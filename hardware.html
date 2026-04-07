@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hardware Options | creeksea.ai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0A0A0A;
+      --white: #FAFAF8;
+      --gray: #444;
+      --gray-dim: #666;
+      --border: rgba(0,0,0,0.10);
+      --max: 1320px;
+    }
+    [data-theme="dark"] {
+      --black: #F0F0EE;
+      --white: #0A0A0A;
+      --gray: #AAA;
+      --gray-dim: #777;
+      --border: rgba(255,255,255,0.10);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 48px;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
+      border-bottom: 1px solid transparent;
+    }
+    nav.scrolled {
+      background: rgba(250,250,248,0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      box-shadow: 0 1px 24px rgba(0,0,0,0.06);
+      padding: 18px 48px;
+    }
+    [data-theme="dark"] nav.scrolled {
+      background: rgba(10,10,10,0.88);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 1px 24px rgba(0,0,0,0.3);
+    }
+    .nav-left { display: flex; align-items: center; gap: 28px; }
+    .nav-wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--black);
+    }
+    .nav-links {
+      display: flex; gap: 36px; list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--black); }
+    .nav-links a.active { color: var(--black); border-bottom: 1px solid var(--black); padding-bottom: 1px; }
+    .nav-cta {
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--black) !important;
+      border-bottom: 1px solid var(--black);
+      padding-bottom: 1px;
+    }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > a { display: flex; align-items: center; gap: 5px; cursor: default; }
+    .nav-dropdown > a::after { content: ''; display: inline-block; width: 5px; height: 5px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform 0.2s; }
+    .nav-dropdown:hover > a::after { transform: rotate(-135deg) translateY(-2px); }
+    .nav-dropdown-menu { position: absolute; top: 100%; right: 0; min-width: 210px; background: rgba(250,250,248,0.97); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.08); padding: 18px 0 6px; opacity: 0; pointer-events: none; transform: translateY(-6px); transition: opacity 0.18s ease, transform 0.18s ease; }
+    [data-theme="dark"] .nav-dropdown-menu { background: rgba(12,12,12,0.97); border-color: rgba(255,255,255,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    .nav-dropdown:hover .nav-dropdown-menu { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .nav-dropdown-menu a { display: flex; align-items: baseline; gap: 10px; padding: 11px 22px; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); transition: color 0.15s, background 0.15s; white-space: nowrap; border-bottom: none !important; }
+    .nav-dropdown-menu a:hover { color: var(--black); background: rgba(0,0,0,0.025); }
+    [data-theme="dark"] .nav-dropdown-menu a:hover { background: rgba(255,255,255,0.04); }
+    .drop-num { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; font-style: italic; color: var(--gray-dim); min-width: 16px; }
+    .nav-dropdown-divider { height: 1px; background: var(--border); margin: 6px 0; }
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      width: 36px; height: 20px;
+      cursor: pointer;
+      position: relative;
+      transition: border-color 0.2s;
+      flex-shrink: 0;
+      margin-left: 16px;
+    }
+    .theme-toggle::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: var(--black);
+      transition: transform 0.25s ease, background 0.2s;
+    }
+    [data-theme="dark"] .theme-toggle::after { transform: translateX(16px); }
+    .theme-toggle:hover { border-color: var(--black); }
+
+    /* ── SHARED SECTION ── */
+    section { border-bottom: 1px solid var(--border); }
+    .section-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #555;
+    }
+    .section-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: #444;
+    }
+
+    /* ── BUTTONS ── */
+    .btn-fill, .btn-outline {
+      display: inline-block;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 14px 28px;
+      transition: all 0.2s;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .btn-fill { background: var(--black); color: var(--white); border: 1px solid var(--black); }
+    .btn-fill:hover { background: transparent; color: var(--black); }
+    .btn-outline { border: 1px solid rgba(0,0,0,0.25); color: var(--black); }
+    .btn-outline:hover { border-color: var(--black); background: rgba(0,0,0,0.03); }
+    [data-theme="dark"] .btn-outline { border-color: rgba(255,255,255,0.25); }
+    [data-theme="dark"] .btn-outline:hover { border-color: var(--black); background: rgba(255,255,255,0.05); }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      min-height: 80vh;
+      display: grid;
+      grid-template-columns: 1fr 480px;
+      align-items: center;
+      gap: 64px;
+      padding: 120px 48px 48px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .page-hero-left { display: flex; flex-direction: column; }
+    .page-hero-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #555;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .page-hero-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 7vw, 7.5rem);
+      font-weight: 300;
+      line-height: 1.0;
+      color: var(--black);
+      margin-bottom: 40px;
+    }
+    .page-hero-heading em { font-style: italic; }
+    .page-hero-desc {
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: var(--gray);
+      max-width: 480px;
+      margin-bottom: 36px;
+    }
+    .page-hero-actions { display: flex; gap: 12px; }
+    .page-hero-right {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .server-rack-svg {
+      width: 100%;
+      max-width: 460px;
+      filter: drop-shadow(0 12px 40px rgba(0,0,0,0.08));
+    }
+    [data-theme="dark"] .server-rack-svg {
+      filter: drop-shadow(0 12px 40px rgba(0,0,0,0.4));
+    }
+
+    /* ── HARDWARE CATEGORY SECTION ── */
+    .hw-category {
+      padding: 48px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hw-category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 48px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .hw-category-left { display: flex; flex-direction: column; gap: 10px; }
+    .hw-category-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--black);
+    }
+    .hw-category-desc {
+      font-size: 0.8rem;
+      line-height: 1.75;
+      color: var(--gray);
+      max-width: 400px;
+    }
+    .hw-category-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: #444;
+      padding-top: 6px;
+    }
+
+    /* ── GPU CARD ROW ── */
+    .hw-row {
+      display: grid;
+      grid-template-columns: 200px 1fr 1fr;
+      align-items: start;
+      gap: 48px;
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .hw-row:last-child { border-bottom: none; }
+    .hw-row::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100vw;
+      background: rgba(0,0,0,0.025);
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: -1;
+    }
+    [data-theme="dark"] .hw-row::before { background: rgba(255,255,255,0.03); }
+    .hw-row:hover::before { opacity: 1; }
+
+    .hw-row-left { display: flex; flex-direction: column; gap: 6px; }
+    .hw-tier-badge {
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gray-dim);
+    }
+    .hw-gpu-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--black);
+      line-height: 1.15;
+    }
+    .hw-gpu-arch {
+      font-size: 0.72rem;
+      color: var(--gray);
+      margin-top: 2px;
+    }
+
+    .hw-row-desc {
+      font-size: 0.8rem;
+      line-height: 1.8;
+      color: var(--gray);
+    }
+
+    .hw-spec-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .hw-spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .hw-spec-item:nth-last-child(-n+2) { border-bottom: none; }
+    .hw-spec-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gray-dim);
+    }
+    .hw-spec-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--black);
+    }
+
+    /* ── PROFILE TABLE ── */
+    .profile-section {
+      padding: 48px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .profile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 48px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .profile-header-left { display: flex; flex-direction: column; gap: 10px; }
+    .profile-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--black);
+    }
+    .profile-desc {
+      font-size: 0.8rem;
+      line-height: 1.75;
+      color: var(--gray);
+      max-width: 440px;
+    }
+    .profile-row {
+      display: grid;
+      grid-template-columns: 240px 1fr 120px 140px;
+      align-items: center;
+      gap: 32px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .profile-row:last-child { border-bottom: none; }
+    .profile-row::before {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%; transform: translateX(-50%);
+      width: 100vw;
+      background: rgba(0,0,0,0.025);
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: -1;
+    }
+    [data-theme="dark"] .profile-row::before { background: rgba(255,255,255,0.03); }
+    .profile-row:hover::before { opacity: 1; }
+    .profile-row.highlighted { background: transparent; }
+    .profile-row.highlighted .profile-name { color: var(--black); }
+    .profile-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: var(--black);
+      line-height: 1.3;
+    }
+    .profile-badge {
+      font-size: 0.55rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gray-dim);
+      margin-top: 4px;
+      display: block;
+    }
+    .profile-config {
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: var(--gray);
+    }
+    .profile-users {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--black);
+      white-space: nowrap;
+    }
+    .profile-users span {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-dim);
+      margin-top: 2px;
+    }
+    .profile-cost {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--black);
+      text-align: right;
+      white-space: nowrap;
+    }
+    .profile-cost span {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray-dim);
+      margin-top: 2px;
+      text-align: right;
+    }
+
+    /* ── CONSIDERATIONS ── */
+    .considerations {
+      padding: 48px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .considerations-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 48px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .considerations-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--black);
+    }
+    .considerations-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+    }
+    .consideration-item {
+      padding: 32px 40px 32px 0;
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .consideration-item:nth-child(3n) { border-right: none; padding-right: 0; }
+    .consideration-item:nth-child(3n+2),
+    .consideration-item:nth-child(3n+3) { padding-left: 40px; }
+    .consideration-item:nth-child(n+4) { border-top: 1px solid var(--border); padding-top: 32px; }
+    .consideration-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #555;
+    }
+    .consideration-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 300;
+      color: var(--black);
+      line-height: 1.2;
+    }
+    .consideration-body {
+      font-size: 0.78rem;
+      line-height: 1.75;
+      color: var(--gray);
+    }
+
+    /* ── PROCUREMENT NOTE ── */
+    .procurement-note {
+      padding: 48px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 30vh;
+    }
+    .procurement-inner {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 64px;
+      align-items: start;
+      padding: 40px;
+      border: 1px solid var(--border);
+    }
+    .procurement-left { display: flex; flex-direction: column; gap: 12px; }
+    .procurement-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: var(--black);
+      line-height: 1.2;
+    }
+    .procurement-body {
+      font-size: 0.8rem;
+      line-height: 1.85;
+      color: var(--gray);
+    }
+    .procurement-body a { border-bottom: 1px solid var(--border); }
+    .procurement-body a:hover { border-color: var(--black); color: var(--black); }
+
+    /* ── CTA ── */
+    .cta {
+      padding: 48px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 60vh;
+    }
+    .cta-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray-dim);
+      margin-bottom: 28px;
+    }
+    .cta-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--black);
+      margin-bottom: 24px;
+    }
+    .cta-title em { font-style: italic; }
+    .cta-sub {
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: var(--gray);
+      max-width: 460px;
+      margin-bottom: 40px;
+    }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 40px 48px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 48px;
+    }
+    .footer-left { display: flex; flex-direction: column; gap: 10px; }
+    .footer-wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--black);
+    }
+    .footer-tagline {
+      font-size: 0.68rem;
+      color: var(--gray-dim);
+      max-width: 280px;
+      line-height: 1.6;
+    }
+    .footer-right { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
+    .footer-links {
+      display: flex; gap: 28px; list-style: none;
+    }
+    .footer-links a {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray);
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--black); }
+    .footer-copy {
+      font-size: 0.65rem;
+      color: var(--gray-dim);
+      letter-spacing: 0.06em;
+    }
+  
+
+  /* ── Hamburger button (desktop: hidden) ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--black);
+    transition: transform 0.22s ease, opacity 0.22s ease;
+    border-radius: 1px;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4.7px, 4.7px); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4.7px, -4.7px); }
+
+  /* ══════════════════════════════════════
+     MOBILE RESPONSIVENESS
+     ══════════════════════════════════════ */
+  @media (max-width: 768px) {
+    /* Nav */
+    nav { padding: 20px 24px !important; }
+    nav.scrolled { padding: 14px 24px !important; }
+    .nav-hamburger { display: flex !important; }
+    .nav-links {
+      display: none;
+      position: fixed;
+      top: 58px;
+      left: 0; right: 0;
+      background: rgba(250,250,248,0.98);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.09);
+      padding: 8px 0 16px;
+      flex-direction: column;
+      gap: 0;
+      z-index: 98;
+      list-style: none;
+    }
+    [data-theme="dark"] .nav-links {
+      background: rgba(10,10,10,0.98);
+      border-bottom-color: rgba(255,255,255,0.08);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { border-bottom: 1px solid var(--border); }
+    .nav-links li:last-child { border-bottom: none; }
+    .nav-links a {
+      display: block;
+      padding: 14px 24px !important;
+      font-size: 0.72rem !important;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray) !important;
+      border-bottom: none !important;
+    }
+    .nav-links a:hover { color: var(--black) !important; }
+    /* Nav links: centered */
+    .nav-links li { text-align: center; }
+    .nav-links a { text-align: center !important; }
+    /* Services sub-menu: hidden by default, expanded on click */
+    .nav-dropdown-menu {
+      position: static !important;
+      opacity: 1 !important;
+      pointer-events: all !important;
+      transform: none !important;
+      box-shadow: none !important;
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      display: none;
+      flex-direction: column;
+    }
+    .nav-dropdown.open .nav-dropdown-menu { display: flex !important; }
+    .nav-dropdown-menu a {
+      padding: 10px 24px !important;
+      font-size: 0.65rem !important;
+      text-align: center !important;
+      justify-content: center !important;
+    }
+    /* Services trigger: show arrow caret, cursor pointer */
+    .nav-dropdown > a { cursor: pointer !important; justify-content: center !important; }
+    .nav-cta { font-size: 0.62rem !important; padding: 9px 14px !important; }
+
+    /* Hero: 1fr 480px → single column, SVG scales */
+    .page-hero {
+      grid-template-columns: 1fr !important;
+      padding: 100px 24px 60px !important;
+      gap: 40px !important;
+      min-height: auto !important;
+    }
+    .server-rack-svg,
+    .page-hero-right svg {
+      width: 100% !important;
+      height: auto !important;
+      max-width: 360px;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Section padding — keep 24px side margins */
+    .local-section,
+    .cloud-section,
+    .considerations-section,
+    .procurement-section,
+    .hw-section { padding: 48px 24px !important; }
+    footer { padding: 40px 24px !important; }
+
+    /* Hardware row (GPU cards): 200px 1fr 1fr → stack */
+    .hw-row { display: block !important; padding: 24px 0 !important; }
+    .hw-row > *:not(:last-child) { margin-bottom: 14px; }
+
+    /* Profile rows (hardware pricing table): 240px 1fr 120px 140px → stack vertically */
+    .profile-row {
+      display: block !important;
+      padding: 20px 0 !important;
+    }
+    .profile-name { font-size: 1.3rem; margin-bottom: 4px; }
+    .profile-badge { display: block; margin-bottom: 10px; }
+    .profile-config { margin-bottom: 10px; font-size: 0.82rem; }
+    .profile-users,
+    .profile-cost { display: inline-block; margin-right: 20px; margin-top: 4px; }
+
+    /* Profile table header: also stack or hide */
+    .profile-header { display: none !important; }
+
+    /* Considerations grid: 3 → 1 col */
+    .considerations-grid { grid-template-columns: 1fr !important; }
+    .consideration-item { border-right: none !important; padding-right: 0 !important; }
+
+    /* Procurement inner: 280px 1fr → single col */
+    .procurement-inner { grid-template-columns: 1fr !important; gap: 32px !important; }
+
+    /* Section headers */
+    .local-header,
+    .cloud-header,
+    .considerations-header,
+    .procurement-header,
+    [class$="-header"] {
+      flex-direction: column !important;
+      gap: 16px !important;
+      align-items: flex-start !important;
+    }
+
+    /* Cloud table: make scrollable */
+    .cloud-table-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+    .cloud-table { min-width: 520px; }
+
+    /* Footer */
+    footer { flex-direction: column !important; align-items: flex-start !important; gap: 32px !important; }
+    .footer-right { align-items: flex-start !important; }
+    .footer-links { flex-wrap: wrap !important; gap: 10px 20px !important; }
+  }
+
+  @media (max-width: 480px) {
+    nav { padding: 16px 20px !important; }
+    .page-hero { padding: 90px 20px 48px !important; }
+    .local-section,
+    .cloud-section,
+    .considerations-section,
+    .procurement-section,
+    .hw-section,
+    section { padding: 40px 20px !important; }
+  }
+
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-left">
+    <a href="index.html"><span class="nav-wordmark">creeksea.ai</span></a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li class="nav-dropdown">
+      <a href="index.html#services">Services</a>
+      <div class="nav-dropdown-menu">
+        <a href="tier-1-foundations.html"><span class="drop-num">01</span>Foundations</a>
+        <a href="tier-2-professional.html"><span class="drop-num">02</span>Professional</a>
+        <a href="tier-3-business.html"><span class="drop-num">03</span>Business</a>
+        <a href="tier-4-enterprise.html"><span class="drop-num">04</span>Enterprise</a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="addon-services.html"><span class="drop-num">+</span>Add-Ons</a>
+      </div>
+    </li>
+    <li><a href="addon-services.html">Add-Ons</a></li>
+    <li><a href="hardware.html" class="active">Hardware</a></li>
+    <li><a href="https://meetings-na2.hubspot.com/fergus-clare" class="nav-cta">Get Started →</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="page-hero-left">
+    <span class="page-hero-eyebrow">Infrastructure</span>
+    <h1 class="page-hero-heading">
+      The hardware<br><em>behind the</em><br>privacy.
+    </h1>
+    <p class="page-hero-desc">
+      Creeksea sources, configures, and manages enterprise-grade NVIDIA GPU infrastructure. Hardware is quoted separately from the management retainer and can be financed, leased, or purchased outright. We recommend hardware based on your workload — not our margin.
+    </p>
+    <div class="page-hero-actions">
+      <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-fill">Get a Hardware Quote →</a>
+      <a href="index.html#services" class="btn-outline">View Service Tiers</a>
+    </div>
+  </div>
+
+  <div class="page-hero-right">
+    <svg class="server-rack-svg" viewBox="0 0 460 580" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Rack cabinet outer shell -->
+      <rect x="20" y="10" width="420" height="560" rx="4" stroke="currentColor" stroke-width="1.2" fill="var(--white)"/>
+      <!-- Rack top panel -->
+      <rect x="20" y="10" width="420" height="28" rx="4" fill="var(--border)" stroke="currentColor" stroke-width="1.2"/>
+      <!-- Rack label -->
+      <text x="230" y="29" text-anchor="middle" font-family="'Inter', sans-serif" font-size="8" letter-spacing="3" fill="currentColor" opacity="0.5" text-transform="uppercase">CREEKSEA · GPU NODE RACK</text>
+      <!-- Rail strips -->
+      <rect x="20" y="38" width="12" height="532" fill="var(--border)" stroke="currentColor" stroke-width="0.6"/>
+      <rect x="428" y="38" width="12" height="532" fill="var(--border)" stroke="currentColor" stroke-width="0.6"/>
+      <!-- Rail holes left -->
+      <circle cx="26" cy="56" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="26" cy="72" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="26" cy="122" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="26" cy="138" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="26" cy="188" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="26" cy="204" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="26" cy="310" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="26" cy="326" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="26" cy="420" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="26" cy="436" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="26" cy="490" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="26" cy="506" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <!-- Rail holes right -->
+      <circle cx="434" cy="56" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="434" cy="72" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="434" cy="122" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="434" cy="138" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="434" cy="188" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="434" cy="204" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="434" cy="310" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="434" cy="326" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="434" cy="420" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="434" cy="436" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="434" cy="490" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+      <circle cx="434" cy="506" r="2.5" fill="var(--white)" stroke="currentColor" stroke-width="0.6"/>
+
+      <!-- ── 1U SERVER 1 ── -->
+      <rect x="36" y="44" width="388" height="38" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <circle cx="52" cy="63" r="4" stroke="currentColor" stroke-width="0.8" fill="none"/>
+      <circle cx="52" cy="63" r="1.5" fill="currentColor" opacity="0.3"/>
+      <rect x="62" y="57" width="5" height="12" rx="1" stroke="currentColor" stroke-width="0.6" fill="none"/>
+      <rect x="72" y="58" width="3" height="3" rx="0.5" fill="currentColor" opacity="0.2"/>
+      <rect x="72" y="64" width="3" height="3" rx="0.5" fill="currentColor" opacity="0.2"/>
+      <!-- Drive bays -->
+      <rect x="82" y="53" width="16" height="20" rx="1" stroke="currentColor" stroke-width="0.6" fill="var(--border)"/>
+      <rect x="102" y="53" width="16" height="20" rx="1" stroke="currentColor" stroke-width="0.6" fill="var(--border)"/>
+      <rect x="122" y="53" width="16" height="20" rx="1" stroke="currentColor" stroke-width="0.6" fill="var(--border)"/>
+      <rect x="142" y="53" width="16" height="20" rx="1" stroke="currentColor" stroke-width="0.6" fill="var(--border)"/>
+      <!-- Server label -->
+      <text x="175" y="61" font-family="'Inter', sans-serif" font-size="5.5" fill="currentColor" opacity="0.4" letter-spacing="1">MANAGEMENT NODE</text>
+      <text x="175" y="71" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.3" letter-spacing="0.5">Dual Xeon · 256 GB ECC</text>
+      <!-- Status LEDs -->
+      <circle cx="370" cy="60" r="2.5" fill="currentColor" opacity="0.15"/>
+      <circle cx="380" cy="60" r="2.5" fill="currentColor" opacity="0.6"/>
+      <circle cx="390" cy="60" r="2.5" fill="currentColor" opacity="0.15"/>
+      <!-- Ports -->
+      <rect x="400" y="56" width="8" height="6" rx="1" stroke="currentColor" stroke-width="0.6" fill="none"/>
+      <rect x="411" y="56" width="8" height="6" rx="1" stroke="currentColor" stroke-width="0.6" fill="none"/>
+
+      <!-- ── 1U SERVER 2 ── -->
+      <rect x="36" y="86" width="388" height="38" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <circle cx="52" cy="105" r="4" stroke="currentColor" stroke-width="0.8" fill="none"/>
+      <circle cx="52" cy="105" r="1.5" fill="currentColor" opacity="0.3"/>
+      <rect x="62" y="99" width="5" height="12" rx="1" stroke="currentColor" stroke-width="0.6" fill="none"/>
+      <rect x="82" y="95" width="16" height="20" rx="1" stroke="currentColor" stroke-width="0.6" fill="var(--border)"/>
+      <rect x="102" y="95" width="16" height="20" rx="1" stroke="currentColor" stroke-width="0.6" fill="var(--border)"/>
+      <rect x="122" y="95" width="16" height="20" rx="1" stroke="currentColor" stroke-width="0.6" fill="var(--border)"/>
+      <rect x="142" y="95" width="16" height="20" rx="1" stroke="currentColor" stroke-width="0.6" fill="var(--border)"/>
+      <text x="175" y="103" font-family="'Inter', sans-serif" font-size="5.5" fill="currentColor" opacity="0.4" letter-spacing="1">STORAGE NODE</text>
+      <text x="175" y="113" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.3" letter-spacing="0.5">NVMe RAID · 96 TB raw</text>
+      <circle cx="370" cy="102" r="2.5" fill="currentColor" opacity="0.6"/>
+      <circle cx="380" cy="102" r="2.5" fill="currentColor" opacity="0.15"/>
+      <circle cx="390" cy="102" r="2.5" fill="currentColor" opacity="0.15"/>
+      <rect x="400" y="98" width="8" height="6" rx="1" stroke="currentColor" stroke-width="0.6" fill="none"/>
+      <rect x="411" y="98" width="8" height="6" rx="1" stroke="currentColor" stroke-width="0.6" fill="none"/>
+
+      <!-- ── 2U GPU SERVER ── -->
+      <rect x="36" y="128" width="388" height="76" rx="2" stroke="currentColor" stroke-width="1" fill="var(--border)" opacity="0.4"/>
+      <rect x="36" y="128" width="388" height="76" rx="2" stroke="currentColor" stroke-width="1" fill="none"/>
+      <!-- GPU label bar -->
+      <rect x="36" y="128" width="388" height="14" rx="2" fill="currentColor" opacity="0.05"/>
+      <text x="56" y="139" font-family="'Inter', sans-serif" font-size="5.5" fill="currentColor" opacity="0.5" letter-spacing="1.5">GPU INFERENCE NODE · PRIMARY</text>
+      <circle cx="392" cy="136" r="2.5" fill="currentColor" opacity="0.7"/>
+      <circle cx="402" cy="136" r="2.5" fill="currentColor" opacity="0.15"/>
+      <circle cx="412" cy="136" r="2.5" fill="currentColor" opacity="0.15"/>
+      <!-- GPU cards -->
+      <rect x="50" y="148" width="54" height="46" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <rect x="54" y="153" width="46" height="8" rx="1" fill="currentColor" opacity="0.06"/>
+      <line x1="54" y1="165" x2="100" y2="165" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="54" y1="169" x2="100" y2="169" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="54" y1="173" x2="100" y2="173" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="54" y1="177" x2="100" y2="177" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="54" y1="181" x2="100" y2="181" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="54" y1="185" x2="100" y2="185" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <text x="77" y="162" text-anchor="middle" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.5">H100</text>
+
+      <rect x="110" y="148" width="54" height="46" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <rect x="114" y="153" width="46" height="8" rx="1" fill="currentColor" opacity="0.06"/>
+      <line x1="114" y1="165" x2="160" y2="165" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="114" y1="169" x2="160" y2="169" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="114" y1="173" x2="160" y2="173" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="114" y1="177" x2="160" y2="177" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="114" y1="181" x2="160" y2="181" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="114" y1="185" x2="160" y2="185" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <text x="137" y="162" text-anchor="middle" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.5">H100</text>
+
+      <rect x="170" y="148" width="54" height="46" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <rect x="174" y="153" width="46" height="8" rx="1" fill="currentColor" opacity="0.06"/>
+      <line x1="174" y1="165" x2="220" y2="165" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="174" y1="169" x2="220" y2="169" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="174" y1="173" x2="220" y2="173" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="174" y1="177" x2="220" y2="177" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="174" y1="181" x2="220" y2="181" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="174" y1="185" x2="220" y2="185" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <text x="197" y="162" text-anchor="middle" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.5">H100</text>
+
+      <rect x="230" y="148" width="54" height="46" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <rect x="234" y="153" width="46" height="8" rx="1" fill="currentColor" opacity="0.06"/>
+      <line x1="234" y1="165" x2="280" y2="165" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="234" y1="169" x2="280" y2="169" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="234" y1="173" x2="280" y2="173" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="234" y1="177" x2="280" y2="177" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="234" y1="181" x2="280" y2="181" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="234" y1="185" x2="280" y2="185" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <text x="257" y="162" text-anchor="middle" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.5">H100</text>
+
+      <!-- NVLink bridge -->
+      <path d="M104 170 L110 170" stroke="currentColor" stroke-width="1.5" opacity="0.25"/>
+      <path d="M164 170 L170 170" stroke="currentColor" stroke-width="1.5" opacity="0.25"/>
+      <path d="M224 170 L230 170" stroke="currentColor" stroke-width="1.5" opacity="0.25"/>
+      <text x="298" y="166" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.35" letter-spacing="0.5">NVLink</text>
+      <text x="298" y="174" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.35" letter-spacing="0.5">900 GB/s</text>
+      <!-- Fans -->
+      <circle cx="360" cy="166" r="10" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/>
+      <path d="M360 156 Q363 161 360 166 Q357 161 360 156Z" fill="currentColor" opacity="0.1"/>
+      <path d="M370 166 Q365 169 360 166 Q365 163 370 166Z" fill="currentColor" opacity="0.1"/>
+      <path d="M360 176 Q357 171 360 166 Q363 171 360 176Z" fill="currentColor" opacity="0.1"/>
+      <path d="M350 166 Q355 163 360 166 Q355 169 350 166Z" fill="currentColor" opacity="0.1"/>
+      <circle cx="360" cy="166" r="2.5" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/>
+      <circle cx="404" cy="166" r="10" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/>
+      <path d="M404 156 Q407 161 404 166 Q401 161 404 156Z" fill="currentColor" opacity="0.1"/>
+      <path d="M414 166 Q409 169 404 166 Q409 163 414 166Z" fill="currentColor" opacity="0.1"/>
+      <path d="M404 176 Q401 171 404 166 Q407 171 404 176Z" fill="currentColor" opacity="0.1"/>
+      <path d="M394 166 Q399 163 404 166 Q399 169 394 166Z" fill="currentColor" opacity="0.1"/>
+      <circle cx="404" cy="166" r="2.5" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/>
+
+      <!-- ── 1U NETWORK SWITCH ── -->
+      <rect x="36" y="208" width="388" height="38" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <text x="56" y="222" font-family="'Inter', sans-serif" font-size="5.5" fill="currentColor" opacity="0.4" letter-spacing="1">NETWORK SWITCH · 100GbE</text>
+      <!-- Switch ports -->
+      <rect x="56" y="226" width="7" height="5" rx="0.5" stroke="currentColor" stroke-width="0.5" fill="currentColor" opacity="0.1"/>
+      <rect x="66" y="226" width="7" height="5" rx="0.5" stroke="currentColor" stroke-width="0.5" fill="currentColor" opacity="0.1"/>
+      <rect x="76" y="226" width="7" height="5" rx="0.5" stroke="currentColor" stroke-width="0.5" fill="currentColor" opacity="0.1"/>
+      <rect x="86" y="226" width="7" height="5" rx="0.5" stroke="currentColor" stroke-width="0.5" fill="currentColor" opacity="0.1"/>
+      <rect x="96" y="226" width="7" height="5" rx="0.5" stroke="currentColor" stroke-width="0.5" fill="currentColor" opacity="0.1"/>
+      <rect x="106" y="226" width="7" height="5" rx="0.5" stroke="currentColor" stroke-width="0.5" fill="currentColor" opacity="0.1"/>
+      <rect x="116" y="226" width="7" height="5" rx="0.5" stroke="currentColor" stroke-width="0.5" fill="currentColor" opacity="0.1"/>
+      <rect x="126" y="226" width="7" height="5" rx="0.5" stroke="currentColor" stroke-width="0.5" fill="currentColor" opacity="0.1"/>
+      <rect x="136" y="226" width="7" height="5" rx="0.5" stroke="currentColor" stroke-width="0.5" fill="currentColor" opacity="0.1"/>
+      <rect x="146" y="226" width="7" height="5" rx="0.5" stroke="currentColor" stroke-width="0.5" fill="currentColor" opacity="0.1"/>
+      <rect x="156" y="226" width="7" height="5" rx="0.5" stroke="currentColor" stroke-width="0.5" fill="currentColor" opacity="0.1"/>
+      <rect x="166" y="226" width="7" height="5" rx="0.5" stroke="currentColor" stroke-width="0.5" fill="currentColor" opacity="0.1"/>
+      <circle cx="380" cy="228" r="2" fill="currentColor" opacity="0.5"/>
+      <circle cx="390" cy="228" r="2" fill="currentColor" opacity="0.15"/>
+      <circle cx="400" cy="228" r="2" fill="currentColor" opacity="0.5"/>
+      <circle cx="410" cy="228" r="2" fill="currentColor" opacity="0.15"/>
+
+      <!-- ── 2U GPU SERVER 2 ── -->
+      <rect x="36" y="250" width="388" height="76" rx="2" stroke="currentColor" stroke-width="1" fill="var(--border)" opacity="0.3"/>
+      <rect x="36" y="250" width="388" height="76" rx="2" stroke="currentColor" stroke-width="1" fill="none"/>
+      <rect x="36" y="250" width="388" height="14" rx="2" fill="currentColor" opacity="0.04"/>
+      <text x="56" y="261" font-family="'Inter', sans-serif" font-size="5.5" fill="currentColor" opacity="0.5" letter-spacing="1.5">GPU INFERENCE NODE · SECONDARY</text>
+      <circle cx="392" cy="258" r="2.5" fill="currentColor" opacity="0.7"/>
+      <circle cx="402" cy="258" r="2.5" fill="currentColor" opacity="0.15"/>
+      <circle cx="412" cy="258" r="2.5" fill="currentColor" opacity="0.15"/>
+      <!-- GPU cards row 2 -->
+      <rect x="50" y="270" width="54" height="46" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <rect x="54" y="275" width="46" height="8" rx="1" fill="currentColor" opacity="0.06"/>
+      <line x1="54" y1="287" x2="100" y2="287" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="54" y1="291" x2="100" y2="291" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="54" y1="295" x2="100" y2="295" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="54" y1="299" x2="100" y2="299" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="54" y1="303" x2="100" y2="303" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <text x="77" y="284" text-anchor="middle" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.5">A100</text>
+      <rect x="110" y="270" width="54" height="46" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <rect x="114" y="275" width="46" height="8" rx="1" fill="currentColor" opacity="0.06"/>
+      <line x1="114" y1="287" x2="160" y2="287" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="114" y1="291" x2="160" y2="291" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="114" y1="295" x2="160" y2="295" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="114" y1="299" x2="160" y2="299" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="114" y1="303" x2="160" y2="303" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <text x="137" y="284" text-anchor="middle" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.5">A100</text>
+      <rect x="170" y="270" width="54" height="46" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <rect x="174" y="275" width="46" height="8" rx="1" fill="currentColor" opacity="0.06"/>
+      <line x1="174" y1="287" x2="220" y2="287" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="174" y1="291" x2="220" y2="291" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="174" y1="295" x2="220" y2="295" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="174" y1="299" x2="220" y2="299" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="174" y1="303" x2="220" y2="303" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <text x="197" y="284" text-anchor="middle" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.5">A100</text>
+      <rect x="230" y="270" width="54" height="46" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <rect x="234" y="275" width="46" height="8" rx="1" fill="currentColor" opacity="0.06"/>
+      <line x1="234" y1="287" x2="280" y2="287" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="234" y1="291" x2="280" y2="291" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="234" y1="295" x2="280" y2="295" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="234" y1="299" x2="280" y2="299" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <line x1="234" y1="303" x2="280" y2="303" stroke="currentColor" stroke-width="0.4" opacity="0.3"/>
+      <text x="257" y="284" text-anchor="middle" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.5">A100</text>
+      <path d="M104 292 L110 292" stroke="currentColor" stroke-width="1.5" opacity="0.25"/>
+      <path d="M164 292 L170 292" stroke="currentColor" stroke-width="1.5" opacity="0.25"/>
+      <path d="M224 292 L230 292" stroke="currentColor" stroke-width="1.5" opacity="0.25"/>
+      <circle cx="360" cy="288" r="10" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/>
+      <path d="M360 278 Q363 283 360 288 Q357 283 360 278Z" fill="currentColor" opacity="0.1"/>
+      <path d="M370 288 Q365 291 360 288 Q365 285 370 288Z" fill="currentColor" opacity="0.1"/>
+      <path d="M360 298 Q357 293 360 288 Q363 293 360 298Z" fill="currentColor" opacity="0.1"/>
+      <path d="M350 288 Q355 285 360 288 Q355 291 350 288Z" fill="currentColor" opacity="0.1"/>
+      <circle cx="360" cy="288" r="2.5" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/>
+      <circle cx="404" cy="288" r="10" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/>
+      <path d="M404 278 Q407 283 404 288 Q401 283 404 278Z" fill="currentColor" opacity="0.1"/>
+      <path d="M414 288 Q409 291 404 288 Q409 285 414 288Z" fill="currentColor" opacity="0.1"/>
+      <path d="M404 298 Q401 293 404 288 Q407 293 404 298Z" fill="currentColor" opacity="0.1"/>
+      <path d="M394 288 Q399 285 404 288 Q399 291 394 288Z" fill="currentColor" opacity="0.1"/>
+      <circle cx="404" cy="288" r="2.5" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/>
+
+      <!-- ── 1U EMPTY / PATCH PANEL ── -->
+      <rect x="36" y="330" width="388" height="28" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <text x="56" y="348" font-family="'Inter', sans-serif" font-size="5.5" fill="currentColor" opacity="0.3" letter-spacing="1">PATCH PANEL · 48-PORT</text>
+      <rect x="56" y="336" width="6" height="8" rx="0.5" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.3"/>
+      <rect x="65" y="336" width="6" height="8" rx="0.5" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.3"/>
+      <rect x="74" y="336" width="6" height="8" rx="0.5" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.3"/>
+      <rect x="83" y="336" width="6" height="8" rx="0.5" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.3"/>
+      <rect x="92" y="336" width="6" height="8" rx="0.5" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.3"/>
+      <rect x="101" y="336" width="6" height="8" rx="0.5" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.3"/>
+      <rect x="110" y="336" width="6" height="8" rx="0.5" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.3"/>
+      <rect x="119" y="336" width="6" height="8" rx="0.5" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.3"/>
+      <rect x="128" y="336" width="6" height="8" rx="0.5" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.3"/>
+      <rect x="137" y="336" width="6" height="8" rx="0.5" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.3"/>
+
+      <!-- ── 2U UPS ── -->
+      <rect x="36" y="362" width="388" height="64" rx="2" stroke="currentColor" stroke-width="0.8" fill="var(--white)"/>
+      <text x="56" y="379" font-family="'Inter', sans-serif" font-size="5.5" fill="currentColor" opacity="0.4" letter-spacing="1">UNINTERRUPTIBLE POWER SUPPLY</text>
+      <rect x="56" y="386" width="120" height="30" rx="2" stroke="currentColor" stroke-width="0.6" fill="currentColor" opacity="0.04"/>
+      <text x="116" y="405" text-anchor="middle" font-family="'Inter', sans-serif" font-size="6" fill="currentColor" opacity="0.35">BATTERY · 15 MIN</text>
+      <!-- Power gauge -->
+      <rect x="200" y="388" width="160" height="8" rx="2" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.3"/>
+      <rect x="201" y="389" width="128" height="6" rx="1.5" fill="currentColor" opacity="0.12"/>
+      <text x="200" y="406" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.3">LOAD</text>
+      <text x="360" y="406" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.3" text-anchor="end">80%</text>
+      <circle cx="390" cy="392" r="4" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/>
+      <text x="390" y="395" text-anchor="middle" font-family="'Inter', sans-serif" font-size="4.5" fill="currentColor" opacity="0.4">ON</text>
+      <circle cx="410" cy="392" r="4" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.4"/>
+
+      <!-- ── CABLE MANAGEMENT ── -->
+      <rect x="36" y="430" width="388" height="22" rx="2" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.3"/>
+      <text x="230" y="445" text-anchor="middle" font-family="'Inter', sans-serif" font-size="5" fill="currentColor" opacity="0.25" letter-spacing="1">CABLE MANAGEMENT</text>
+
+      <!-- Bottom blank panels -->
+      <rect x="36" y="456" width="388" height="22" rx="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.2"/>
+      <rect x="36" y="482" width="388" height="22" rx="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.2"/>
+      <rect x="36" y="508" width="388" height="22" rx="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.2"/>
+
+      <!-- Rack bottom panel -->
+      <rect x="20" y="542" width="420" height="28" rx="4" fill="var(--border)" stroke="currentColor" stroke-width="1.2" opacity="0.6"/>
+      <text x="230" y="560" text-anchor="middle" font-family="'Inter', sans-serif" font-size="7" letter-spacing="2" fill="currentColor" opacity="0.3">42U · PRIVATE DEPLOYMENT</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ENTRY-LEVEL -->
+<section class="hw-category">
+  <div class="hw-category-header">
+    <div class="hw-category-left">
+      <span class="section-label">Entry-Level</span>
+      <h2 class="hw-category-title">Consumer-Grade<br>Professional GPUs</h2>
+      <p class="hw-category-desc">Ideal for Tier 1 deployments. High-performance consumer and workstation GPUs that offer excellent inference throughput at accessible price points.</p>
+    </div>
+    <span class="hw-category-num">01</span>
+  </div>
+
+  <div class="hw-row">
+    <div class="hw-row-left">
+      <span class="hw-tier-badge">Tier 1 Recommended</span>
+      <div class="hw-gpu-name">NVIDIA RTX 4090</div>
+      <div class="hw-gpu-arch">Ada Lovelace · 24GB GDDR6X</div>
+    </div>
+    <p class="hw-row-desc">The highest-performance consumer GPU available. Exceptional for running 7B–34B parameter models at full precision, or 70B+ models with quantization. Ideal for teams with moderate concurrent user loads.</p>
+    <div class="hw-spec-grid">
+      <div class="hw-spec-item"><span class="hw-spec-label">VRAM</span><span class="hw-spec-val">24 GB</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">CUDA Cores</span><span class="hw-spec-val">16,384</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Memory BW</span><span class="hw-spec-val">1,008 GB/s</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">TDP</span><span class="hw-spec-val">450W</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Models (FP16)</span><span class="hw-spec-val">Up to 13B</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Models (INT4)</span><span class="hw-spec-val">Up to 70B</span></div>
+    </div>
+  </div>
+
+  <div class="hw-row">
+    <div class="hw-row-left">
+      <span class="hw-tier-badge">Tier 1 Alternative</span>
+      <div class="hw-gpu-name">NVIDIA RTX 6000 Ada</div>
+      <div class="hw-gpu-arch">Ada Lovelace · 48GB GDDR6</div>
+    </div>
+    <p class="hw-row-desc">Professional workstation GPU with double the VRAM of the RTX 4090 and ECC memory support. Runs full-precision 34B models comfortably, and 70B with light quantization. Better suited for compliance-sensitive environments.</p>
+    <div class="hw-spec-grid">
+      <div class="hw-spec-item"><span class="hw-spec-label">VRAM</span><span class="hw-spec-val">48 GB ECC</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">CUDA Cores</span><span class="hw-spec-val">18,176</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Memory BW</span><span class="hw-spec-val">960 GB/s</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">TDP</span><span class="hw-spec-val">300W</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Models (FP16)</span><span class="hw-spec-val">Up to 34B</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Models (INT4)</span><span class="hw-spec-val">Up to 70B+</span></div>
+    </div>
+  </div>
+
+  <div class="hw-row">
+    <div class="hw-row-left">
+      <span class="hw-tier-badge">Tier 1 Recommended · Small Business</span>
+      <div class="hw-gpu-name">Apple Mac Studio<br><em style="font-style:italic;font-size:0.85em;font-weight:300;">M4 Max</em></div>
+      <div class="hw-gpu-arch">Apple Silicon · 64–96 GB Unified Memory</div>
+    </div>
+    <p class="hw-row-desc">Our top recommendation for small businesses. The unified memory architecture lets the CPU and GPU share the same high-bandwidth memory pool, enabling surprisingly large models on compact, whisper-quiet hardware — with zero GPU driver management. Plug in, install Ollama, run models up to 40B at full precision.</p>
+    <div class="hw-spec-grid">
+      <div class="hw-spec-item"><span class="hw-spec-label">Unified Memory</span><span class="hw-spec-val">64–96 GB</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Memory BW</span><span class="hw-spec-val">546 GB/s</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Models (Full)</span><span class="hw-spec-val">Up to 40B</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Concurrent Users</span><span class="hw-spec-val">3–8</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">GPU Drivers</span><span class="hw-spec-val">None required</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Est. Hardware Cost</span><span class="hw-spec-val">$2,000 – $4,500</span></div>
+    </div>
+  </div>
+
+  <div class="hw-row">
+    <div class="hw-row-left">
+      <span class="hw-tier-badge">Tier 1–2 · Multi-User Teams</span>
+      <div class="hw-gpu-name">Apple Mac Studio<br><em style="font-style:italic;font-size:0.85em;font-weight:300;">M3 Ultra</em></div>
+      <div class="hw-gpu-arch">Apple Silicon · Up to 192 GB Unified Memory</div>
+    </div>
+    <p class="hw-row-desc">The most capable single-box option for teams that need large models at full precision without building a GPU workstation. Up to 192 GB of unified memory handles 70B+ models comfortably, with enough headroom for multiple concurrent users and several models loaded simultaneously.</p>
+    <div class="hw-spec-grid">
+      <div class="hw-spec-item"><span class="hw-spec-label">Unified Memory</span><span class="hw-spec-val">Up to 192 GB</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Memory BW</span><span class="hw-spec-val">800 GB/s</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Models (Full)</span><span class="hw-spec-val">Up to 70B+</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Concurrent Users</span><span class="hw-spec-val">5–15</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">GPU Drivers</span><span class="hw-spec-val">None required</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Est. Hardware Cost</span><span class="hw-spec-val">$5,000 – $10,000</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFESSIONAL -->
+<section class="hw-category">
+  <div class="hw-category-header">
+    <div class="hw-category-left">
+      <span class="section-label">Professional</span>
+      <h2 class="hw-category-title">Data Center<br>Workstation GPUs</h2>
+      <p class="hw-category-desc">Recommended for Tier 2 deployments. Purpose-built for inference at scale with ECC memory, higher VRAM, and enterprise-grade reliability.</p>
+    </div>
+    <span class="hw-category-num">02</span>
+  </div>
+
+  <div class="hw-row">
+    <div class="hw-row-left">
+      <span class="hw-tier-badge">Tier 2 Recommended</span>
+      <div class="hw-gpu-name">NVIDIA A5000</div>
+      <div class="hw-gpu-arch">Ampere · 24GB GDDR6 ECC</div>
+    </div>
+    <p class="hw-row-desc">Enterprise workstation GPU built for sustained 24/7 workloads. ECC memory ensures data integrity in long-running inference processes. Excellent performance-per-watt for always-on deployments.</p>
+    <div class="hw-spec-grid">
+      <div class="hw-spec-item"><span class="hw-spec-label">VRAM</span><span class="hw-spec-val">24 GB ECC</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">CUDA Cores</span><span class="hw-spec-val">8,192</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Memory BW</span><span class="hw-spec-val">768 GB/s</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">TDP</span><span class="hw-spec-val">230W</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Models (FP16)</span><span class="hw-spec-val">Up to 13B</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Reliability</span><span class="hw-spec-val">ECC / Enterprise</span></div>
+    </div>
+  </div>
+
+  <div class="hw-row">
+    <div class="hw-row-left">
+      <span class="hw-tier-badge">Tier 2 High-Memory</span>
+      <div class="hw-gpu-name">NVIDIA A6000</div>
+      <div class="hw-gpu-arch">Ampere · 48GB GDDR6 ECC</div>
+    </div>
+    <p class="hw-row-desc">The flagship professional workstation GPU. 48GB VRAM enables simultaneous loading of multiple large models. Ideal for organizations running parallel inference requests across several model variants.</p>
+    <div class="hw-spec-grid">
+      <div class="hw-spec-item"><span class="hw-spec-label">VRAM</span><span class="hw-spec-val">48 GB ECC</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">CUDA Cores</span><span class="hw-spec-val">10,752</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Memory BW</span><span class="hw-spec-val">768 GB/s</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">TDP</span><span class="hw-spec-val">300W</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Models (FP16)</span><span class="hw-spec-val">Up to 34B</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Reliability</span><span class="hw-spec-val">ECC / Enterprise</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ENTERPRISE -->
+<section class="hw-category">
+  <div class="hw-category-header">
+    <div class="hw-category-left">
+      <span class="section-label">Enterprise</span>
+      <h2 class="hw-category-title">Data Center<br>Accelerators</h2>
+      <p class="hw-category-desc">Required for Tier 3 and Tier 4 deployments. True data center accelerators with NVLink, massive VRAM, and support for full-precision large models and training workloads.</p>
+    </div>
+    <span class="hw-category-num">03</span>
+  </div>
+
+  <div class="hw-row">
+    <div class="hw-row-left">
+      <span class="hw-tier-badge">Tier 3 Standard</span>
+      <div class="hw-gpu-name">NVIDIA A100 40GB</div>
+      <div class="hw-gpu-arch">Ampere · 40GB HBM2e · SXM4</div>
+    </div>
+    <p class="hw-row-desc">The industry benchmark for enterprise AI inference. HBM2e memory provides 1.6× the bandwidth of GDDR6. Multi-GPU configurations with NVLink enable running 180B+ parameter models without quantization.</p>
+    <div class="hw-spec-grid">
+      <div class="hw-spec-item"><span class="hw-spec-label">VRAM</span><span class="hw-spec-val">40 GB HBM2e</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Memory BW</span><span class="hw-spec-val">1,555 GB/s</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">FP16 TFLOPS</span><span class="hw-spec-val">77.97</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">TDP</span><span class="hw-spec-val">400W</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">NVLink</span><span class="hw-spec-val">600 GB/s</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">4× NVLink</span><span class="hw-spec-val">Up to 180B FP16</span></div>
+    </div>
+  </div>
+
+  <div class="hw-row">
+    <div class="hw-row-left">
+      <span class="hw-tier-badge">Tier 3 / 4 High-Memory</span>
+      <div class="hw-gpu-name">NVIDIA A100 80GB</div>
+      <div class="hw-gpu-arch">Ampere · 80GB HBM2e · SXM4</div>
+    </div>
+    <p class="hw-row-desc">Double the VRAM of the A100 40GB. A single node can run full-precision 70B models; 4-node configurations handle 180B+ without compromise. The standard for organizations requiring maximum inference quality.</p>
+    <div class="hw-spec-grid">
+      <div class="hw-spec-item"><span class="hw-spec-label">VRAM</span><span class="hw-spec-val">80 GB HBM2e</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Memory BW</span><span class="hw-spec-val">2,039 GB/s</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">FP16 TFLOPS</span><span class="hw-spec-val">77.97</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">TDP</span><span class="hw-spec-val">400W</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">NVLink</span><span class="hw-spec-val">600 GB/s</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Single Node</span><span class="hw-spec-val">Up to 70B FP16</span></div>
+    </div>
+  </div>
+
+  <div class="hw-row">
+    <div class="hw-row-left">
+      <span class="hw-tier-badge">Tier 4 — Next Gen</span>
+      <div class="hw-gpu-name">NVIDIA H100 SXM</div>
+      <div class="hw-gpu-arch">Hopper · 80GB HBM3 · SXM5</div>
+    </div>
+    <p class="hw-row-desc">The most advanced GPU accelerator commercially available. 3× the AI inference throughput of the A100 with Transformer Engine optimizations. The definitive choice for organizations at the frontier of private AI deployment.</p>
+    <div class="hw-spec-grid">
+      <div class="hw-spec-item"><span class="hw-spec-label">VRAM</span><span class="hw-spec-val">80 GB HBM3</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Memory BW</span><span class="hw-spec-val">3,350 GB/s</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">FP16 TFLOPS</span><span class="hw-spec-val">267.6</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">TDP</span><span class="hw-spec-val">700W</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">NVLink</span><span class="hw-spec-val">900 GB/s</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">vs A100</span><span class="hw-spec-val">~3× inference</span></div>
+    </div>
+  </div>
+
+  <div class="hw-row">
+    <div class="hw-row-left">
+      <span class="hw-tier-badge">Tier 4 — Air-Gapped</span>
+      <div class="hw-gpu-name">Custom Air-Gapped Server</div>
+      <div class="hw-gpu-arch">Bespoke · Customer Spec</div>
+    </div>
+    <p class="hw-row-desc">For organizations requiring complete network isolation. Creeksea designs and deploys fully air-gapped GPU servers with manual update procedures, hardware security modules, and physical access controls. No external connectivity whatsoever.</p>
+    <div class="hw-spec-grid">
+      <div class="hw-spec-item"><span class="hw-spec-label">GPU Options</span><span class="hw-spec-val">Any enterprise GPU</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Connectivity</span><span class="hw-spec-val">None (air-gapped)</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Updates</span><span class="hw-spec-val">Physical media only</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Security</span><span class="hw-spec-val">HSM + physical</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Compliance</span><span class="hw-spec-val">IL4 / IL5 eligible</span></div>
+      <div class="hw-spec-item"><span class="hw-spec-label">Pricing</span><span class="hw-spec-val">Custom</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ON-PREMISES PROFILES -->
+<section class="profile-section">
+  <div class="profile-header">
+    <div class="profile-header-left">
+      <span class="section-label">On-Premises</span>
+      <h2 class="profile-title">Choosing the right<br>local hardware.</h2>
+      <p class="profile-desc">GPU VRAM is the primary constraint for local deployments — larger models require more VRAM, or must be quantized to run on smaller hardware. For small businesses, the Apple Mac Studio is our top recommendation: its unified memory architecture allows surprisingly large models to run on compact, quiet, power-efficient hardware with no GPU driver management required.</p>
+    </div>
+    <span class="hw-category-num">04</span>
+  </div>
+
+  <div class="profile-row">
+    <div>
+      <div class="profile-name">Entry-Level</div>
+      <span class="profile-badge">CPU inference · models ≤7B</span>
+    </div>
+    <div class="profile-config">Modern CPU, 32 GB RAM, SSD. Suitable for personal experimentation and light single-user workloads with small models.</div>
+    <div class="profile-users">1–2<span>concurrent users</span></div>
+    <div class="profile-cost">$800 – $2,000<span>estimated hardware</span></div>
+  </div>
+
+  <div class="profile-row highlighted">
+    <div>
+      <div class="profile-name">Apple Mac Studio<br><em style="font-style:italic;font-size:0.9em;">M4 Max</em></div>
+      <span class="profile-badge">Recommended · models ≤40B</span>
+    </div>
+    <div class="profile-config">64–96 GB unified memory. Plug-and-play, whisper-quiet, no GPU drivers. Our top recommendation for small businesses entering private AI.</div>
+    <div class="profile-users">3–8<span>concurrent users</span></div>
+    <div class="profile-cost">$2,000 – $4,500<span>estimated hardware</span></div>
+  </div>
+
+  <div class="profile-row highlighted">
+    <div>
+      <div class="profile-name">Apple Mac Studio<br><em style="font-style:italic;font-size:0.9em;">M3 Ultra</em></div>
+      <span class="profile-badge">Recommended · models ≤70B+</span>
+    </div>
+    <div class="profile-config">Up to 192 GB unified memory. Recommended for multi-user teams needing to run large models at full precision without quantization.</div>
+    <div class="profile-users">5–15<span>concurrent users</span></div>
+    <div class="profile-cost">$5,000 – $10,000<span>estimated hardware</span></div>
+  </div>
+
+  <div class="profile-row">
+    <div>
+      <div class="profile-name">Mid-Tier PC</div>
+      <span class="profile-badge">Consumer GPU · 8–16 GB VRAM · models ≤13B</span>
+    </div>
+    <div class="profile-config">NVIDIA RTX 4070/4080, 64 GB RAM. Good for teams that need Windows compatibility and larger model access with quantization.</div>
+    <div class="profile-users">2–5<span>concurrent users</span></div>
+    <div class="profile-cost">$2,000 – $5,000<span>estimated hardware</span></div>
+  </div>
+
+  <div class="profile-row">
+    <div>
+      <div class="profile-name">High-Tier PC</div>
+      <span class="profile-badge">Prosumer GPU · 24 GB VRAM · models ≤34B</span>
+    </div>
+    <div class="profile-config">NVIDIA RTX 4090 or A5000. Strong inference throughput with ECC memory options for compliance-sensitive environments.</div>
+    <div class="profile-users">3–8<span>concurrent users</span></div>
+    <div class="profile-cost">$5,000 – $10,000<span>estimated hardware</span></div>
+  </div>
+
+  <div class="profile-row">
+    <div>
+      <div class="profile-name">Workstation</div>
+      <span class="profile-badge">Multi-GPU · large models ≤70B</span>
+    </div>
+    <div class="profile-config">Dual RTX 4090 / A6000 or NVIDIA A100 40GB. For organizations requiring sustained high-throughput inference across large models at full precision.</div>
+    <div class="profile-users">8–20<span>concurrent users</span></div>
+    <div class="profile-cost">$10,000 – $25,000+<span>estimated hardware</span></div>
+  </div>
+</section>
+
+<!-- CLOUD HOSTING -->
+<section class="profile-section">
+  <div class="profile-header">
+    <div class="profile-header-left">
+      <span class="section-label">Cloud Hosting</span>
+      <h2 class="profile-title">Remote deployment<br>cost guidance.</h2>
+      <p class="profile-desc">Cloud deployments use a production inference server (e.g., vLLM with continuous batching) which significantly increases concurrent throughput versus local. Reserved or spot instances can reduce on-demand costs by 30–70%. All estimates reflect approximate pricing as of early 2026.</p>
+    </div>
+    <span class="hw-category-num">05</span>
+  </div>
+
+  <div class="profile-row">
+    <div>
+      <div class="profile-name">Development</div>
+      <span class="profile-badge">NVIDIA T4 · 16 GB VRAM</span>
+    </div>
+    <div class="profile-config">Light use and development environments. Suitable for testing model configurations and low-concurrency internal tools before production rollout.</div>
+    <div class="profile-users">2–5<span>concurrent users</span></div>
+    <div class="profile-cost">$200 – $500 / mo<span>on-demand estimate</span></div>
+  </div>
+
+  <div class="profile-row">
+    <div>
+      <div class="profile-name">Small Team</div>
+      <span class="profile-badge">NVIDIA A10G · 24 GB VRAM</span>
+    </div>
+    <div class="profile-config">Production deployment for small teams. Full-precision 13B models or quantized 34B. Reliable throughput for daily business workflows.</div>
+    <div class="profile-users">5–12<span>concurrent users</span></div>
+    <div class="profile-cost">$500 – $900 / mo<span>on-demand estimate</span></div>
+  </div>
+
+  <div class="profile-row">
+    <div>
+      <div class="profile-name">Business</div>
+      <span class="profile-badge">NVIDIA A100 40GB</span>
+    </div>
+    <div class="profile-config">Production-grade deployment for growing organizations. Handles large models at full precision with strong multi-user concurrency.</div>
+    <div class="profile-users">10–25<span>concurrent users</span></div>
+    <div class="profile-cost">$900 – $1,800 / mo<span>on-demand estimate</span></div>
+  </div>
+
+  <div class="profile-row">
+    <div>
+      <div class="profile-name">Enterprise</div>
+      <span class="profile-badge">NVIDIA H100 / A100 80GB</span>
+    </div>
+    <div class="profile-config">Maximum throughput and model quality. Handles 70B+ models at full precision with high concurrency. Recommended for mission-critical deployments.</div>
+    <div class="profile-users">20–50+<span>concurrent users</span></div>
+    <div class="profile-cost">$2,000 – $6,000+ / mo<span>on-demand estimate</span></div>
+  </div>
+</section>
+
+<!-- LOCAL VS CLOUD CONSIDERATIONS -->
+<section class="considerations">
+  <div class="considerations-header">
+    <div>
+      <span class="section-label">Key Considerations</span>
+      <h2 class="considerations-title">Local vs. cloud —<br><em>what to weigh.</em></h2>
+    </div>
+    <span class="hw-category-num">06</span>
+  </div>
+  <div class="considerations-grid">
+    <div class="consideration-item">
+      <span class="consideration-label">Data Privacy</span>
+      <div class="consideration-title">Total on-premises control.</div>
+      <p class="consideration-body">Local deployments ensure all data stays on-premises, never leaving your network. The only option for sensitive, regulated, or confidential workloads that cannot tolerate any external data exposure.</p>
+    </div>
+    <div class="consideration-item">
+      <span class="consideration-label">Cost Structure</span>
+      <div class="consideration-title">Capital vs. operating expense.</div>
+      <p class="consideration-body">Local hardware is a one-time capital expense; cloud compute is an ongoing operating expense. Hybrid approaches are possible. At scale, local hardware typically becomes more cost-efficient after 18–24 months of operation.</p>
+    </div>
+    <div class="consideration-item">
+      <span class="consideration-label">Scalability</span>
+      <div class="consideration-title">Cloud scales, local is fixed.</div>
+      <p class="consideration-body">Cloud deployments scale on demand and handle variable workloads without over-provisioning. Local hardware is fixed capacity. High-throughput or bursty workloads may favor cloud or a carefully designed hybrid model.</p>
+    </div>
+    <div class="consideration-item">
+      <span class="consideration-label">Latency</span>
+      <div class="consideration-title">Local is fastest for on-site teams.</div>
+      <p class="consideration-body">On-premises deployments typically deliver lower latency for users on the same network. Cloud latency depends on geographic proximity to the instance and network conditions.</p>
+    </div>
+    <div class="consideration-item">
+      <span class="consideration-label">Maintenance</span>
+      <div class="consideration-title">Hardware requires upkeep.</div>
+      <p class="consideration-body">Local hardware requires physical maintenance, driver management, and occasional upgrades. Cloud reduces operational overhead but increases vendor dependency and ongoing spend.</p>
+    </div>
+    <div class="consideration-item">
+      <span class="consideration-label">Our Recommendation</span>
+      <div class="consideration-title">Local first, hybrid if needed.</div>
+      <p class="consideration-body">For most clients with data privacy requirements, we recommend starting with on-premises hardware — particularly the Apple Mac Studio for small teams. Cloud is introduced only when local capacity is genuinely insufficient.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROCUREMENT NOTE -->
+<section class="procurement-note">
+  <div class="procurement-inner">
+    <div class="procurement-left">
+      <span class="section-label">Procurement</span>
+      <div class="procurement-title">How hardware<br>pricing works.</div>
+    </div>
+    <p class="procurement-body">
+      Hardware pricing varies with market conditions and availability. Creeksea sources hardware through authorized enterprise channels with full warranty coverage. Hardware can be purchased outright, financed over 24–36 months, or leased. In all cases, the hardware is owned or leased directly by your organization — Creeksea does not retain ownership. Hardware costs are quoted separately from the management retainer at the time of contract.<br><br>
+      Contact <a href="mailto:activate@creeksea.ai">activate@creeksea.ai</a> for a current hardware quote tailored to your workload and budget.
+    </p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <span class="cta-label">Hardware Questions?</span>
+  <h2 class="cta-title">We'll spec the right<br><em>hardware for you.</em></h2>
+  <p class="cta-sub">Hardware selection depends on model size, concurrent users, and budget. Tell us your requirements and we'll build a recommendation — at no cost.</p>
+  <div class="cta-actions">
+    <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-fill">Get a Hardware Quote →</a>
+    <a href="index.html#services" class="btn-outline">View Service Tiers</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-left">
+    <span class="footer-wordmark">creeksea.ai</span>
+    <span class="footer-tagline">Private AI infrastructure for enterprises that cannot compromise.</span>
+  </div>
+  <div class="footer-right">
+    <ul class="footer-links">
+      <li><a href="tier-1-foundations.html">Foundations</a></li>
+      <li><a href="tier-2-professional.html">Professional</a></li>
+      <li><a href="tier-3-business.html">Business</a></li>
+      <li><a href="tier-4-enterprise.html">Enterprise</a></li>
+      <li><a href="addon-services.html">Add-Ons</a></li>
+      <li><a href="hardware.html">Hardware</a></li>
+    </ul>
+    <span class="footer-copy">© 2025 Creeksea Advisory Group, LLC · activate@creeksea.ai</span>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 40);
+  }, { passive: true });
+
+  // Theme toggle with localStorage persistence
+  const html = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('creeksea-theme') || 'light';
+  html.setAttribute('data-theme', saved);
+
+  toggle.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('creeksea-theme', next);
+  });
+</script>
+
+<script>
+  // ── Mobile nav hamburger ──
+  (function() {
+    var btn = document.getElementById('navHamburger');
+    var links = document.getElementById('navLinks');
+    if (!btn || !links) return;
+
+    btn.addEventListener('click', function() {
+      btn.classList.toggle('open');
+      links.classList.toggle('open');
+    });
+
+    // Close menu when a non-dropdown link is tapped
+    links.querySelectorAll('a').forEach(function(a) {
+      if (!a.closest('.nav-dropdown') || a.closest('.nav-dropdown-menu')) {
+        a.addEventListener('click', function() {
+          btn.classList.remove('open');
+          links.classList.remove('open');
+          // close any open dropdowns too
+          links.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
+        });
+      }
+    });
+
+    // Services dropdown: toggle on tap (mobile only)
+    links.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
+      var trigger = dropdown.querySelector(':scope > a');
+      if (!trigger) return;
+      trigger.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          dropdown.classList.toggle('open');
+        }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

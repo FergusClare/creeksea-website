@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add-Ons & Custom | creeksea.ai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #0A0A0A; --white: #FAFAF8; --gray: #444; --gray-dim: #666; --border: rgba(0,0,0,0.10); --max: 1320px; }
+    [data-theme="dark"] { --black: #F0F0EE; --white: #0A0A0A; --gray: #AAA; --gray-dim: #777; --border: rgba(255,255,255,0.10); }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--black); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 28px 48px; transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease; border-bottom: 1px solid transparent; }
+    nav.scrolled { background: rgba(250,250,248,0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.08); box-shadow: 0 1px 24px rgba(0,0,0,0.06); padding: 18px 48px; }
+    [data-theme="dark"] nav.scrolled { background: rgba(10,10,10,0.88); border-bottom: 1px solid rgba(255,255,255,0.08); box-shadow: 0 1px 24px rgba(0,0,0,0.3); }
+    .nav-left { display: flex; align-items: center; gap: 28px; }
+    .nav-wordmark { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 400; letter-spacing: 0.08em; color: var(--black); }
+    .nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+    .nav-links a { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--black); }
+    .nav-links a.active { color: var(--black); border-bottom: 1px solid var(--black); padding-bottom: 1px; }
+    .nav-cta { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--black) !important; border-bottom: 1px solid var(--black); padding-bottom: 1px; }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > a { display: flex; align-items: center; gap: 5px; cursor: default; }
+    .nav-dropdown > a::after { content: ''; display: inline-block; width: 5px; height: 5px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform 0.2s; }
+    .nav-dropdown:hover > a::after { transform: rotate(-135deg) translateY(-2px); }
+    .nav-dropdown-menu { position: absolute; top: 100%; right: 0; min-width: 210px; background: rgba(250,250,248,0.97); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.08); padding: 18px 0 6px; opacity: 0; pointer-events: none; transform: translateY(-6px); transition: opacity 0.18s ease, transform 0.18s ease; }
+    [data-theme="dark"] .nav-dropdown-menu { background: rgba(12,12,12,0.97); border-color: rgba(255,255,255,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    .nav-dropdown:hover .nav-dropdown-menu { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .nav-dropdown-menu a { display: flex; align-items: baseline; gap: 10px; padding: 11px 22px; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); transition: color 0.15s, background 0.15s; white-space: nowrap; border-bottom: none !important; }
+    .nav-dropdown-menu a:hover { color: var(--black); background: rgba(0,0,0,0.025); }
+    [data-theme="dark"] .nav-dropdown-menu a:hover { background: rgba(255,255,255,0.04); }
+    .drop-num { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; font-style: italic; color: var(--gray-dim); min-width: 16px; }
+    .nav-dropdown-divider { height: 1px; background: var(--border); margin: 6px 0; }
+    .theme-toggle { background: none; border: 1px solid var(--border); border-radius: 20px; width: 36px; height: 20px; cursor: pointer; position: relative; transition: border-color 0.2s; flex-shrink: 0; margin-left: 16px; }
+    .theme-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 12px; height: 12px; border-radius: 50%; background: var(--black); transition: transform 0.25s ease, background 0.2s; }
+    [data-theme="dark"] .theme-toggle::after { transform: translateX(16px); }
+    .theme-toggle:hover { border-color: var(--black); }
+    section { border-bottom: 1px solid var(--border); }
+    .section-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #555; }
+    .section-num { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; color: #444; }
+    .btn-fill, .btn-outline { display: inline-block; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 14px 28px; transition: all 0.2s; cursor: pointer; white-space: nowrap; }
+    .btn-fill { background: var(--black); color: var(--white); border: 1px solid var(--black); }
+    .btn-fill:hover { background: transparent; color: var(--black); }
+    .btn-outline { border: 1px solid rgba(0,0,0,0.25); color: var(--black); }
+    .btn-outline:hover { border-color: var(--black); background: rgba(0,0,0,0.03); }
+    [data-theme="dark"] .btn-outline { border-color: rgba(255,255,255,0.25); }
+    [data-theme="dark"] .btn-outline:hover { border-color: var(--black); background: rgba(255,255,255,0.05); }
+    .hero { min-height: 80vh; display: grid; grid-template-columns: 1fr 340px; align-items: center; gap: 64px; padding: 120px 48px 48px; }
+    .hero-left { display: flex; flex-direction: column; }
+    .hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 16px; }
+    .hero-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(4rem, 8vw, 8rem); font-weight: 300; line-height: 0.95; color: var(--black); margin-bottom: 32px; }
+    .hero-desc { font-size: 0.85rem; line-height: 1.8; color: var(--gray); max-width: 520px; margin-bottom: 36px; }
+    .hero-actions { display: flex; gap: 12px; }
+    .custom-card { border: 1px solid var(--border); padding: 36px; display: flex; flex-direction: column; gap: 20px; }
+    .custom-card-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #555; }
+    .custom-card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; color: var(--black); line-height: 1.2; }
+    .custom-card-body { font-size: 0.78rem; line-height: 1.75; color: var(--gray); }
+    .custom-card-divider { border: none; border-top: 1px solid var(--border); }
+    .custom-card-detail { font-size: 0.72rem; line-height: 1.7; color: var(--gray-dim); }
+    .section-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .section-header-left { display: flex; flex-direction: column; gap: 10px; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; line-height: 1.05; color: var(--black); }
+    .section-subtitle { font-size: 0.8rem; line-height: 1.75; color: var(--gray); max-width: 480px; }
+    .addons-section { padding: 48px 48px; display: flex; flex-direction: column; justify-content: center; }
+    .addon-row { display: grid; grid-template-columns: 260px 1fr 180px; align-items: center; gap: 32px; padding: 24px 0; border-bottom: 1px solid var(--border); position: relative; }
+    .addon-row:last-child { border-bottom: none; }
+    .addon-row::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: 100vw; background: rgba(0,0,0,0.025); opacity: 0; transition: opacity 0.2s; z-index: -1; }
+    [data-theme="dark"] .addon-row::before { background: rgba(255,255,255,0.03); }
+    .addon-row:hover::before { opacity: 1; }
+    .addon-name { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--black); }
+    .addon-detail { font-size: 0.78rem; line-height: 1.6; color: var(--gray); }
+    .addon-price { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 300; color: var(--black); white-space: nowrap; text-align: right; }
+    .addon-price span { display: block; font-family: 'Inter', sans-serif; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-dim); margin-top: 2px; text-align: right; }
+    .retainer-section { padding: 48px 48px; display: flex; flex-direction: column; justify-content: center; }
+    .retainer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+    .retainer-plan { padding: 36px 40px 36px 0; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 0; }
+    .retainer-plan:nth-child(2), .retainer-plan:nth-child(3) { padding-left: 40px; }
+    .retainer-plan:last-child { border-right: none; padding-right: 0; }
+    .retainer-plan-name { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 12px; }
+    .retainer-plan-price { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 300; color: var(--black); line-height: 1; margin-bottom: 4px; }
+    .retainer-plan-price-sub { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-dim); margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
+    .retainer-feature { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+    .retainer-feature:last-child { border-bottom: none; }
+    .retainer-feature-label { font-size: 0.7rem; color: var(--gray); line-height: 1.4; }
+    .retainer-feature-val { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; font-weight: 300; color: var(--black); text-align: right; flex-shrink: 0; }
+    .retainer-feature-val.dim { color: var(--gray-dim); font-family: 'Inter', sans-serif; font-size: 0.68rem; }
+    .kb-section { padding: 48px 48px; display: flex; flex-direction: column; justify-content: center; }
+    .kb-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+    .kb-left { display: flex; flex-direction: column; gap: 20px; }
+    .kb-price { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; color: var(--black); }
+    .kb-price-sub { font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-dim); }
+    .kb-desc { font-size: 0.82rem; line-height: 1.8; color: var(--gray); }
+    .kb-right { display: flex; flex-direction: column; gap: 0; }
+    .kb-feature { padding: 18px 0; border-bottom: 1px solid var(--border); display: flex; gap: 16px; align-items: start; }
+    .kb-feature:first-child { border-top: 1px solid var(--border); }
+    .kb-check { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-style: italic; color: #444; padding-top: 1px; flex-shrink: 0; }
+    .kb-feature-name { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 300; color: var(--black); margin-bottom: 3px; }
+    .kb-feature-text { font-size: 0.76rem; line-height: 1.65; color: var(--gray); }
+    .not-included { padding: 48px 48px; display: flex; flex-direction: column; justify-content: center; }
+    .not-included-inner { display: grid; grid-template-columns: 280px 1fr; gap: 64px; align-items: start; padding: 40px; border: 1px solid var(--border); }
+    .not-included-left { display: flex; flex-direction: column; gap: 12px; }
+    .not-included-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--black); line-height: 1.2; }
+    .not-included-body { font-size: 0.8rem; line-height: 1.85; color: var(--gray); }
+    .cta { padding: 48px 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 60vh; }
+    .cta-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray-dim); margin-bottom: 28px; }
+    .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 5vw, 5rem); font-weight: 300; line-height: 1.1; color: var(--black); margin-bottom: 24px; }
+    .cta-title em { font-style: italic; }
+    .cta-sub { font-size: 0.82rem; line-height: 1.8; color: var(--gray); max-width: 460px; margin-bottom: 40px; }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; }
+    footer { padding: 40px 48px; display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; }
+    .footer-left { display: flex; flex-direction: column; gap: 10px; }
+    .footer-wordmark { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 400; letter-spacing: 0.08em; color: var(--black); }
+    .footer-tagline { font-size: 0.68rem; color: var(--gray-dim); max-width: 280px; line-height: 1.6; }
+    .footer-right { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
+    .footer-links { display: flex; gap: 28px; list-style: none; }
+    .footer-links a { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--black); }
+    .footer-copy { font-size: 0.65rem; color: var(--gray-dim); letter-spacing: 0.06em; }
+  
+
+  /* ── Hamburger button (desktop: hidden) ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--black);
+    transition: transform 0.22s ease, opacity 0.22s ease;
+    border-radius: 1px;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4.7px, 4.7px); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4.7px, -4.7px); }
+
+  /* ══════════════════════════════════════
+     MOBILE RESPONSIVENESS
+     ══════════════════════════════════════ */
+  @media (max-width: 768px) {
+    /* Nav */
+    nav { padding: 20px 24px !important; }
+    nav.scrolled { padding: 14px 24px !important; }
+    .nav-hamburger { display: flex !important; }
+    .nav-links {
+      display: none;
+      position: fixed;
+      top: 58px;
+      left: 0; right: 0;
+      background: rgba(250,250,248,0.98);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.09);
+      padding: 8px 0 16px;
+      flex-direction: column;
+      gap: 0;
+      z-index: 98;
+      list-style: none;
+    }
+    [data-theme="dark"] .nav-links {
+      background: rgba(10,10,10,0.98);
+      border-bottom-color: rgba(255,255,255,0.08);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { border-bottom: 1px solid var(--border); }
+    .nav-links li:last-child { border-bottom: none; }
+    .nav-links a {
+      display: block;
+      padding: 14px 24px !important;
+      font-size: 0.72rem !important;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray) !important;
+      border-bottom: none !important;
+    }
+    .nav-links a:hover { color: var(--black) !important; }
+    /* Nav links: centered */
+    .nav-links li { text-align: center; }
+    .nav-links a { text-align: center !important; }
+    /* Services sub-menu: hidden by default, expanded on click */
+    .nav-dropdown-menu {
+      position: static !important;
+      opacity: 1 !important;
+      pointer-events: all !important;
+      transform: none !important;
+      box-shadow: none !important;
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      display: none;
+      flex-direction: column;
+    }
+    .nav-dropdown.open .nav-dropdown-menu { display: flex !important; }
+    .nav-dropdown-menu a {
+      padding: 10px 24px !important;
+      font-size: 0.65rem !important;
+      text-align: center !important;
+      justify-content: center !important;
+    }
+    /* Services trigger: show arrow caret, cursor pointer */
+    .nav-dropdown > a { cursor: pointer !important; justify-content: center !important; }
+    .nav-cta { font-size: 0.62rem !important; padding: 9px 14px !important; }
+
+    /* Hero: 1fr 340px → single column */
+    .hero {
+      grid-template-columns: 1fr !important;
+      padding: 100px 24px 60px !important;
+      gap: 40px !important;
+      min-height: auto !important;
+    }
+
+    /* Sections — keep 24px side margins */
+    .addons-section, .retainer-section, .kb-section, .not-included, .cta {
+      padding: 48px 24px !important;
+    }
+    footer { padding: 40px 24px !important; }
+    /* Addon rows: 260px 1fr 180px → stack */
+    .addon-row {
+      display: block !important;
+      padding: 20px 0 !important;
+    }
+    .addon-name { font-size: 1.5rem !important; margin-bottom: 6px; }
+    .addon-detail { margin-bottom: 8px; }
+    .addon-price { text-align: left !important; margin-top: 6px; }
+
+    /* Retainer grid: 3 → 1 col */
+    .retainer-section { padding: 48px 24px !important; }
+    .retainer-grid { grid-template-columns: 1fr !important; }
+    .retainer-plan { border-right: none !important; padding-right: 0 !important; padding-left: 0 !important; }
+    .retainer-plan:not(:last-child) { border-bottom: 1px solid var(--border) !important; padding-bottom: 32px !important; }
+    .retainer-plan:not(:first-child) { padding-top: 32px !important; }
+
+    /* KB inner: 1fr 1fr → single column */
+    .kb-section { padding: 48px 24px !important; }
+    .kb-inner { grid-template-columns: 1fr !important; gap: 32px !important; }
+
+    /* Not included */
+    .not-included { padding: 48px 24px !important; }
+    .not-included-inner { grid-template-columns: 1fr !important; gap: 24px !important; padding: 24px !important; }
+
+    /* Footer */
+    footer { flex-direction: column !important; align-items: flex-start !important; gap: 32px !important; }
+    .footer-right { align-items: flex-start !important; }
+    .footer-links { flex-wrap: wrap !important; gap: 10px 20px !important; }
+  }
+
+  @media (max-width: 480px) {
+    nav { padding: 16px 20px !important; }
+    .hero { padding: 90px 20px 48px !important; }
+    .addons-section,
+    .retainer-section,
+    .kb-section,
+    .not-included { padding: 40px 20px !important; }
+  }
+
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a href="index.html"><span class="nav-wordmark">creeksea.ai</span></a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li class="nav-dropdown">
+      <a href="index.html#services">Services</a>
+      <div class="nav-dropdown-menu">
+        <a href="tier-1-foundations.html"><span class="drop-num">01</span>Foundations</a>
+        <a href="tier-2-professional.html"><span class="drop-num">02</span>Professional</a>
+        <a href="tier-3-business.html"><span class="drop-num">03</span>Business</a>
+        <a href="tier-4-enterprise.html"><span class="drop-num">04</span>Enterprise</a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="addon-services.html"><span class="drop-num">+</span>Add-Ons</a>
+      </div>
+    </li>
+    <li><a href="addon-services.html" class="active">Add-Ons</a></li>
+    <li><a href="hardware.html">Hardware</a></li>
+    <li><a href="https://meetings-na2.hubspot.com/fergus-clare" class="nav-cta">Get Started →</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <span class="hero-eyebrow">Add-Ons &amp; Custom Engagements</span>
+    <h1 class="hero-heading">Beyond<br>the tier.</h1>
+    <p class="hero-desc">Every standard tier is a complete deployment. These add-ons extend it — adding capability, compliance coverage, and ongoing support without requiring an upgrade. Any service can be purchased standalone or layered onto an existing deployment at any time. And when your requirements don't fit a tier, we scope and price a fully custom engagement around what you actually need.</p>
+    <div class="hero-actions">
+      <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-fill">Schedule a Call &rarr;</a>
+      <a href="#addons" class="btn-outline">Browse Add-Ons &darr;</a>
+    </div>
+  </div>
+  <div class="custom-card">
+    <div class="custom-card-label">Tier 05 &mdash; Custom</div>
+    <div class="custom-card-title">Fully bespoke LLM deployment &amp; AI strategy.</div>
+    <div class="custom-card-body">For organizations with requirements that don't fit a standard tier &mdash; multi-site deployments, government entities, specialized fine-tuning, proprietary hardware, or phased multi-year roadmaps. Scoped and priced per engagement.</div>
+    <hr class="custom-card-divider">
+    <div class="custom-card-detail">Custom engagements begin with a no-cost 60&ndash;90 minute discovery session. Following discovery, we provide a formal Statement of Work with fixed-price or time-and-materials options.</div>
+    <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-fill" style="text-align:center; margin-top: 8px;">Start a Discovery Session &rarr;</a>
+  </div>
+</section>
+
+<section class="addons-section" id="addons">
+  <div class="section-header">
+    <div class="section-header-left">
+      <span class="section-label">A La Carte Add-On Services</span>
+      <h2 class="section-title">Available to any tier,<br>at any time.</h2>
+      <p class="section-subtitle">All add-on services include documentation and a handoff session. Prices shown are estimated ranges; final pricing is confirmed at engagement kickoff. Multi-add-on bundles of 3 or more qualify for a 10% discount.</p>
+    </div>
+    <span class="section-num">01</span>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Additional MCP Server Integration</div>
+    <div class="addon-detail">Per new tool or data source connected to your LLM &mdash; CRM, database, Slack, Google Drive, SharePoint, or any supported MCP target. Includes scoping, integration build, testing, and documentation.</div>
+    <div class="addon-price">$2,500 &ndash; $4,000<span>per integration</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Additional Custom Agent Build</div>
+    <div class="addon-detail">A single-purpose AI agent with a defined workflow, tool configuration, and system prompt engineering. Scoped around a specific internal process &mdash; document review, intake triage, report generation, or equivalent.</div>
+    <div class="addon-price">$6,000 &ndash; $10,000<span>per agent</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Multi-Agent Orchestration Pipeline</div>
+    <div class="addon-detail">A coordinated system of three or more agents with shared memory, inter-agent handoffs, conditional branching, and error handling. Enables fully autonomous multi-step business workflows that span multiple systems and decision points.</div>
+    <div class="addon-price">$12,000 &ndash; $22,000<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Custom Model Fine-Tuning</div>
+    <div class="addon-detail">Dataset preparation, supervised fine-tuning (SFT), and evaluation on a base open-source model. Produces a model tuned to your organization's language, domain knowledge, and output style. Price scales with data volume and compute requirements.</div>
+    <div class="addon-price">$10,000 &ndash; $22,000+<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Additional RAG Data Source Pipeline</div>
+    <div class="addon-detail">A new document ingestion pipeline for an additional collection &mdash; new department, document type, or data source. Includes chunking strategy selection, embedding configuration, and vector DB integration.</div>
+    <div class="addon-price">$3,500 &ndash; $6,000<span>per pipeline</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Vector Database Setup &amp; Optimization</div>
+    <div class="addon-detail">Standalone vector DB deployment &mdash; Qdrant, Chroma, Weaviate, or pgvector &mdash; with indexing, query tuning, and performance benchmarking. For organizations adding RAG capability to an existing deployment.</div>
+    <div class="addon-price">$3,500 &ndash; $6,500<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Custom Chat UI / Frontend Build</div>
+    <div class="addon-detail">A branded, web-based chat interface on your own domain &mdash; your logo, your color scheme, your product name. Includes authentication, conversation history, source citation display, feedback collection, and admin controls.</div>
+    <div class="addon-price">$9,000 &ndash; $18,000<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">API Gateway &amp; Rate Limiting Setup</div>
+    <div class="addon-detail">Dedicated API gateway &mdash; Kong, Traefik, or equivalent &mdash; with per-user or per-team quotas, full request logging, key rotation, and monitoring integration. For deployments that need production-grade API management independently of a full tier upgrade.</div>
+    <div class="addon-price">$2,500 &ndash; $5,000<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">SSO / Identity Provider Integration</div>
+    <div class="addon-detail">SAML or OIDC integration with Okta, Azure AD, Google Workspace, or a comparable identity provider. Enables single sign-on for your LLM platform using existing corporate credentials.</div>
+    <div class="addon-price">$5,500 &ndash; $9,500<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">LDAP / Active Directory Integration</div>
+    <div class="addon-detail">Centralized directory sync for user provisioning, group-based access control, and automatic de-provisioning when staff leave. Keeps your LLM platform synchronized with your corporate directory without manual overhead.</div>
+    <div class="addon-price">$5,000 &ndash; $8,500<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Compliance &amp; Privacy Review</div>
+    <div class="addon-detail">Readiness assessment and gap analysis for HIPAA, SOC 2, GDPR, or CCPA as applicable to your industry. Includes a written findings report suitable for regulatory review, auditor requests, or client due diligence questionnaires.</div>
+    <div class="addon-price">$4,500 &ndash; $9,000<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Security Audit &amp; Penetration Test</div>
+    <div class="addon-detail">Review of API endpoint exposure, authentication mechanisms, network boundary, inference stack configuration, and secrets management &mdash; followed by a hardening pass implementing the findings and a written report.</div>
+    <div class="addon-price">$5,000 &ndash; $9,500<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Model Benchmarking &amp; Selection</div>
+    <div class="addon-detail">Structured evaluation of three to five candidate models against your specific use case &mdash; with scored test batteries, a comparison report, and a written recommendation. Ensures you've deployed the right model before investing in prompts and integrations.</div>
+    <div class="addon-price">$2,500 &ndash; $4,500<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">On-Site Deployment &amp; Installation</div>
+    <div class="addon-detail">In-person setup at your facility for organizations that require hands-on installation, physical hardware configuration, or on-site security review. Travel, lodging, and per diem billed at cost.</div>
+    <div class="addon-price">$3,500 + travel<span>per visit</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Additional Staff Training Session</div>
+    <div class="addon-detail">A half-day workshop for up to 15 participants. Standard curriculum covers system use, model capabilities, best practices, and governance guidelines. Custom curriculum available for an additional $500.</div>
+    <div class="addon-price">$2,500<span>per half-day</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Workflow Automation Build</div>
+    <div class="addon-detail">An end-to-end automated workflow integrating your LLM with a business process &mdash; document review queues, report generation, email triage, intake processing, or equivalent. Scoped, built, and tested against your environment.</div>
+    <div class="addon-price">$3,500 &ndash; $7,000<span>per workflow</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">PII Redaction &amp; Data Masking Pipeline</div>
+    <div class="addon-detail">An automated preprocessing layer that strips or masks personally identifiable information &mdash; SSNs, MRNs, financial account numbers, names, and addresses &mdash; before data reaches the model context. Configured to your specific data types and regulatory requirements.</div>
+    <div class="addon-price">$4,500 &ndash; $8,000<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">LLM Evaluation &amp; Regression Testing Framework</div>
+    <div class="addon-detail">An automated eval suite with scored prompt batteries across your specific use cases. Catches quality regressions after model updates or configuration changes before they reach users. Gives your team a documented quality standard for every platform change.</div>
+    <div class="addon-price">$4,500 &ndash; $8,500<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Prompt Engineering &amp; Use Case Library</div>
+    <div class="addon-detail">A curated library of tested system prompts for common business workflows &mdash; document Q&amp;A, meeting summarization, policy lookup, email triage, and more. Delivered as a living document with optional quarterly refresh at $800 per update.</div>
+    <div class="addon-price">$2,500 &ndash; $5,000<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">AI Governance Policy Development</div>
+    <div class="addon-detail">Custom acceptable-use policy, data classification rules for LLM inputs, AI incident response procedure, and employee acknowledgment forms. Drafted with your legal and compliance team. Covers what regulators and auditors increasingly require before approving AI-enabled workflows.</div>
+    <div class="addon-price">$4,500 &ndash; $8,500<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Change Management &amp; Adoption Program</div>
+    <div class="addon-detail">Champion identification workshop, use case prioritization session, 60-day employee adoption playbook, and a structured feedback loop. The most underinvested area in enterprise LLM deployments &mdash; technical success does not guarantee that staff actually use the system.</div>
+    <div class="addon-price">$5,000 &ndash; $10,000<span>one-time</span></div>
+  </div>
+  <div class="addon-row">
+    <div class="addon-name">Annual Architecture Review</div>
+    <div class="addon-detail">A yearly deep-dive benchmarking your deployment against new open-source models, tooling, and security practices. Includes a written findings report and a prioritized recommendations roadmap. The LLM landscape moves fast enough that a yearly checkup consistently pays for itself.</div>
+    <div class="addon-price">$4,500<span>per year</span></div>
+  </div>
+</section>
+
+<section class="kb-section">
+  <div class="section-header">
+    <div class="section-header-left">
+      <span class="section-label">Packaged Product</span>
+      <h2 class="section-title">Creeksea Private<br>Knowledge Base.</h2>
+      <p class="section-subtitle">A turnkey private AI product combining a RAG pipeline, vector database, document upload interface, and branded chat UI into a single deployment &mdash; your organization's own private knowledge assistant, running entirely on your infrastructure.</p>
+    </div>
+    <span class="section-num">02</span>
+  </div>
+  <div class="kb-inner">
+    <div class="kb-left">
+      <span class="section-label">Starting Price</span>
+      <div class="kb-price">$18,000 &ndash; $28,000</div>
+      <div class="kb-price-sub">One-time setup fee</div>
+      <p class="kb-desc">Think of it as your organization's own private ChatGPT &mdash; but grounded entirely on your internal documents, policies, and data. Answers are cited back to source documents. Access is role-controlled. Nothing leaves your infrastructure.<br><br>Recommended for any tier client primarily using their LLM for internal document search, policy Q&amp;A, or knowledge management. As a packaged product it deploys faster, integrates better, and costs less than assembling equivalent capabilities from individual add-ons.</p>
+      <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-fill" style="align-self: flex-start; margin-top: 8px;">Get a Quote &rarr;</a>
+    </div>
+    <div class="kb-right">
+      <div class="kb-feature">
+        <span class="kb-check">&#10003;</span>
+        <div>
+          <div class="kb-feature-name">Full RAG Pipeline</div>
+          <div class="kb-feature-text">Document ingestion, chunking strategy selection, embedding configuration, and vector database deployment &mdash; optimized for your document types and query patterns.</div>
+        </div>
+      </div>
+      <div class="kb-feature">
+        <span class="kb-check">&#10003;</span>
+        <div>
+          <div class="kb-feature-name">Document Upload Interface</div>
+          <div class="kb-feature-text">Drag-and-drop web UI for authorized staff to add, update, and manage source documents. No engineering required to keep the knowledge base current.</div>
+        </div>
+      </div>
+      <div class="kb-feature">
+        <span class="kb-check">&#10003;</span>
+        <div>
+          <div class="kb-feature-name">Branded Chat Frontend</div>
+          <div class="kb-feature-text">Custom-branded chat interface on your domain with conversation history, source citations linked to original documents, and a user feedback mechanism.</div>
+        </div>
+      </div>
+      <div class="kb-feature">
+        <span class="kb-check">&#10003;</span>
+        <div>
+          <div class="kb-feature-name">Role-Based Access Control</div>
+          <div class="kb-feature-text">Restrict access by department, team, or document category. Different groups see different document collections based on their role &mdash; enforced at the infrastructure level.</div>
+        </div>
+      </div>
+      <div class="kb-feature">
+        <span class="kb-check">&#10003;</span>
+        <div>
+          <div class="kb-feature-name">Admin Dashboard</div>
+          <div class="kb-feature-text">Document management, usage analytics, and user access controls &mdash; everything an administrator needs to keep the system healthy without involving engineering.</div>
+        </div>
+      </div>
+      <div class="kb-feature">
+        <span class="kb-check">&#10003;</span>
+        <div>
+          <div class="kb-feature-name">Initial Document Ingestion</div>
+          <div class="kb-feature-text">Up to 500 source documents ingested, chunked, and indexed at launch &mdash; giving your team a working knowledge base from day one.</div>
+        </div>
+      </div>
+      <div class="kb-feature">
+        <span class="kb-check">&#10003;</span>
+        <div>
+          <div class="kb-feature-name">Optional PII Redaction Pipeline</div>
+          <div class="kb-feature-text">Preprocessing layer that strips or masks identifiable information before sensitive documents enter the knowledge base. Recommended for healthcare, legal, and financial document collections.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="retainer-section">
+  <div class="section-header">
+    <div class="section-header-left">
+      <span class="section-label">Monthly Support Retainer</span>
+      <h2 class="section-title">Keep your deployment healthy,<br>current, and evolving.</h2>
+      <p class="section-subtitle">Available to clients on any service tier. Month-to-month with no long-term commitment required, or prepaid annually at a 10% discount. Retainer clients receive a discount on all future add-on services.</p>
+    </div>
+    <span class="section-num">03</span>
+  </div>
+  <div class="retainer-grid">
+    <div class="retainer-plan">
+      <div class="retainer-plan-name">Support Basic</div>
+      <div class="retainer-plan-price">$1,200</div>
+      <div class="retainer-plan-price-sub">Per month</div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Email Support</span><span class="retainer-feature-val">&#10003;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Response SLA</span><span class="retainer-feature-val">3 business days</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Monthly Check-in Call</span><span class="retainer-feature-val">&#10003;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Proactive Monitoring</span><span class="retainer-feature-val dim">&mdash;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Model &amp; Software Updates</span><span class="retainer-feature-val">As requested</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Minor Config Changes</span><span class="retainer-feature-val dim">&mdash;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Add-On Discount</span><span class="retainer-feature-val">15% off</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Priority Escalation</span><span class="retainer-feature-val dim">&mdash;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Quarterly Strategy Review</span><span class="retainer-feature-val dim">&mdash;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Dedicated Slack / Teams</span><span class="retainer-feature-val dim">&mdash;</span></div>
+    </div>
+    <div class="retainer-plan">
+      <div class="retainer-plan-name">Support Standard</div>
+      <div class="retainer-plan-price">$2,500</div>
+      <div class="retainer-plan-price-sub">Per month</div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Email Support</span><span class="retainer-feature-val">&#10003;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Response SLA</span><span class="retainer-feature-val">1 business day</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Monthly Check-in Call</span><span class="retainer-feature-val">&#10003;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Proactive Monitoring</span><span class="retainer-feature-val">&#10003;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Model &amp; Software Updates</span><span class="retainer-feature-val">Monthly cadence</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Minor Config Changes</span><span class="retainer-feature-val">Up to 2 / mo</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Add-On Discount</span><span class="retainer-feature-val">10% off</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Priority Escalation</span><span class="retainer-feature-val">&#10003;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Quarterly Strategy Review</span><span class="retainer-feature-val dim">&mdash;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Dedicated Slack / Teams</span><span class="retainer-feature-val dim">&mdash;</span></div>
+    </div>
+    <div class="retainer-plan">
+      <div class="retainer-plan-name">Support Premium</div>
+      <div class="retainer-plan-price">$4,500</div>
+      <div class="retainer-plan-price-sub">Per month</div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Email Support</span><span class="retainer-feature-val">&#10003;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Response SLA</span><span class="retainer-feature-val">4 business hours</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Monthly Check-in Call</span><span class="retainer-feature-val">&#10003;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Proactive Monitoring</span><span class="retainer-feature-val">&#10003;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Model &amp; Software Updates</span><span class="retainer-feature-val">Continuous</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Minor Config Changes</span><span class="retainer-feature-val">Unlimited</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Add-On Discount</span><span class="retainer-feature-val">20% off</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Priority Escalation</span><span class="retainer-feature-val">&#10003;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Quarterly Strategy Review</span><span class="retainer-feature-val">&#10003;</span></div>
+      <div class="retainer-feature"><span class="retainer-feature-label">Dedicated Slack / Teams</span><span class="retainer-feature-val">&#10003;</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="not-included">
+  <div class="not-included-inner">
+    <div class="not-included-left">
+      <span class="section-label">Pricing Note</span>
+      <div class="not-included-title">How add-on<br>pricing works.</div>
+    </div>
+    <p class="not-included-body">
+      All prices shown are estimated starting ranges in USD. Final pricing for any add-on engagement is confirmed at kickoff after a brief scoping conversation to understand your environment, existing infrastructure, and specific requirements. Complex integrations &mdash; large document collections, multi-system orchestration, or compliance-heavy environments &mdash; will fall toward the higher end of the range.<br><br>
+      Multi-add-on bundles of three or more services purchased simultaneously qualify for a 10% discount. Support retainer clients receive an additional discount on all add-on services (15% on Basic, 10% on Standard, 20% on Premium). Discounts are not combinable.<br><br>
+      All add-on engagements include documentation and a handoff session. Rates quoted in a signed Statement of Work are locked for the duration of that engagement. Retainer agreements are month-to-month with no long-term commitment, or prepaid annually at a 10% discount.
+    </p>
+  </div>
+</section>
+
+<section class="cta">
+  <span class="cta-label">Ready to Extend Your Deployment?</span>
+  <h2 class="cta-title">Add capability<br><em>on your timeline.</em></h2>
+  <p class="cta-sub">Add-ons can be purchased as standalone engagements or layered onto an existing deployment at any time. Start with a 30-minute call &mdash; we'll identify which add-ons make the most sense for where your deployment is today.</p>
+  <div class="cta-actions">
+    <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-fill">Schedule a Call &rarr;</a>
+    <a href="index.html" class="btn-outline">View All Tiers</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">
+    <span class="footer-wordmark">creeksea.ai</span>
+    <span class="footer-tagline">Private AI infrastructure for enterprises that cannot compromise.</span>
+  </div>
+  <div class="footer-right">
+    <ul class="footer-links">
+      <li><a href="tier-1-foundations.html">Foundations</a></li>
+      <li><a href="tier-2-professional.html">Professional</a></li>
+      <li><a href="tier-3-business.html">Business</a></li>
+      <li><a href="tier-4-enterprise.html">Enterprise</a></li>
+      <li><a href="addon-services.html">Add-Ons</a></li>
+      <li><a href="hardware.html">Hardware</a></li>
+    </ul>
+    <span class="footer-copy">&copy; 2025 Creeksea Advisory Group, LLC &middot; activate@creeksea.ai</span>
+  </div>
+</footer>
+
+<script>
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
+  const html = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('creeksea-theme') || 'light';
+  html.setAttribute('data-theme', saved);
+  toggle.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('creeksea-theme', next);
+  });
+</script>
+
+<script>
+  // ── Mobile nav hamburger ──
+  (function() {
+    var btn = document.getElementById('navHamburger');
+    var links = document.getElementById('navLinks');
+    if (!btn || !links) return;
+
+    btn.addEventListener('click', function() {
+      btn.classList.toggle('open');
+      links.classList.toggle('open');
+    });
+
+    // Close menu when a non-dropdown link is tapped
+    links.querySelectorAll('a').forEach(function(a) {
+      if (!a.closest('.nav-dropdown') || a.closest('.nav-dropdown-menu')) {
+        a.addEventListener('click', function() {
+          btn.classList.remove('open');
+          links.classList.remove('open');
+          // close any open dropdowns too
+          links.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
+        });
+      }
+    });
+
+    // Services dropdown: toggle on tap (mobile only)
+    links.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
+      var trigger = dropdown.querySelector(':scope > a');
+      if (!trigger) return;
+      trigger.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          dropdown.classList.toggle('open');
+        }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>

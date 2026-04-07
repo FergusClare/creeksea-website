@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tier 4 — Enterprise | creeksea.ai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --black: #0A0A0A; --white: #FAFAF8; --gray: #444; --gray-dim: #666; --border: rgba(0,0,0,0.10); --max: 1320px; }
+    [data-theme="dark"] { --black: #F0F0EE; --white: #0A0A0A; --gray: #AAA; --gray-dim: #777; --border: rgba(255,255,255,0.10); }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--black); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { color: inherit; text-decoration: none; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 28px 48px; transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease; border-bottom: 1px solid transparent; }
+    nav.scrolled { background: rgba(250,250,248,0.88); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.08); box-shadow: 0 1px 24px rgba(0,0,0,0.06); padding: 18px 48px; }
+    [data-theme="dark"] nav.scrolled { background: rgba(10,10,10,0.88); border-bottom: 1px solid rgba(255,255,255,0.08); box-shadow: 0 1px 24px rgba(0,0,0,0.3); }
+    .nav-left { display: flex; align-items: center; gap: 28px; }
+    .nav-wordmark { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 400; letter-spacing: 0.08em; color: var(--black); }
+    .nav-links { display: flex; gap: 36px; list-style: none; align-items: center; }
+    .nav-links a { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); transition: color 0.2s; }
+    .nav-links a:hover { color: var(--black); }
+    .nav-links a.active { color: var(--black); border-bottom: 1px solid var(--black); padding-bottom: 1px; }
+    .nav-cta { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--black) !important; border-bottom: 1px solid var(--black); padding-bottom: 1px; }
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > a { display: flex; align-items: center; gap: 5px; cursor: default; }
+    .nav-dropdown > a::after { content: ''; display: inline-block; width: 5px; height: 5px; border-right: 1px solid currentColor; border-bottom: 1px solid currentColor; transform: rotate(45deg) translateY(-2px); transition: transform 0.2s; }
+    .nav-dropdown:hover > a::after { transform: rotate(-135deg) translateY(-2px); }
+    .nav-dropdown-menu { position: absolute; top: 100%; right: 0; min-width: 210px; background: rgba(250,250,248,0.97); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(0,0,0,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.08); padding: 18px 0 6px; opacity: 0; pointer-events: none; transform: translateY(-6px); transition: opacity 0.18s ease, transform 0.18s ease; }
+    [data-theme="dark"] .nav-dropdown-menu { background: rgba(12,12,12,0.97); border-color: rgba(255,255,255,0.08); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    .nav-dropdown:hover .nav-dropdown-menu { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .nav-dropdown-menu a { display: flex; align-items: baseline; gap: 10px; padding: 11px 22px; font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray); transition: color 0.15s, background 0.15s; white-space: nowrap; border-bottom: none !important; }
+    .nav-dropdown-menu a:hover { color: var(--black); background: rgba(0,0,0,0.025); }
+    [data-theme="dark"] .nav-dropdown-menu a:hover { background: rgba(255,255,255,0.04); }
+    .drop-num { font-family: 'Cormorant Garamond', serif; font-size: 0.75rem; font-style: italic; color: var(--gray-dim); min-width: 16px; }
+    .nav-dropdown-divider { height: 1px; background: var(--border); margin: 6px 0; }
+    .theme-toggle { background: none; border: 1px solid var(--border); border-radius: 20px; width: 36px; height: 20px; cursor: pointer; position: relative; transition: border-color 0.2s; flex-shrink: 0; margin-left: 16px; }
+    .theme-toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 12px; height: 12px; border-radius: 50%; background: var(--black); transition: transform 0.25s ease, background 0.2s; }
+    [data-theme="dark"] .theme-toggle::after { transform: translateX(16px); }
+    .theme-toggle:hover { border-color: var(--black); }
+    section { border-bottom: 1px solid var(--border); }
+    .section-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #555; }
+    .section-num { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; color: #444; }
+    .btn-fill, .btn-outline { display: inline-block; font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 14px 28px; transition: all 0.2s; cursor: pointer; white-space: nowrap; }
+    .btn-fill { background: var(--black); color: var(--white); border: 1px solid var(--black); }
+    .btn-fill:hover { background: transparent; color: var(--black); }
+    .btn-outline { border: 1px solid rgba(0,0,0,0.25); color: var(--black); }
+    .btn-outline:hover { border-color: var(--black); background: rgba(0,0,0,0.03); }
+    [data-theme="dark"] .btn-outline { border-color: rgba(255,255,255,0.25); }
+    [data-theme="dark"] .btn-outline:hover { border-color: var(--black); background: rgba(255,255,255,0.05); }
+
+    .hero { min-height: 80vh; display: grid; grid-template-columns: 1fr 340px; align-items: center; gap: 64px; padding: 120px 48px 48px; }
+    .hero-left { display: flex; flex-direction: column; }
+    .hero-eyebrow { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: #555; margin-bottom: 16px; }
+    .hero-heading { font-family: 'Cormorant Garamond', serif; font-size: clamp(5rem, 10vw, 10rem); font-weight: 300; line-height: 0.95; color: var(--black); margin-bottom: 32px; }
+    .hero-desc { font-size: 0.85rem; line-height: 1.8; color: var(--gray); max-width: 520px; margin-bottom: 36px; }
+    .hero-actions { display: flex; gap: 12px; }
+
+    .facts-card { border: 1px solid var(--border); padding: 36px; display: flex; flex-direction: column; gap: 0; }
+    .fact-row { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .fact-row:last-of-type { border-bottom: none; }
+    .fact-label { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray-dim); flex-shrink: 0; }
+    .fact-val { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 300; color: var(--black); text-align: right; }
+    .facts-price { font-family: 'Cormorant Garamond', serif; font-size: 2.8rem; font-weight: 300; color: var(--black); line-height: 1; margin: 20px 0 4px; }
+    .facts-price-sub { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gray-dim); margin-bottom: 20px; }
+    .facts-card-cta { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); }
+
+    .included { padding: 48px 48px; display: flex; flex-direction: column; justify-content: center; }
+    .included-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .included-header-left { display: flex; flex-direction: column; gap: 10px; }
+    .included-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; line-height: 1.05; color: var(--black); }
+    .included-subtitle { font-size: 0.8rem; line-height: 1.75; color: var(--gray); max-width: 480px; }
+    .included-row { display: grid; grid-template-columns: 40px 1fr; gap: 24px; align-items: start; padding: 24px 0; border-bottom: 1px solid var(--border); position: relative; }
+    .included-row:last-child { border-bottom: none; }
+    .included-row::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: 100vw; background: rgba(0,0,0,0.025); opacity: 0; transition: opacity 0.2s; z-index: -1; }
+    [data-theme="dark"] .included-row::before { background: rgba(255,255,255,0.03); }
+    .included-row:hover::before { opacity: 1; }
+    .included-check { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; color: #444; padding-top: 2px; }
+    .included-text { display: flex; flex-direction: column; gap: 4px; }
+    .included-name { font-family: 'Cormorant Garamond', serif; font-size: 1.25rem; font-weight: 300; color: var(--black); line-height: 1.2; }
+    .included-detail { font-size: 0.78rem; line-height: 1.7; color: var(--gray); }
+
+    .use-cases { padding: 48px 48px; display: flex; flex-direction: column; justify-content: center; min-height: 50vh; }
+    .use-cases-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .use-cases-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; color: var(--black); line-height: 1.05; }
+    .use-cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+    .use-case-item { padding: 32px 40px 32px 0; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; }
+    .use-case-item:nth-child(3n) { border-right: none; padding-right: 0; }
+    .use-case-item:nth-child(3n+2), .use-case-item:nth-child(3n+3) { padding-left: 40px; }
+    .use-case-item:nth-child(n+4) { border-top: 1px solid var(--border); padding-top: 32px; }
+    .use-case-num { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; color: #444; }
+    .use-case-title { font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; font-weight: 300; color: var(--black); line-height: 1.2; }
+    .use-case-body { font-size: 0.78rem; line-height: 1.75; color: var(--gray); }
+
+    .timeline { padding: 48px 48px; display: flex; flex-direction: column; justify-content: center; min-height: 50vh; }
+    .timeline-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .timeline-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; color: var(--black); line-height: 1.05; }
+    .timeline-title em { font-style: italic; }
+    .timeline-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+    .timeline-step { padding: 0 40px 0 0; border-right: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; }
+    .timeline-step:last-child { border-right: none; padding-right: 0; }
+    .timeline-step:not(:first-child) { padding-left: 40px; }
+    .timeline-step-num { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; color: #444; }
+    .timeline-step-week { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gray-dim); }
+    .timeline-step-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 300; color: var(--black); line-height: 1.2; }
+    .timeline-step-body { font-size: 0.78rem; line-height: 1.75; color: var(--gray); }
+
+    .compare { padding: 48px 48px; display: flex; flex-direction: column; justify-content: center; }
+    .compare-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .compare-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; color: var(--black); line-height: 1.05; }
+    .compare-table { width: 100%; border-collapse: collapse; }
+    .compare-table th { font-size: 0.6rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gray-dim); text-align: left; padding: 12px 0; border-bottom: 1px solid var(--border); font-weight: 400; }
+    .compare-table th:not(:first-child) { text-align: center; padding-left: 24px; }
+    .compare-table th.current-tier { color: var(--black); }
+    .compare-table td { font-size: 0.82rem; color: var(--gray); padding: 18px 0; border-bottom: 1px solid var(--border); line-height: 1.4; }
+    .compare-table td:not(:first-child) { text-align: center; padding-left: 24px; font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 300; }
+    .compare-table td.current-tier { color: var(--black); font-weight: 400; }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table .dash { color: var(--border); }
+
+    .addons { padding: 48px 48px; display: flex; flex-direction: column; justify-content: center; }
+    .addons-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 48px; padding-bottom: 28px; border-bottom: 1px solid var(--border); }
+    .addons-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; color: var(--black); line-height: 1.05; }
+    .addons-desc { font-size: 0.8rem; line-height: 1.75; color: var(--gray); max-width: 360px; }
+    .addon-row { display: grid; grid-template-columns: 260px 1fr 180px; align-items: center; gap: 32px; padding: 24px 0; border-bottom: 1px solid var(--border); position: relative; }
+    .addon-row:last-child { border-bottom: none; }
+    .addon-row::before { content: ''; position: absolute; top: 0; bottom: 0; left: 50%; transform: translateX(-50%); width: 100vw; background: rgba(0,0,0,0.025); opacity: 0; transition: opacity 0.2s; z-index: -1; }
+    [data-theme="dark"] .addon-row::before { background: rgba(255,255,255,0.03); }
+    .addon-row:hover::before { opacity: 1; }
+    .addon-name { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--black); }
+    .addon-detail { font-size: 0.78rem; line-height: 1.6; color: var(--gray); }
+    .addon-price { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-weight: 300; color: var(--black); white-space: nowrap; text-align: right; }
+    .addon-price span { display: block; font-family: 'Inter', sans-serif; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-dim); margin-top: 2px; text-align: right; }
+
+    .not-included { padding: 48px 48px; display: flex; flex-direction: column; justify-content: center; }
+    .not-included-inner { display: grid; grid-template-columns: 280px 1fr; gap: 64px; align-items: start; padding: 40px; border: 1px solid var(--border); }
+    .not-included-left { display: flex; flex-direction: column; gap: 12px; }
+    .not-included-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--black); line-height: 1.2; }
+    .not-included-body { font-size: 0.8rem; line-height: 1.85; color: var(--gray); }
+
+    .cta { padding: 48px 48px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 60vh; }
+    .cta-label { font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gray-dim); margin-bottom: 28px; }
+    .cta-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2.8rem, 5vw, 5rem); font-weight: 300; line-height: 1.1; color: var(--black); margin-bottom: 24px; }
+    .cta-title em { font-style: italic; }
+    .cta-sub { font-size: 0.82rem; line-height: 1.8; color: var(--gray); max-width: 460px; margin-bottom: 40px; }
+    .cta-actions { display: flex; gap: 12px; justify-content: center; }
+
+    footer { padding: 40px 48px; display: flex; align-items: flex-start; justify-content: space-between; gap: 48px; }
+    .footer-left { display: flex; flex-direction: column; gap: 10px; }
+    .footer-wordmark { font-family: 'Cormorant Garamond', serif; font-size: 1rem; font-weight: 400; letter-spacing: 0.08em; color: var(--black); }
+    .footer-tagline { font-size: 0.68rem; color: var(--gray-dim); max-width: 280px; line-height: 1.6; }
+    .footer-right { display: flex; flex-direction: column; align-items: flex-end; gap: 16px; }
+    .footer-links { display: flex; gap: 28px; list-style: none; }
+    .footer-links a { font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gray); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--black); }
+    .footer-copy { font-size: 0.65rem; color: var(--gray-dim); letter-spacing: 0.06em; }
+  
+
+  /* ── Hamburger button (desktop: hidden) ── */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 4px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 22px;
+    height: 1.5px;
+    background: var(--black);
+    transition: transform 0.22s ease, opacity 0.22s ease;
+    border-radius: 1px;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(4.7px, 4.7px); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(4.7px, -4.7px); }
+
+  /* ══════════════════════════════════════
+     MOBILE RESPONSIVENESS
+     ══════════════════════════════════════ */
+  @media (max-width: 768px) {
+    /* Nav */
+    nav { padding: 20px 24px !important; }
+    nav.scrolled { padding: 14px 24px !important; }
+    .nav-hamburger { display: flex !important; }
+    .nav-links {
+      display: none;
+      position: fixed;
+      top: 58px;
+      left: 0; right: 0;
+      background: rgba(250,250,248,0.98);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(0,0,0,0.09);
+      padding: 8px 0 16px;
+      flex-direction: column;
+      gap: 0;
+      z-index: 98;
+      list-style: none;
+    }
+    [data-theme="dark"] .nav-links {
+      background: rgba(10,10,10,0.98);
+      border-bottom-color: rgba(255,255,255,0.08);
+    }
+    .nav-links.open { display: flex; }
+    .nav-links li { border-bottom: 1px solid var(--border); }
+    .nav-links li:last-child { border-bottom: none; }
+    .nav-links a {
+      display: block;
+      padding: 14px 24px !important;
+      font-size: 0.72rem !important;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray) !important;
+      border-bottom: none !important;
+    }
+    .nav-links a:hover { color: var(--black) !important; }
+    /* Nav links: centered */
+    .nav-links li { text-align: center; }
+    .nav-links a { text-align: center !important; }
+    /* Services sub-menu: hidden by default, expanded on click */
+    .nav-dropdown-menu {
+      position: static !important;
+      opacity: 1 !important;
+      pointer-events: all !important;
+      transform: none !important;
+      box-shadow: none !important;
+      border: none !important;
+      background: transparent !important;
+      padding: 0 !important;
+      display: none;
+      flex-direction: column;
+    }
+    .nav-dropdown.open .nav-dropdown-menu { display: flex !important; }
+    .nav-dropdown-menu a {
+      padding: 10px 24px !important;
+      font-size: 0.65rem !important;
+      text-align: center !important;
+      justify-content: center !important;
+    }
+    /* Services trigger: show arrow caret, cursor pointer */
+    .nav-dropdown > a { cursor: pointer !important; justify-content: center !important; }
+    .nav-cta { font-size: 0.62rem !important; padding: 9px 14px !important; }
+
+    /* Hero: 1fr 340px → single column */
+    .hero {
+      grid-template-columns: 1fr !important;
+      padding: 100px 24px 60px !important;
+      gap: 40px !important;
+      min-height: auto !important;
+    }
+    .hero-right, .compare-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch; }
+    
+    /* Compare table: scrollable */
+    .compare-table {
+      display: block !important;
+      overflow-x: auto !important;
+      -webkit-overflow-scrolling: touch;
+      min-width: 540px;
+    }
+
+    /* Included rows: keep 40px icon col — already fine, just adjust padding */
+    .included-section { padding: 48px 24px !important; }
+
+    /* Use cases: 3 → 1 col */
+    .use-cases { padding: 48px 24px !important; }
+    .use-cases-grid { grid-template-columns: 1fr !important; }
+    .use-case-item { border-right: none !important; padding-right: 0 !important; padding-left: 0 !important; }
+    .use-cases-header { flex-direction: column !important; gap: 16px !important; }
+
+    /* Timeline steps: 4 → 2 col */
+    .timeline-section { padding: 48px 24px !important; }
+    .timeline-steps { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
+    .timeline-step { border-right: none !important; padding-right: 0 !important; padding-left: 0 !important; }
+    .timeline-header { flex-direction: column !important; gap: 16px !important; }
+
+    /* Sections — keep 24px side margins */
+    .included, .use-cases, .timeline, .compare, .addons, .not-included, .cta {
+      padding: 48px 24px !important;
+    }
+    footer { padding: 40px 24px !important; }
+    /* Addon rows: 260px 1fr 180px → stack */
+    .addons-header { flex-direction: column !important; gap: 16px !important; }
+    .addon-row {
+      display: block !important;
+      padding: 20px 0 !important;
+    }
+    .addon-name { font-size: 1.5rem !important; margin-bottom: 6px; }
+    .addon-detail { margin-bottom: 8px; }
+    .addon-price { text-align: left !important; margin-top: 6px; }
+
+    /* Not included: 280px 1fr → single column */
+    .not-included { padding: 48px 24px !important; }
+    .not-included-inner {
+      grid-template-columns: 1fr !important;
+      gap: 32px !important;
+      padding: 24px !important;
+    }
+
+    /* Footer */
+    footer { flex-direction: column !important; align-items: flex-start !important; gap: 32px !important; }
+    .footer-right { align-items: flex-start !important; }
+    .footer-links { flex-wrap: wrap !important; gap: 10px 20px !important; }
+  }
+
+  @media (max-width: 480px) {
+    nav { padding: 16px 20px !important; }
+    .hero { padding: 90px 20px 48px !important; }
+    .timeline-steps { grid-template-columns: 1fr !important; }
+    .included-section,
+    .use-cases,
+    .timeline-section,
+    .addons-section,
+    .not-included { padding: 40px 20px !important; }
+  }
+
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-left">
+    <a href="index.html"><span class="nav-wordmark">creeksea.ai</span></a>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li class="nav-dropdown">
+      <a href="index.html#services" class="active">Services</a>
+      <div class="nav-dropdown-menu">
+        <a href="tier-1-foundations.html"><span class="drop-num">01</span>Foundations</a>
+        <a href="tier-2-professional.html"><span class="drop-num">02</span>Professional</a>
+        <a href="tier-3-business.html"><span class="drop-num">03</span>Business</a>
+        <a href="tier-4-enterprise.html"><span class="drop-num">04</span>Enterprise</a>
+        <div class="nav-dropdown-divider"></div>
+        <a href="addon-services.html"><span class="drop-num">+</span>Add-Ons</a>
+      </div>
+    </li>
+    <li><a href="addon-services.html">Add-Ons</a></li>
+    <li><a href="hardware.html">Hardware</a></li>
+    <li><a href="https://meetings-na2.hubspot.com/fergus-clare" class="nav-cta">Get Started →</a></li>
+  </ul>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <span class="hero-eyebrow">Tier 04 — Enterprise</span>
+    <h1 class="hero-heading">Enter­prise.</h1>
+    <p class="hero-desc">A fully hardened, high-availability LLM platform with a branded chat interface, LDAP/Active Directory integration, zero-trust architecture, and full-lifecycle delivery from a dedicated project manager. Enterprise is the ceiling of what a private AI deployment can be — unlimited models, advanced RAG, eight custom agents, full compliance readiness, and 30 days of dedicated post-launch support.</p>
+    <div class="hero-actions">
+      <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-fill">Schedule a Call →</a>
+      <a href="addon-services.html" class="btn-outline">View Add-Ons</a>
+    </div>
+  </div>
+  <div class="facts-card">
+    <div class="facts-price">$75,000+</div>
+    <div class="facts-price-sub">One-time setup fee</div>
+    <div class="fact-row"><span class="fact-label">Deployment</span><span class="fact-val">HA multi-server</span></div>
+    <div class="fact-row"><span class="fact-label">Models Deployed</span><span class="fact-val">Unlimited</span></div>
+    <div class="fact-row"><span class="fact-label">User Accounts</span><span class="fact-val">Unlimited</span></div>
+    <div class="fact-row"><span class="fact-label">MCP Integrations</span><span class="fact-val">Up to 10</span></div>
+    <div class="fact-row"><span class="fact-label">Custom Agents</span><span class="fact-val">Up to 8</span></div>
+    <div class="fact-row"><span class="fact-label">RAG Pipeline</span><span class="fact-val">Advanced + Hybrid</span></div>
+    <div class="fact-row"><span class="fact-label">SSO + LDAP / AD</span><span class="fact-val">Included</span></div>
+    <div class="fact-row"><span class="fact-label">Branded Chat UI</span><span class="fact-val">Included</span></div>
+    <div class="fact-row"><span class="fact-label">Post-Deploy Support</span><span class="fact-val">30-day hypercare</span></div>
+    <div class="fact-row"><span class="fact-label">Deployment Time</span><span class="fact-val">~14 weeks</span></div>
+    <div class="facts-card-cta">
+      <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-fill" style="display:block;text-align:center;">Get a Quote →</a>
+    </div>
+  </div>
+</section>
+
+<section class="included">
+  <div class="included-header">
+    <div class="included-header-left">
+      <span class="section-label">What's Included</span>
+      <h2 class="included-title">The complete private AI platform,<br>fully hardened.</h2>
+      <p class="included-subtitle">Enterprise is purpose-built for large organizations, compliance-sensitive industries, and teams that require high availability, enterprise identity management, and a bespoke end-user experience. Includes a dedicated project manager for the full engagement duration.</p>
+    </div>
+    <span class="section-num">01</span>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Multi-Server High-Availability Deployment</div>
+      <div class="included-detail">A multi-server HA architecture with load balancing and automatic failover. No single point of failure. Inference traffic is distributed across nodes; if one goes offline, requests route automatically. Engineered for the uptime guarantees your organization requires.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Unlimited Model Deployments with Benchmarking</div>
+      <div class="included-detail">Deploy as many models as your infrastructure supports, with no cap. Includes a structured model benchmarking and selection consultation — a scored evaluation of candidate models against your specific use cases, with a written recommendation report before any model goes into production.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">LDAP / Active Directory Integration</div>
+      <div class="included-detail">Full LDAP and Active Directory integration for centralized identity management. User accounts, group memberships, and access permissions are pulled directly from your directory — no duplicate provisioning, no drift between your directory and the LLM platform, and automatic de-provisioning when staff leave.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Zero-Trust Architecture Review & Hardening</div>
+      <div class="included-detail">A full zero-trust security review of your LLM deployment — covering API endpoint exposure, authentication chain, network segmentation, inter-service trust, and secrets management. Followed by a hardening pass that implements the findings. Your deployment meets the security standard your IT and legal teams require before anything touches production data.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Full Compliance Readiness Review</div>
+      <div class="included-detail">Comprehensive readiness assessment for SOC 2, HIPAA, GDPR, or CCPA alignment as applicable to your industry and geography. Includes a written findings report, a gap remediation plan, and configuration changes to bring your deployment into alignment. Provides documented evidence suitable for regulatory review or client due diligence.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Comprehensive Audit Logging & Data Residency Controls</div>
+      <div class="included-detail">Full audit logging of every request — who, what, when, and with what input. Data residency controls ensure data stays in your specified geographic boundary. Access reporting dashboards give your compliance team the evidence they need without requiring engineering support to produce it.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Advanced RAG Pipeline with Hybrid Search</div>
+      <div class="included-detail">An enterprise-grade RAG implementation with hybrid search combining dense vector search and sparse keyword retrieval — delivering more accurate results across mixed document types. Includes document pipeline automation, custom chunking strategy, and embedding model selection tuned to your corpus. Your models answer questions grounded in your internal knowledge, with citations, at scale.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">MCP Server Integrations</div>
+      <div class="included-detail">Up to ten MCP server integrations connecting your models to the full breadth of tools and enterprise data sources your organization uses — ERP systems, CRM platforms, file systems, collaboration tools, databases, and external APIs. Each integration scoped, built, and tested against your environment.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Custom AI Agents with Full Workflow Orchestration</div>
+      <div class="included-detail">Up to eight custom AI agents, each purpose-built for a specific business function, with full workflow orchestration — shared memory, multi-agent handoffs, conditional branching, and error handling. Enables complex, autonomous end-to-end business processes that span multiple systems and decision points without human intervention at each step.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Branded Web-Based Chat UI</div>
+      <div class="included-detail">A custom-branded chat interface on your own domain — your logo, your color scheme, your product name. Includes authentication, conversation history, source citation display, admin controls, and a feedback mechanism. Your team sees a polished internal product, not an open-source tool with raw API access.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">PII Redaction & Data Masking Pipeline</div>
+      <div class="included-detail">Automated preprocessing that strips or masks personally identifiable information before any document reaches the model context. Configured to your specific data types and regulatory requirements. Applied at the pipeline level — not dependent on user behavior.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Full Prompt Engineering Library</div>
+      <div class="included-detail">25+ production-tested system prompts across all major business functions — legal, finance, HR, operations, research, customer service, and more. Delivered as a living document with one included quarterly refresh. Gives every team a practical, proven starting point without investing in prompt engineering expertise.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Full AI Governance Policy Package</div>
+      <div class="included-detail">A complete governance package: acceptable-use policy, data classification framework for LLM inputs, AI incident response procedure, and employee acknowledgment forms. Drafted with your legal and compliance team. Covers what regulators, auditors, and enterprise clients increasingly require before approving AI-enabled workflows.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">LLM Evaluation & Regression Testing Framework</div>
+      <div class="included-detail">An automated eval suite with scored prompt batteries across your specific use cases. Catches quality regressions after model updates or configuration changes before they reach users. Gives your team confidence that every change to the platform is validated against a defined quality standard.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Change Management & Adoption Kickoff</div>
+      <div class="included-detail">An internal champion identification workshop, use case prioritization session, and a 60-day employee adoption playbook. Addresses the most common failure mode in enterprise AI deployments: a technically successful system that staff don't actually use. Includes a structured 60-day feedback loop to track adoption and resolve friction points.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Full-Day Staff Training</div>
+      <div class="included-detail">A full-day training session with unlimited participants, delivered on-site or virtually. Custom curriculum covering system use, model capabilities, agent workflows, governance guidelines, and best practices. Ensures every team that will use the platform understands how to use it effectively from day one.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">30-Day Hypercare & Dedicated Project Manager</div>
+      <div class="included-detail">Thirty days of dedicated post-deployment monitoring, performance tuning, and priority support after go-live. A dedicated project manager oversees the full engagement from kickoff through hypercare — your single point of contact for scheduling, decisions, and escalations throughout the entire deployment.</div>
+    </div>
+  </div>
+
+  <div class="included-row">
+    <span class="included-check">✓</span>
+    <div class="included-text">
+      <div class="included-name">Executive Summary & Architecture Documentation</div>
+      <div class="included-detail">A boardroom-ready executive summary report covering deployment scope, security posture, compliance status, and operational readiness — alongside a complete architecture documentation package for your IT and engineering teams. Everything leadership and operations need, in the format each audience expects.</div>
+    </div>
+  </div>
+</section>
+
+<section class="use-cases">
+  <div class="use-cases-header">
+    <div>
+      <span class="section-label">Ideal For</span>
+      <h2 class="use-cases-title">Who Enterprise<br>is built for.</h2>
+    </div>
+    <span class="section-num">02</span>
+  </div>
+  <div class="use-cases-grid">
+    <div class="use-case-item">
+      <span class="use-case-num">01</span>
+      <div class="use-case-title">Large Organizations</div>
+      <p class="use-case-body">Enterprises with hundreds or thousands of users that need a high-availability platform, LDAP-integrated provisioning, and a polished branded interface — not an infrastructure project their teams have to manage.</p>
+    </div>
+    <div class="use-case-item">
+      <span class="use-case-num">02</span>
+      <div class="use-case-title">Compliance-Critical Industries</div>
+      <p class="use-case-body">Legal firms, healthcare systems, and financial institutions where a compliance readiness review, zero-trust hardening, data residency controls, and a full governance policy package are prerequisites — not optional enhancements.</p>
+    </div>
+    <div class="use-case-item">
+      <span class="use-case-num">03</span>
+      <div class="use-case-title">Active Directory Environments</div>
+      <p class="use-case-body">Organizations whose entire user lifecycle — onboarding, role changes, offboarding — runs through Active Directory or LDAP, and who need their AI platform to reflect that directory automatically without manual synchronization.</p>
+    </div>
+    <div class="use-case-item">
+      <span class="use-case-num">04</span>
+      <div class="use-case-title">High-Availability Requirements</div>
+      <p class="use-case-body">Teams for whom LLM downtime has measurable operational impact — legal teams on deadline, clinical staff with patient workflows, or financial teams in time-sensitive processes — who need load-balanced infrastructure with automatic failover.</p>
+    </div>
+    <div class="use-case-item">
+      <span class="use-case-num">05</span>
+      <div class="use-case-title">Complex Automation at Scale</div>
+      <p class="use-case-body">Organizations that need not just individual AI agents but coordinated multi-agent orchestration — where one agent's output triggers the next across multiple systems, data sources, and decision points, with full auditability throughout.</p>
+    </div>
+    <div class="use-case-item">
+      <span class="use-case-num">06</span>
+      <div class="use-case-title">Branded Internal AI Products</div>
+      <p class="use-case-body">Organizations that want to deliver private AI to their staff as a named internal product — with a custom domain, their branding, conversation history, and source citations — rather than routing everyone through a raw API or a third-party interface.</p>
+    </div>
+  </div>
+</section>
+
+<section class="timeline">
+  <div class="timeline-header">
+    <div>
+      <span class="section-label">Engagement Timeline</span>
+      <h2 class="timeline-title">Fully operational in<br><em>fourteen weeks.</em></h2>
+    </div>
+    <span class="section-num">03</span>
+  </div>
+  <div class="timeline-steps">
+    <div class="timeline-step">
+      <span class="timeline-step-num">01</span>
+      <span class="timeline-step-week">Weeks 1–3</span>
+      <div class="timeline-step-title">Discovery & Architecture Planning</div>
+      <p class="timeline-step-body">Full requirements discovery with dedicated PM. Compliance scope defined. Zero-trust architecture designed. LDAP/AD integration mapped. HA topology specified. RAG document inventory and chunking strategy drafted. Model benchmarking initiated. All integration dependencies documented before build begins.</p>
+    </div>
+    <div class="timeline-step">
+      <span class="timeline-step-num">02</span>
+      <span class="timeline-step-week">Weeks 4–7</span>
+      <div class="timeline-step-title">Infrastructure & Security Build</div>
+      <p class="timeline-step-body">Multi-server HA deployment built and load-balanced. LDAP/AD integration completed. Zero-trust hardening applied. Compliance readiness review conducted. Audit logging, data residency controls, and access reporting configured. PII redaction pipeline live. Eval framework established with initial test batteries.</p>
+    </div>
+    <div class="timeline-step">
+      <span class="timeline-step-num">03</span>
+      <span class="timeline-step-week">Weeks 8–12</span>
+      <div class="timeline-step-title">RAG, Agents, UI & Integrations</div>
+      <p class="timeline-step-body">Advanced RAG pipeline with hybrid search built and optimized. All MCP integrations connected. Up to eight custom agents built and orchestrated. Branded chat UI deployed on your domain. All ten MCP integrations live. Governance policy package drafted with legal team. Prompt library delivered. Adoption playbook prepared.</p>
+    </div>
+    <div class="timeline-step">
+      <span class="timeline-step-num">04</span>
+      <span class="timeline-step-week">Weeks 13–14 + 30-Day Hypercare</span>
+      <div class="timeline-step-title">Training, Go-Live & Hypercare</div>
+      <p class="timeline-step-body">Full-day staff training delivered. Adoption kickoff session run. Executive summary and architecture documentation delivered. System confirmed live. Thirty days of dedicated monitoring, performance tuning, and priority support begins. PM remains engaged through hypercare close.</p>
+    </div>
+  </div>
+</section>
+
+<section class="compare">
+  <div class="compare-header">
+    <div>
+      <span class="section-label">Compare Tiers</span>
+      <h2 class="compare-title">How Enterprise<br>compares.</h2>
+    </div>
+    <span class="section-num">04</span>
+  </div>
+  <table class="compare-table">
+    <thead>
+      <tr>
+        <th>Capability</th>
+        <th>Tier 1 — Foundations</th>
+        <th>Tier 2 — Professional</th>
+        <th>Tier 3 — Business</th>
+        <th class="current-tier">Tier 4 — Enterprise</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Setup Fee</td><td>$8,000</td><td>$18,000</td><td>$38,000</td><td class="current-tier">$75,000+</td></tr>
+      <tr><td>Deployment Option</td><td>Local only</td><td>Local or Cloud</td><td>Local + Hybrid</td><td class="current-tier">HA Multi-Server</td></tr>
+      <tr><td>Models Included</td><td>1</td><td>Up to 3</td><td>Up to 5</td><td class="current-tier">Unlimited</td></tr>
+      <tr><td>User Accounts</td><td>Up to 5</td><td>Up to 20</td><td>Unlimited</td><td class="current-tier">Unlimited</td></tr>
+      <tr><td>MCP Integrations</td><td>1</td><td>Up to 3</td><td>Up to 5</td><td class="current-tier">Up to 10</td></tr>
+      <tr><td>Custom Agents</td><td class="dash">—</td><td>1</td><td>Up to 3</td><td class="current-tier">Up to 8</td></tr>
+      <tr><td>RAG Pipeline</td><td class="dash">—</td><td class="dash">—</td><td>Included</td><td class="current-tier">Advanced + Hybrid</td></tr>
+      <tr><td>SSO / LDAP</td><td class="dash">—</td><td class="dash">—</td><td>SSO / SAML</td><td class="current-tier">SSO + LDAP / AD</td></tr>
+      <tr><td>RBAC & Audit Logging</td><td class="dash">—</td><td>Basic</td><td>Full RBAC + Logs</td><td class="current-tier">Full + Compliance</td></tr>
+      <tr><td>Staff Training</td><td class="dash">—</td><td>Admin walkthrough</td><td>Half-day (10 people)</td><td class="current-tier">Full-day (unlimited)</td></tr>
+      <tr><td>Post-Deploy Support</td><td>2 hours</td><td>4 hours</td><td>8 hours</td><td class="current-tier">30-day hypercare</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="addons">
+  <div class="addons-header">
+    <div>
+      <span class="section-label">Recommended Add-Ons</span>
+      <h2 class="addons-title">Post-deployment investments<br>for Enterprise clients.</h2>
+    </div>
+    <p class="addons-desc">Enterprise clients have the most complete baseline of any tier. Post-deployment, the highest-value ongoing investments focus on keeping the platform current, expanding its intelligence, and sustaining operational excellence over time. Multi-add-on bundles of 3 or more qualify for a 10% discount.</p>
+  </div>
+
+  <div class="addon-row">
+    <div class="addon-name">Annual Architecture Review</div>
+    <div class="addon-detail">For an Enterprise client, this should be a standard line item in the annual IT budget. The open-source LLM landscape moves fast enough that a deployment without a yearly review quickly falls behind — in model quality, tooling, security posture, and efficiency. Includes a structured deep-dive, a written findings report, and a prioritized recommendations roadmap. The cost of running an outdated model stack at Enterprise scale far exceeds the review fee.</div>
+    <div class="addon-price">$4,500<span>per year</span></div>
+  </div>
+
+  <div class="addon-row">
+    <div class="addon-name">Custom Model Fine-Tuning</div>
+    <div class="addon-detail">Once your base deployment is stable and you have six or more months of usage data, fine-tuning on your organization's language, documents, and domain knowledge is the highest-leverage quality improvement available. Covers dataset preparation, supervised fine-tuning (SFT), and evaluation against your base model. The result is a model that speaks your organization's language with the accuracy of a domain expert.</div>
+    <div class="addon-price">$10,000 – $22,000+<span>one-time</span></div>
+  </div>
+
+  <div class="addon-row">
+    <div class="addon-name">Additional RAG Data Source Pipelines</div>
+    <div class="addon-detail">Enterprise clients almost always identify new document repositories, internal databases, or business tools to connect after the initial deployment. Budget for additional pipelines annually — each adds a new document collection or data source to your RAG system with its own ingestion pipeline, chunking strategy, and embeddings. Keeps your knowledge base current as your organization's data landscape evolves.</div>
+    <div class="addon-price">$3,500 – $6,000<span>per pipeline</span></div>
+  </div>
+
+  <div class="addon-row">
+    <div class="addon-name">Support Premium Retainer</div>
+    <div class="addon-detail">At Enterprise deployment scale, the dedicated Slack or Teams channel and quarterly strategy review are particularly valuable given the complexity of what's running. Includes a 4-business-hour response SLA, unlimited minor configuration changes, continuous model and software updates, a dedicated channel, and a quarterly strategy session with Creeksea advisory staff to align your deployment roadmap with new open-source developments.</div>
+    <div class="addon-price">$4,500<span>per month</span></div>
+  </div>
+</section>
+
+<section class="not-included">
+  <div class="not-included-inner">
+    <div class="not-included-left">
+      <span class="section-label">Pricing Note</span>
+      <div class="not-included-title">What's not<br>in the fee.</div>
+    </div>
+    <p class="not-included-body">
+      The $75,000+ setup fee covers professional services only — labor, architecture, security hardening, compliance review, RAG pipeline build, agent development, branded UI, documentation, training, and 30-day hypercare. It does not include hardware procurement costs for on-premises or HA deployments, cloud GPU or compute instance fees, third-party software licensing, or travel and accommodation for on-site visits (billed at cost).<br><br>
+      For multi-server HA deployments, hardware specifications are documented during the discovery and architecture phase. Creeksea can advise on procurement, source hardware at cost, or work with your existing vendor relationships. For cloud-hosted HA configurations, we design around your preferred providers. See our <a href="hardware.html" style="border-bottom: 1px solid var(--border);">Hardware page</a> for detailed configuration guidance.<br><br>
+      All prices are starting rates in USD. Final pricing is determined after a scoping session and provided via a formal Statement of Work. Rates quoted in a signed SOW are locked for the duration of the engagement.
+    </p>
+  </div>
+</section>
+
+<section class="cta">
+  <span class="cta-label">Ready to Begin?</span>
+  <h2 class="cta-title">Build the private AI platform<br><em>your organization deserves.</em></h2>
+  <p class="cta-sub">All engagements begin with a complimentary 30-minute discovery call — no pressure, no commitment. For Enterprise engagements, we recommend a 60-minute scoping session to cover architecture, compliance scope, and integration requirements in full.</p>
+  <div class="cta-actions">
+    <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-fill">Schedule a Call →</a>
+    <a href="addon-services.html" class="btn-outline">View Add-Ons & Custom</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-left">
+    <span class="footer-wordmark">creeksea.ai</span>
+    <span class="footer-tagline">Private AI infrastructure for enterprises that cannot compromise.</span>
+  </div>
+  <div class="footer-right">
+    <ul class="footer-links">
+      <li><a href="tier-1-foundations.html">Foundations</a></li>
+      <li><a href="tier-2-professional.html">Professional</a></li>
+      <li><a href="tier-3-business.html">Business</a></li>
+      <li><a href="tier-4-enterprise.html">Enterprise</a></li>
+      <li><a href="addon-services.html">Add-Ons</a></li>
+      <li><a href="hardware.html">Hardware</a></li>
+    </ul>
+    <span class="footer-copy">© 2025 Creeksea Advisory Group, LLC · activate@creeksea.ai</span>
+  </div>
+</footer>
+
+<script>
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 40); }, { passive: true });
+  const html = document.documentElement;
+  const toggle = document.getElementById('themeToggle');
+  const saved = localStorage.getItem('creeksea-theme') || 'light';
+  html.setAttribute('data-theme', saved);
+  toggle.addEventListener('click', () => {
+    const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('creeksea-theme', next);
+  });
+</script>
+
+<script>
+  // ── Mobile nav hamburger ──
+  (function() {
+    var btn = document.getElementById('navHamburger');
+    var links = document.getElementById('navLinks');
+    if (!btn || !links) return;
+
+    btn.addEventListener('click', function() {
+      btn.classList.toggle('open');
+      links.classList.toggle('open');
+    });
+
+    // Close menu when a non-dropdown link is tapped
+    links.querySelectorAll('a').forEach(function(a) {
+      if (!a.closest('.nav-dropdown') || a.closest('.nav-dropdown-menu')) {
+        a.addEventListener('click', function() {
+          btn.classList.remove('open');
+          links.classList.remove('open');
+          // close any open dropdowns too
+          links.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
+        });
+      }
+    });
+
+    // Services dropdown: toggle on tap (mobile only)
+    links.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
+      var trigger = dropdown.querySelector(':scope > a');
+      if (!trigger) return;
+      trigger.addEventListener('click', function(e) {
+        if (window.innerWidth <= 768) {
+          e.preventDefault();
+          dropdown.classList.toggle('open');
+        }
+      });
+    });
+  })();
+</script>
+
+</body>
+</html>
