@@ -1,961 +1,2095 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-5W42P4DX9V"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-  
-    gtag('config', 'G-5W42P4DX9V');
-  </script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-5W42P4DX9V');</script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>creeksea.ai — Private AI Infrastructure</title>
-  <meta name="description" content="Private AI infrastructure deployed on your hardware. Locally hosted, HIPAA and FedRAMP-ready, with no vendor lock-in. Enterprise AI solutions from creeksea.ai.">
+  <title>creeksea.ai — AI Agents That Hyperscale Your Business</title>
+  <meta name="description" content="We design, build, and deploy custom AI agents that automate your most complex business workflows. End-to-end, from strategy to production.">
   <link rel="canonical" href="https://creeksea.ai/">
   <link rel="icon" type="image/png" href="favicon.png">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://creeksea.ai/">
-  <meta property="og:title" content="creeksea.ai — Private AI Infrastructure">
-  <meta property="og:description" content="Private AI infrastructure deployed on your hardware. Locally hosted, HIPAA and FedRAMP-ready, with no vendor lock-in.">
-  <meta property="og:site_name" content="creeksea.ai">
+  <meta property="og:title" content="creeksea.ai — AI Agents That Hyperscale Your Business">
+  <meta property="og:description" content="Custom AI agents that automate your most complex business workflows.">
   <meta property="og:image" content="https://creeksea.ai/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="creeksea.ai — Private AI Infrastructure">
-  <meta name="twitter:description" content="Private AI infrastructure deployed on your hardware. Locally hosted, HIPAA and FedRAMP-ready, with no vendor lock-in.">
-  <meta name="twitter:image" content="https://creeksea.ai/og-image.png">
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "creeksea.ai",
-    "url": "https://creeksea.ai",
-    "description": "Private AI infrastructure deployed on your hardware. Locally hosted, HIPAA and FedRAMP-ready, with no vendor lock-in.",
-    "contactPoint": {
-      "@type": "ContactPoint",
-      "email": "activate@creeksea.ai",
-      "contactType": "sales"
-    }
-  }
-  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:auto;overflow-x:hidden}
+    body{font-family:'Inter',system-ui,sans-serif;background:#000;color:#fff;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
 
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 0 48px 60px;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 1px solid var(--border);
+    /* ===== CINEMATIC POST-PROCESS LAYERS =====
+       Three fixed full-viewport layers sit *above* the ribbon canvas but *below* content:
+         z=0  ribbon canvas (substrate light)
+         z=1  vignette (radial darkening at edges)
+         z=2  film grain (animated noise)
+         z=3+ content
+       Letterbox bars (top/bottom) sit at z=20 above content for the proper cinema frame. */
+    .vignette{position:fixed;inset:0;pointer-events:none;z-index:1;background:radial-gradient(ellipse at 50% 50%,transparent 35%,rgba(0,0,0,0.55) 85%,rgba(0,0,0,0.85) 100%)}
+    /* Inline SVG fractal-noise data URI — animated by translating the layer slowly. */
+    .grain{position:fixed;inset:-30%;pointer-events:none;z-index:2;opacity:0.10;mix-blend-mode:overlay;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.92' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+      animation:grainShift 1.2s steps(6) infinite}
+    @keyframes grainShift{
+      0%{transform:translate(0,0)}
+      16%{transform:translate(-3%,2%)}
+      33%{transform:translate(2%,-3%)}
+      50%{transform:translate(-1%,4%)}
+      66%{transform:translate(4%,1%)}
+      83%{transform:translate(-2%,-2%)}
+      100%{transform:translate(0,0)}
     }
-    .hero-index {
-      position: absolute; top: 50%; left: 48px;
-      transform: translateY(-50%);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.9rem;
-      font-style: italic;
-      color: var(--gray-dim);
-    }
-    .hero-heading {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(5rem, 11vw, 10.5rem);
-      font-weight: 300;
-      line-height: 0.92;
-      letter-spacing: -0.02em;
-      color: var(--black);
-      max-width: var(--max);
-    }
-    .hero-heading em {
-      font-style: italic;
-      font-weight: 300;
-    }
-    .hero-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      margin-top: 60px;
-      padding-top: 28px;
-      border-top: 1px solid var(--border);
-    }
-    .hero-desc {
-      font-size: 0.82rem;
-      line-height: 1.7;
-      color: var(--gray);
-      max-width: 380px;
-      letter-spacing: 0.01em;
-    }
-    .hero-actions {
-      display: flex; gap: 20px; align-items: center;
-    }
+    /* Letterbox bars — soft, not literal black. Establishes "you are watching a film". */
+    .letterbox{position:fixed;left:0;right:0;height:40px;z-index:20;pointer-events:none;
+      background:linear-gradient(to bottom,rgba(0,0,0,0.85),transparent);transition:height 0.6s cubic-bezier(.16,1,.3,1)}
+    .letterbox.bottom{bottom:0;top:auto;background:linear-gradient(to top,rgba(0,0,0,0.85),transparent)}
+    .letterbox.top{top:0}
 
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      line-height: 1.0;
-      color: var(--black);
-    }
+    /* ===== GLOBAL SCROLL RAIL =====
+       A fixed, full-page scroll progress rail on the left edge. Tracks total page progress.
+       Section markers along the rail labelled "Reel 0X" — the active marker brightens.
+       The rail itself fades to ~0.35 opacity when idle (no scroll for 1s) and rebrightens on scroll.
+       Lives at z=15 — above content but below letterbox/nav. */
+    .scroll-rail{position:fixed;left:24px;top:14vh;bottom:14vh;width:1px;z-index:15;pointer-events:none;
+      opacity:0.35;transition:opacity 0.6s ease-out}
+    .scroll-rail.awake{opacity:1}
+    .scroll-rail-track{position:absolute;left:0;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,
+      rgba(255,255,255,0) 0%,rgba(255,255,255,0.10) 8%,rgba(255,255,255,0.10) 92%,rgba(255,255,255,0) 100%)}
+    .scroll-rail-fill{position:absolute;left:0;top:0;width:1px;height:0%;
+      background:linear-gradient(to bottom,rgba(244,216,168,0.95) 0%,rgba(244,216,168,0.55) 50%,rgba(95,184,212,0.45) 100%);
+      box-shadow:0 0 10px rgba(244,216,168,0.55);transition:height 0.12s linear}
+    /* Tracking dot — glowing puck riding total scroll position */
+    .scroll-rail-dot{position:absolute;left:-3px;top:0%;width:7px;height:7px;border-radius:50%;
+      background:#fff;box-shadow:0 0 18px rgba(255,245,220,0.95),0 0 36px rgba(244,216,168,0.55);
+      transition:top 0.12s linear}
+    /* Per-section tick + label */
+    .scroll-rail-tick{position:absolute;left:-4px;width:9px;height:1px;background:rgba(255,255,255,0.35);
+      transition:background 0.4s,transform 0.4s,box-shadow 0.4s;transform:scaleX(0.6)}
+    .scroll-rail-tick.active{background:rgba(244,216,168,0.95);transform:scaleX(1.4);
+      box-shadow:0 0 10px rgba(244,216,168,0.7)}
+    .scroll-rail-label{position:absolute;left:18px;font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;
+      color:rgba(255,255,255,0.30);font-weight:400;white-space:nowrap;transform:translateY(-50%);
+      transition:color 0.4s,opacity 0.4s;opacity:0.55}
+    .scroll-rail-label.active{color:rgba(244,216,168,0.95);opacity:1}
+    .scroll-rail-label .num{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.62rem;
+      color:rgba(255,255,255,0.55);margin-right:6px}
+    .scroll-rail-label.active .num{color:rgba(244,216,168,0.95)}
 
-    /* ── STATEMENT ── */
-    .statement {
-      padding: 48px 48px;
-      display: flex;
-      align-items: center;
-      gap: 80px;
-      min-height: 60vh;
-    }
-    .statement-left {
-      flex-shrink: 0;
-      width: 120px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      padding-top: 12px;
-    }
-    .statement-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3rem, 5.5vw, 5.5rem);
-      font-weight: 300;
-      line-height: 1.2;
-      color: var(--black);
-      flex: 1;
-    }
-    .statement-title em { font-style: italic; }
+    /* NAV (slimmed; rides on the cinema frame) */
+    nav{position:fixed;top:0;left:0;right:0;z-index:30;padding:18px 40px;display:flex;align-items:center;justify-content:space-between;transition:all 0.4s}
+    nav.scrolled{background:rgba(0,0,0,0.6);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-bottom:1px solid rgba(255,255,255,0.06)}
+    .nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:600;letter-spacing:0.01em;display:inline-flex;align-items:baseline;gap:12px}
+    .nav-logo-sep{font-family:'Inter',sans-serif;font-weight:300;color:rgba(255,255,255,0.25);font-size:0.95rem}
+    .nav-logo-tag{font-family:'Inter',sans-serif;font-weight:400;font-size:0.74rem;letter-spacing:0.02em;color:rgba(255,255,255,0.55);text-transform:lowercase}
+    .nav-links{display:flex;gap:32px;list-style:none;align-items:center}
+    .nav-links a{font-size:0.78rem;font-weight:400;color:rgba(255,255,255,0.55);transition:color 0.2s}
+    .nav-links a:hover{color:#fff}
+    .nav-cta{font-size:0.78rem;font-weight:500;color:#000 !important;background:#fff;padding:8px 20px;border-radius:100px;transition:all 0.2s}
+    /* LIGHT-MODE TOGGLE BUTTON — disabled. Uncomment to re-enable.
+    .theme-toggle{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid rgba(255,255,255,0.18);border-radius:50%;background:transparent;cursor:pointer;color:rgba(255,255,255,0.65);transition:all 0.2s;padding:0}
+    .theme-toggle:hover{border-color:rgba(255,255,255,0.4);color:#fff}
+    .theme-toggle svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+    .theme-toggle .icon-sun{display:none}
+    [data-theme="light"] .theme-toggle{border-color:rgba(0,0,0,0.18);color:rgba(26,26,26,0.65)}
+    [data-theme="light"] .theme-toggle:hover{border-color:rgba(0,0,0,0.4);color:#1a1a1a}
+    [data-theme="light"] .theme-toggle .icon-moon{display:none}
+    [data-theme="light"] .theme-toggle .icon-sun{display:block}
+    */
+    .nav-cta:hover{background:rgba(255,255,255,0.85);transform:scale(1.04)}
+    .nav-hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px}
+    .nav-hamburger span{display:block;width:20px;height:1.5px;background:#fff;transition:all 0.2s}
+    .nav-hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px)}
+    .nav-hamburger.open span:nth-child(2){opacity:0}
+    .nav-hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px)}
 
-    /* ── WHY GRID ── */
-    .why {
-      padding: 48px 48px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 70vh;
-    }
-    .why-header {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      margin-bottom: 64px;
-      padding-bottom: 32px;
-      border-bottom: 1px solid var(--border);
-    }
-    .why-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.4rem, 4vw, 4rem);
-      font-weight: 300;
-      line-height: 1.05;
-      color: var(--black);
-      max-width: 480px;
-    }
-    .why-header-right {
-      max-width: 300px;
-      font-size: 0.8rem;
-      line-height: 1.75;
-      color: var(--gray);
-    }
-    .why-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-    }
-    .why-card {
-      padding: 44px 0;
-      border-right: 1px solid var(--border);
-      padding-right: 40px;
-      padding-left: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    .why-card:first-child { padding-left: 0; }
-    .why-card:last-child { border-right: none; padding-right: 0; padding-left: 40px; }
-    .why-card:nth-child(2) { padding-left: 40px; }
-    .why-card-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.1rem;
-      font-style: italic;
-      color: #444;
-    }
-    .why-card-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
-      font-weight: 400;
-      color: var(--black);
-      line-height: 1.2;
-    }
-    .why-card-body {
-      font-size: 0.8rem;
-      line-height: 1.75;
-      color: var(--gray);
-      flex: 1;
-    }
+    /* RIBBON CANVAS — substrate behind everything */
+    #ribbon-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+    /* Effects canvas — lens flares, particle bursts. Above ribbons, below content. */
+    #fx-canvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
 
-    /* ── SERVICES ── */
-    .services {
-      padding: 48px 48px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 70vh;
-    }
-    .services-header {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      margin-bottom: 64px;
-      padding-bottom: 32px;
-      border-bottom: 1px solid var(--border);
-    }
-    .services-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.4rem, 4vw, 4rem);
-      font-weight: 300;
-      line-height: 1.05;
-      color: var(--black);
-      max-width: 480px;
-    }
-    .tier-row {
-      display: grid;
-      grid-template-columns: 280px 1fr auto;
-      align-items: center;
-      gap: 32px;
-      padding: 24px 0;
-      border-bottom: 1px solid var(--border);
-      transition: background 0.2s;
-      cursor: pointer;
-      position: relative;
-    }
-    .tier-row:last-child { border-bottom: none; }
-    .tier-row::before {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100vw;
-      background: rgba(0,0,0,0.025);
-      opacity: 0;
-      transition: opacity 0.2s;
-      z-index: -1;
-    }
-    .tier-row:hover::before { opacity: 1; }
-    .tier-row-name-cell {
-      display: flex;
-      flex-direction: column;
-    }
-    .tier-row-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.78rem;
-      font-style: italic;
-      color: var(--gray-dim);
-      margin-bottom: 2px;
-    }
-    .tier-row-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem;
-      font-weight: 300;
-      color: var(--black);
-    }
-    .tier-row-desc {
-      font-size: 0.78rem;
-      line-height: 1.6;
-      color: var(--gray);
-    }
-    .tier-row-price {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
-      font-weight: 300;
-      color: var(--black);
-      white-space: nowrap;
-      text-align: right;
-    }
-    .tier-row-price span {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      color: var(--gray);
-      display: block;
-      text-align: right;
-      margin-top: 2px;
-    }
+    /* ===== SHOT 1 — HERO (full-bleed cinematic title card) =====
+       The ribbons enter from above, swerve toward each other, and *write* the headline in light.
+       A massive serif occupies viewport-scale type. The H1 is an SVG so the ribbon can stroke
+       its letterforms. The wordmark is set in a kinetic, edge-to-edge composition with deliberate
+       asymmetry — eyebrow flush left, supporting copy flush right at the bottom. */
+    .shot{position:relative;min-height:100vh;width:100%;overflow:hidden;z-index:3}
+    .hero{height:100vh;display:flex;align-items:center;justify-content:center}
+    /* Grid was '1fr auto 1fr' — but the H1 SVG (94vw wide, height:auto) drove the centre row's
+       intrinsic height, so on common 16:9/16:10 viewports the SVG ate the whole column and the
+       1fr top/bottom rows collapsed below their content. Combined with .shot's overflow:hidden,
+       that clipped the bottom-row CTA ("Schedule a Call"). Fix: make the centre row the flexible
+       one (auto 1fr auto) so .hero-top and .hero-bot reserve their natural height first, and the
+       SVG fills whatever vertical space is left. min-height:0 on the centre row lets the SVG
+       shrink under flex/grid sizing instead of forcing overflow. */
+    /* Two rows: H1 wrap fills 1fr (centred vertically), CTA bot in auto. The former
+       eyebrow row was removed when the studio meta moved into the global nav.
+       padding-top:80px gives the SVG headline clearance from the global nav. The
+       SVG height is intrinsic (width:min(94vw,1400px), height:auto), so 80px is the
+       safe max at typical desktop heights — more would shrink 1fr below the SVG's
+       intrinsic height and clip via .shot's overflow:hidden. */
+    .hero-inner{position:relative;width:100%;height:100%;display:grid;grid-template-rows:1fr auto;padding-top:80px}
 
-    /* ── PROCESS ── */
-    .process {
-      padding: 48px 48px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 60vh;
-    }
-    .process-header {
-      margin-bottom: 64px;
-      padding-bottom: 32px;
-      border-bottom: 1px solid var(--border);
-    }
-    .process-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.4rem, 4vw, 4rem);
-      font-weight: 300;
-      line-height: 1.05;
-      color: var(--black);
-    }
-    .process-steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-    }
-    .process-step {
-      padding: 0 40px 0 0;
-      border-right: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .process-step:last-child { border-right: none; padding-right: 0; }
-    .process-step:not(:first-child) { padding-left: 40px; }
-    .process-step-num {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.85rem;
-      font-style: italic;
-      color: var(--gray-dim);
-    }
-    .process-step-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.35rem;
-      font-weight: 400;
-      color: var(--black);
-      line-height: 1.2;
-    }
-    .process-step-body {
-      font-size: 0.78rem;
-      line-height: 1.75;
-      color: var(--gray);
-    }
+    /* Centre band — the H1 lives here as inline SVG so we can stroke each letter.
+       min-height:0 + min-width:0 lets the wrap participate in grid track shrinking; without
+       it the SVG's intrinsic size forces the centre row to overflow and clip the CTA below.
+       (max-height:100% was tried here to constrain the SVG inside the centre row, but it
+       made the headline visibly smaller. We removed it and instead kept .hero-bot to a
+       single short row so the centre row gets back its full height — see comment on .hero-bot.) */
+    .hero-h1-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;width:100%;min-height:0;min-width:0}
+    .hero-h1-svg{width:min(94vw,1400px);height:auto;display:block;filter:drop-shadow(0 8px 40px rgba(0,0,0,0.55))}
+    /* Letter strokes start dark; JS animates the stroke-dashoffset as ribbons sweep through. */
+    .hero-h1-svg text{fill:rgba(255,255,255,0.04);stroke:rgba(255,255,255,0.92);stroke-width:0.7;
+      font-family:'Cormorant Garamond',serif;font-weight:300;letter-spacing:-0.02em}
+    /* The "hyperscale" emphasis word — italic, slightly larger, rendered with warm-amber stroke. */
+    .hero-h1-svg .em{font-style:italic;stroke:rgba(244,216,168,0.95)}
+    /* Class added by JS once the ribbon has "drawn" the line. Lights the fill. */
+    .hero-h1-svg .lit{fill:#fff;transition:fill 0.6s ease-out}
+    .hero-h1-svg .em.lit{fill:rgba(255,235,200,0.95)}
 
-    /* ── INDUSTRIES ── */
-    .industries {
-      padding: 48px 48px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      min-height: 70vh;
-    }
-    .industries-header {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      margin-bottom: 64px;
-      padding-bottom: 32px;
-      border-bottom: 1px solid var(--border);
-    }
-    .industries-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.4rem, 4vw, 4rem);
-      font-weight: 300;
-      line-height: 1.05;
-      color: var(--black);
-    }
-    .industry-list {
-      display: flex;
-      flex-direction: column;
-    }
-    .industry-item {
-      display: grid;
-      grid-template-columns: 280px 1fr 120px;
-      align-items: center;
-      gap: 32px;
-      padding: 24px 0;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-    .industry-item:last-child { border-bottom: none; }
-    .industry-item::before {
-      content: '';
-      position: absolute;
-      top: 0; bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100vw;
-      background: rgba(0,0,0,0.025);
-      opacity: 0;
-      transition: opacity 0.2s;
-      z-index: -1;
-    }
-    .industry-item:hover::before { opacity: 1; }
-    .industry-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem;
-      font-weight: 300;
-      color: var(--black);
-    }
-    .industry-desc {
-      font-size: 0.78rem;
-      color: var(--gray);
-      line-height: 1.6;
-    }
-    .industry-tag {
-      font-size: 0.6rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--gray-dim);
-    }
+    /* Bottom band — flex column centred under the H1. Order: sub copy → CTAs.
+       JS fades .hero-bot (the wrapper) on scroll so the whole footing exits with the H1.
+       Why fade the wrapper, not the children: each child has an `animation: fadeUp ... forwards`
+       intro whose final keyframe sets transform:translateY(0). CSS animations sit above
+       inline-style in the cascade, so JS-driven opacity/transform on the children would be
+       clobbered. The wrapper has no animation, so JS owns its visual state cleanly. */
+    .hero-bot{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:36px;padding:0 56px 80px;will-change:opacity,transform}
+    .hero-cta-stack{display:flex;flex-direction:row;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;opacity:0;animation:fadeUp 0.9s 1.6s forwards}
+    .hero-sub-cin{max-width:540px;font-size:0.92rem;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.65;text-align:center;opacity:0;animation:fadeUp 0.9s 1.4s forwards;text-shadow:0 1px 2px rgba(0,0,0,0.7)}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .btn-glow{font-size:0.88rem;font-weight:500;color:#000;background:#fff;padding:14px 36px;border-radius:100px;border:none;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden;display:inline-block}
+    .btn-glow::before{content:'';position:absolute;inset:-2px;background:#fff;border-radius:100px;z-index:-1;filter:blur(20px);opacity:0.2;transition:opacity 0.3s}
+    .btn-glow:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(255,255,255,0.15)}
+    .btn-glow:hover::before{opacity:0.4}
+    .btn-ghost{font-size:0.82rem;font-weight:400;color:rgba(255,255,255,0.6);padding:12px 32px;border-radius:100px;border:1px solid rgba(255,255,255,0.15);transition:all 0.3s;cursor:pointer;background:transparent;display:inline-block}
+    .btn-ghost:hover{border-color:rgba(255,255,255,0.4);color:#fff;background:rgba(255,255,255,0.04)}
 
-    /* ── CTA ── */
-    .cta {
-      padding: 48px 48px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      min-height: 60vh;
-      gap: 48px;
-    }
-    .cta-label {
-      font-size: 0.62rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--gray-dim);
-    }
-    .cta-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(3.5rem, 7vw, 7rem);
-      font-weight: 300;
-      line-height: 0.95;
-      color: var(--black);
-      max-width: 900px;
-    }
-    .cta-title em { font-style: italic; }
-    .cta-sub {
-      font-size: 0.82rem;
-      line-height: 1.7;
-      color: var(--gray);
-      max-width: 420px;
-    }
-    .cta-actions {
-      display: flex; gap: 20px;
-    }
+    /* Hero scroll cue — minimal, cinematic. Sits inside the bot's 80px bottom-padding
+       band so its 80px is real breathing room above the cue, not visually filled. The
+       previous 56px cue (36 line + 8 gap + 12 text) consumed the entire band, leaving
+       0px between the cue and the buttons. Now ~32px tall, leaving ~36px clear gap. */
+    /* Centered via left:0/right:0 + align-items:center on the flex column rather than
+       translateX(-50%) — the fadeUp keyframe's `to` state sets transform:translateY(0)
+       which would clobber the X centering (same bug previously fixed on .hero-cta-stack).
+       pointer-events:none so the now-full-width cue strip doesn't catch clicks across
+       the bottom of the hero. */
+    /* fill-mode: both — fills the keyframe's `from` state (opacity:0) DURING the 2.2s
+       delay too, so the cue stays hidden at load. With `forwards` only, the rule's
+       opacity:0 was the only thing hiding it during the delay, but the onScroll handler
+       sets style.opacity=1 at sy=0 which overrode the rule (inline beats internal sheet).
+       Result was: cue visible at load → animation kicks in at 2.2s → cue snaps to opacity:0
+       → fades back in. With `both`, the filled-from state beats inline style throughout. */
+    .hero-scroll{position:absolute;bottom:12px;left:0;right:0;z-index:3;display:flex;flex-direction:column;align-items:center;gap:4px;pointer-events:none;opacity:0;animation:fadeUp 1s 2.2s both}
+    .hero-scroll span{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+    .scroll-line{width:1px;height:16px;background:linear-gradient(to bottom,rgba(255,255,255,0.4),transparent);animation:scrollPulse 2.4s infinite}
+    @keyframes scrollPulse{0%,100%{opacity:0.3;transform:scaleY(0.6);transform-origin:top}50%{opacity:1;transform:scaleY(1);transform-origin:top}}
 
-    /* ── FOOTER ── */
-    footer {
-      padding: 48px;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
+    /* ===== SHOT 2 — WORD REVEAL (sticky cinematic monologue) =====
+       Sticky for 200vh (tightened from 280vh — cinema should feel cut, not leisurely).
+       The local progress rule was retired — the global scroll rail handles that work. */
+    /* Background is intentionally transparent — the section inherits from the page so
+       the cinematic substrate (ribbon canvas, vignette) shows through. (An earlier fix
+       attempted margin-top:25vh here to address the hero CTA being clipped, but the real
+       cause was inside the hero's grid — see .hero-inner / .hero-h1-svg above.) */
+    /* height shrunk from 200vh→130vh: sticky-inner is 100vh, so the original 200vh left
+       100vh of dead air after monologue exited. 130vh keeps ~30vh of sticky-read time
+       plus the natural exit. margin-top gives a breathing band between hero and monologue
+       to match the cinematic interstitial feel of the parallax-quote between process/why. */
+    .sticky-section{height:130vh;margin-top:calc(60vh - 190px);position:relative;z-index:3;background:transparent}
+    /* Flex-column with justify-content:center -> the monologue text block sits at the
+       vertical centre of the viewport when the section is pinned. align-items:flex-start
+       preserves the left-aligned cinematic composition. .sticky-label is
+       position:absolute, so it ignores flex layout and stays where the design intends. */
+    .sticky-inner{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:0 96px;background:transparent}
+    /* Small eyebrow framing the monologue's problem→solution structure. Inter caps with
+       letter-spacing — same family as other eyebrows on the page. The "our solution" half
+       picks up the warm-amber accent used elsewhere for emphasis. */
+    .monologue-eyebrow{font-family:'Inter',sans-serif;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.45);font-weight:400;margin:0 0 36px;text-align:center}
+    .monologue-eyebrow b{color:rgba(244,216,168,0.85);font-weight:500}
+    .word-monologue{margin:0 auto;max-width:1100px;font-family:'Cormorant Garamond',serif;font-size:clamp(2.6rem,5.2vw,5rem);font-weight:300;line-height:1.18;letter-spacing:-0.012em;text-align:center}
+    .word-monologue .w{display:inline;color:rgba(255,255,255,0.07);transition:color 0.22s ease-out,text-shadow 0.22s ease-out,filter 0.22s ease-out}
+    .word-monologue .w.lit{color:#fff;text-shadow:0 0 28px rgba(255,255,255,0.6),0 0 70px rgba(244,216,168,0.32);filter:brightness(1.1)}
+    .word-monologue .w.seen{color:rgba(255,255,255,0.78);text-shadow:none}
+    /* Accent words ("AI", "reliably") — wrapped in <em> for italic, but inherit the
+       same dim unlit color as a normal .w. They light to warm-amber instead of white. */
+    .word-monologue em{font-style:italic;color:inherit}
+    .word-monologue .w.lit em{color:rgba(244,216,168,0.98);text-shadow:0 0 32px rgba(244,216,168,0.85),0 0 70px rgba(244,216,168,0.4)}
+    .word-monologue .w.seen em{color:rgba(244,216,168,0.78)}
+    /* Italic closing thought (last 9 words). Same reveal cadence as .w; lit color is a
+       slightly dimmed cool-white to read as a softer authorial aside. */
+    .word-monologue .w.italic{font-style:italic}
+    .word-monologue .w.italic.lit{color:rgba(235,238,245,0.88);text-shadow:0 0 22px rgba(235,238,245,0.45),0 0 60px rgba(244,216,168,0.18);filter:brightness(1.0)}
+    .word-monologue .w.italic.seen{color:rgba(235,238,245,0.62)}
+    /* The standalone .sticky-tag was retired — its closing italic clause is now
+       part of the main word-by-word reveal stream as .w.italic spans. */
+
+    /* ===== SHOT 3 — STATS (full-viewport cinematic moments) =====
+       Each stat is its own pinned section. They scroll past sequentially — no z-stack, no
+       cross-fade. The user reads "12 min", scrolls past, the next card rises into view and
+       rolls to "99.4%", then "2 weeks". stats-shot is just a wrapper for the 3 sections. */
+    .stats-shot{position:relative;z-index:3;margin-bottom:350px}
+    /* Section header for the Numbers block — sits above the first stat-section as a 60vh
+       title card. Centres the heading via flex; uses the standard .big-text style. */
+    .stats-header{min-height:60vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:40px 40px 80px}
+    .stat-section{height:150vh;position:relative}
+    .stat-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    /* No opacity fade — cards live in separate sections so they don't overlap and don't
+       need to cross-fade. The .active class is kept for the ribbon-sweep on .stat-rule. */
+    .stat-card{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 56px}
+    .stat-eyebrow{font-size:0.72rem;letter-spacing:0.22em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:32px;text-shadow:0 1px 2px rgba(0,0,0,0.7)}
+    /* The number itself — viewport-scale */
+    .stat-number{font-family:'Cormorant Garamond',serif;font-size:clamp(8rem,22vw,22rem);font-weight:300;line-height:0.85;letter-spacing:-0.04em;color:#fff;text-shadow:0 4px 30px rgba(0,0,0,0.7),0 0 80px rgba(244,216,168,0.15);display:flex;align-items:baseline;justify-content:center;mix-blend-mode:screen}
+    /* Stack of containment defenses: overflow:hidden + overflow:clip (stricter, mandatory)
+       + mask-image (forces layer-level clip). Needed because the .digit-col uses inline
+       transforms to scroll through stacked spans (slot-machine roll), and those transforms
+       create their own stacking contexts that can escape parent overflow:hidden — the
+       "3" span of the "4" column was visibly leaking above the digit row. */
+    .stat-number .digits{display:inline-flex;overflow:hidden;overflow:clip;height:1em;line-height:0.85;-webkit-mask-image:linear-gradient(#000,#000);mask-image:linear-gradient(#000,#000)}
+    .stat-number .digit-col{display:inline-flex;flex-direction:column;height:1em;transition:transform 0.05s linear}
+    .stat-number .digit-col span{height:1em;display:flex;align-items:center;justify-content:center;line-height:1}
+    .stat-number .suffix{font-size:0.35em;font-weight:300;color:rgba(255,255,255,0.7);margin-left:0.18em;letter-spacing:0;font-style:italic}
+    /* Type-out label that arrives after the count completes */
+    .stat-caption{margin-top:48px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(1.4rem,2.2vw,2rem);font-weight:300;color:rgba(255,255,255,0);max-width:560px;line-height:1.4;text-shadow:0 1px 4px rgba(0,0,0,0.65);transition:color 0.6s ease-out 0.2s,transform 0.6s ease-out 0.2s;transform:translateY(20px)}
+    .stat-card.settled .stat-caption{color:rgba(255,255,255,0.85);transform:translateY(0)}
+    .stat-card.settled .stat-caption em{color:rgba(244,216,168,0.95)}
+    /* The hairline below the number that the ribbon sweeps along */
+    .stat-rule{margin-top:36px;width:min(60vw,720px);height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);position:relative}
+    .stat-rule::after{content:'';position:absolute;top:-1px;left:0;width:18%;height:3px;background:linear-gradient(90deg,transparent,rgba(244,216,168,0.95),transparent);box-shadow:0 0 24px rgba(244,216,168,0.85);transform:translateX(-100%);transition:transform 1.6s cubic-bezier(.4,.0,.2,1)}
+    .stat-card.active .stat-rule::after{transform:translateX(560%)}
+
+    /* ===== 3D CARD CINEMATOGRAPHY =====
+       Cards live in a perspective stage. Mouse-driven tilt + scroll-driven entry rotation.
+       Inner layers float at different translateZ values for parallax depth. The glass-refraction
+       highlight is a radial that follows the cursor. A faint colored rim-light hugs the edge
+       nearest the page's currently-dominant ribbon color. Disabled on mobile (flat glass).
+
+       --tilt-x / --tilt-y : driven by mouse hover from JS, in degrees.
+       --refl-x / --refl-y : 0..100 — cursor position used to place the refraction sheen.
+       --enter : 0..1 — scroll entry/exit progress (0 = far from center, 1 = card centered).
+       --rim   : -1..1 — page warm/cool dominance: + warm, - cool. */
+    .stage-3d{perspective:1400px;perspective-origin:50% 50%}
+    .card3d{position:relative;transform-style:preserve-3d;transform:
+      rotateX(calc((var(--enter,1) * var(--enter-rot-x,0deg)) + var(--tilt-x,0deg)))
+      rotateY(calc((var(--enter,1) * var(--enter-rot-y,0deg)) + var(--tilt-y,0deg)))
+      translateZ(calc(var(--enter,1) * 0px));
+      transition:transform 0.18s cubic-bezier(.16,1,.3,1);
+      will-change:transform}
+    .card3d.featured{--enter-rot-x:0deg;--enter-rot-y:0deg}
+    .card3d::before{
+      /* Glass refraction highlight that tracks the cursor. Radial. */
+      content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+      background:radial-gradient(circle at calc(var(--refl-x,50%)) calc(var(--refl-y,50%)),
+        rgba(255,255,255,0.10) 0%,rgba(255,255,255,0.04) 22%,transparent 55%);
+      opacity:var(--enter,1);transition:opacity 0.4s;mix-blend-mode:screen;z-index:1}
+    .card3d::after{
+      /* Rim light tinted by --rim (warm if positive, cool if negative). */
+      content:'';position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;
+      background:linear-gradient(135deg,
+        rgba(244,216,168,calc(0.35 * max(var(--rim,0),0))) 0%,
+        transparent 35%,
+        transparent 65%,
+        rgba(95,184,212,calc(0.35 * max(calc(0 - var(--rim,0)),0))) 100%);
+      opacity:var(--enter,1);transition:opacity 0.5s;
+      -webkit-mask:linear-gradient(#000,#000) content-box,linear-gradient(#000,#000);
+      -webkit-mask-composite:xor;mask-composite:exclude;padding:1px;z-index:2}
+    /* Inner layers — translateZ values drive parallax when the card tilts */
+    .card3d > .layer{position:relative;transform:translateZ(0);will-change:transform}
+    .card3d > .layer.lz-icon{transform:translateZ(34px)}
+    .card3d > .layer.lz-title{transform:translateZ(18px)}
+    .card3d > .layer.lz-body{transform:translateZ(4px)}
+    .card3d > .layer.lz-meta{transform:translateZ(28px)}
+    .card3d > .layer.lz-amount{transform:translateZ(40px)}
+    /* Subtle inner radial bloom for "depth from below" — not the refraction (which tracks cursor) */
+    .card3d > .glass-bloom{position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+      background:radial-gradient(ellipse at 50% 110%,rgba(244,216,168,0.06) 0%,transparent 55%),
+        radial-gradient(ellipse at 50% -10%,rgba(255,255,255,0.05) 0%,transparent 50%);
+      z-index:0}
+    /* When card is the focal/featured card and centered in viewport, bloom forward */
+    .card3d.featured.bloom-forward{transform:
+      rotateX(calc((var(--enter,1) * var(--enter-rot-x,0deg)) + var(--tilt-x,0deg)))
+      rotateY(calc((var(--enter,1) * var(--enter-rot-y,0deg)) + var(--tilt-y,0deg)))
+      translateZ(36px) scale(1.025)}
+
+    /* Subtle inset glass for usecase row right-side scenes */
+    .uc-scene{width:160px;height:120px;position:relative;flex-shrink:0;perspective:600px}
+    .uc-scene .uc-layer{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+      transform-style:preserve-3d;transform:translateZ(var(--lz,0))}
+    .uc-scene svg{width:100%;height:100%;stroke:rgba(244,216,168,0.55);fill:none;stroke-width:1.4;
+      stroke-linecap:round;stroke-linejoin:round}
+
+    /* ===== Subsequent sections (rebuilt in cinematic language) ===== */
+    .fs{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;padding:96px 40px;z-index:3}
+    .fs-dark{background:linear-gradient(180deg,rgba(255,255,255,0.015) 0%,transparent 30%,transparent 70%,rgba(0,0,0,0.06) 100%);border-top:1px solid rgba(255,255,255,0.04)}
+    .fs-black{background:linear-gradient(180deg,rgba(0,0,0,0.06) 0%,transparent 25%,transparent 75%,rgba(0,0,0,0.06) 100%);border-top:1px solid rgba(255,255,255,0.04)}
+    .fs-gradient{background:linear-gradient(180deg,rgba(255,255,255,0.02) 0%,transparent 35%,transparent 65%,rgba(0,0,0,0.08) 100%);border-top:1px solid rgba(255,255,255,0.04)}
+    /* 350px breathing bands between mid-deck sections — matches the cinematic interstitial
+       feel of the parallax-quote between Process and Why. */
+    #pricing{margin-top:350px}
+    #use-cases{margin-top:350px}
+    #cta{margin-top:350px}
+    .fs-inner{max-width:1100px;width:100%;margin:0 auto;position:relative;z-index:1}
+    .sr{opacity:0;transform:translateY(60px);filter:blur(8px);transition:opacity 0.9s cubic-bezier(.16,1,.3,1),transform 0.9s cubic-bezier(.16,1,.3,1),filter 1.2s cubic-bezier(.16,1,.3,1)}
+    .sr.v{opacity:1;transform:translateY(0);filter:blur(0)}
+    .d1{transition-delay:0.1s}.d2{transition-delay:0.2s}.d3{transition-delay:0.3s}.d4{transition-delay:0.4s}
+    .big-text{font-family:'Cormorant Garamond',serif;font-size:clamp(2.8rem,6vw,5.5rem);font-weight:300;line-height:1.08;letter-spacing:-0.01em;text-shadow:0 2px 8px rgba(0,0,0,0.55),0 0 32px rgba(0,0,0,0.35)}
+    .big-text em{font-style:italic;font-weight:300;color:rgba(255,255,255,0.7)}
+    .section-line{width:60px;height:1px;background:rgba(255,255,255,0.15);margin:0 auto 40px}
+
+    /* placeholder note for sections still in old form */
+    .pending-shot{padding:80px 56px;border-top:1px dashed rgba(255,255,255,0.06);position:relative;z-index:3}
+    .pending-shot .pending-tag{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(244,216,168,0.5);margin-bottom:16px;text-shadow:0 1px 2px rgba(0,0,0,0.7)}
+
+    .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px;background:transparent}
+    .step-card{background:rgba(8,12,20,0.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:48px 36px;position:relative;overflow:hidden;transition:background 0.4s,border-color 0.4s;border:1px solid rgba(255,255,255,0.05);border-radius:6px}
+    .step-card:hover{background:rgba(14,20,32,0.65);border-color:rgba(255,255,255,0.1)}
+    .step-num{font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;color:rgba(244,216,168,0.18);line-height:1;margin-bottom:24px;font-style:italic}
+    .step-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:500;margin-bottom:12px;letter-spacing:0.01em}
+    .step-body{font-size:0.85rem;line-height:1.7;color:rgba(255,255,255,0.55);font-weight:300}
+    .why-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:48px;background:transparent}
+    .why-card{background:rgba(8,12,20,0.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:48px 36px;transition:background 0.4s,border-color 0.4s;position:relative;overflow:hidden;border:1px solid rgba(255,255,255,0.05);border-radius:6px}
+    .why-card:hover{background:rgba(14,20,32,0.65);border-color:rgba(255,255,255,0.1)}
+    .why-icon{width:48px;height:48px;border-radius:50%;border:1px solid rgba(244,216,168,0.25);display:flex;align-items:center;justify-content:center;margin-bottom:24px;background:rgba(0,0,0,0.25);box-shadow:0 0 24px rgba(244,216,168,0.08) inset}
+    .why-icon svg{width:22px;height:22px;stroke:rgba(244,216,168,0.85);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+    .why-title{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:500;margin-bottom:12px}
+    .why-body{font-size:0.85rem;line-height:1.75;color:rgba(255,255,255,0.55);font-weight:300}
+    .pricing-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:48px;background:transparent}
+    .price-card{background:rgba(8,12,20,0.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:52px 44px;display:flex;flex-direction:column;gap:20px;transition:background 0.4s,border-color 0.4s;border:1px solid rgba(255,255,255,0.05);border-radius:6px}
+    .price-card.featured{background:rgba(14,20,32,0.7);border-color:rgba(244,216,168,0.28);box-shadow:0 0 60px rgba(244,216,168,0.12) inset}
+    .price-tag{font-size:0.65rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.6);display:inline-block;padding:4px 14px;border-radius:100px;border:1px solid rgba(255,255,255,0.2);width:fit-content;background:rgba(0,0,0,0.3)}
+    .price-name{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500}
+    .price-amount{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;letter-spacing:-0.02em}
+    .price-amount span{font-size:0.85rem;color:rgba(255,255,255,0.45);font-family:'Inter',sans-serif}
+    .price-desc{font-size:0.88rem;line-height:1.7;color:rgba(255,255,255,0.55);flex:1;font-weight:300}
+    .price-btn{display:block;text-align:center;font-size:0.88rem;font-weight:500;padding:16px;border-radius:100px;cursor:pointer;border:none}
+    .price-btn-fill{color:#000;background:#fff}
+    .price-btn-outline{color:#fff;background:transparent;border:1px solid rgba(255,255,255,0.12)}
+    /* Use-case rows now styled as cards (rounded edges, glass background) to match the
+       step/why/price cards. 5px extra padding around inner text and icon elements gives
+       internal breathing room. Bottom border replaced by card-to-card spacing via margin. */
+    .usecase-row{display:flex;align-items:center;gap:80px;padding:48px 41px;background:rgba(8,12,20,0.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.05);border-radius:6px;transition:background 0.4s,border-color 0.4s;position:relative;overflow:hidden;margin-bottom:24px}
+    .usecase-row:hover{background:rgba(14,20,32,0.65);border-color:rgba(255,255,255,0.1)}
+    .usecase-row:last-child{margin-bottom:0}
+    .usecase-num{font-family:'Cormorant Garamond',serif;font-size:6rem;font-weight:300;color:rgba(255,255,255,0.08);line-height:1;flex-shrink:0;width:120px;padding:5px}
+    .usecase-title{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:500;margin-bottom:12px;text-shadow:0 1px 2px rgba(0,0,0,0.65);padding:5px 5px 0}
+    .usecase-body{font-size:0.92rem;line-height:1.7;color:rgba(255,255,255,0.6);max-width:500px;font-weight:300;padding:0 5px}
+    .usecase-tag{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.45);margin-top:16px;display:inline-block;padding:0 5px 5px}
+    .uc-scene{padding:5px}
+    .parallax-quote{height:60vh;padding:200px 0;display:flex;align-items:center;justify-content:center;position:relative;z-index:3;overflow:hidden;box-sizing:content-box}
+    .parallax-quote-inner{font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:300;font-style:italic;color:rgba(255,255,255,0.85);text-align:center;max-width:700px;padding:0 40px;line-height:1.5;will-change:transform}
+    .cta-section{text-align:center;padding:160px 40px;position:relative;overflow:hidden;z-index:3;background:transparent;border-top:1px solid rgba(255,255,255,0.04)}
+    .cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:900px;height:900px;background:radial-gradient(circle,rgba(0,0,0,0.4) 0%,rgba(0,0,0,0.14) 35%,transparent 70%);pointer-events:none}
+    .cta-content{position:relative;z-index:2}
+    .cta-content p{font-size:1.05rem;color:rgba(255,255,255,0.6);max-width:480px;margin:24px auto 48px;line-height:1.7;font-weight:300}
+    .cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .cta-section .btn-glow{box-shadow:0 0 calc(40px + var(--beam-intensity,0)*60px) rgba(244,216,168,calc(0.18 + var(--beam-intensity,0)*0.55)),0 0 calc(120px + var(--beam-intensity,0)*100px) rgba(244,216,168,calc(0.05 + var(--beam-intensity,0)*0.32));transition:box-shadow 0.4s ease-out}
+    .cta-section .btn-glow::after{content:'';position:absolute;inset:0;border-radius:100px;background:radial-gradient(ellipse at 50% 50%,rgba(255,240,210,calc(var(--beam-intensity,0)*0.55)) 0%,transparent 70%);pointer-events:none;opacity:var(--beam-intensity,0);transition:opacity 0.3s}
+    footer{border-top:1px solid rgba(255,255,255,0.08);padding:48px 40px;display:flex;justify-content:space-between;align-items:flex-start;gap:40px;position:relative;z-index:3;background:transparent}
+    .footer-left{display:flex;flex-direction:column;gap:10px}
+    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:500}
+    .footer-tag{font-size:0.78rem;color:rgba(255,255,255,0.45);max-width:300px;line-height:1.6;font-weight:300}
+    .footer-right{display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+    .footer-links{display:flex;gap:24px;list-style:none;flex-wrap:wrap}
+    .footer-links a{font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:300}
+    .footer-links a:hover{color:#fff}
+    .footer-copy{font-size:0.68rem;color:rgba(255,255,255,0.35)}
+
+    /* RESPONSIVE */
+    @media(max-width:1024px){
+      .steps{grid-template-columns:repeat(2,1fr)}
+      .why-grid{grid-template-columns:repeat(2,1fr)}
+      .hero-bot{padding-left:32px;padding-right:32px}
     }
-    .footer-left {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+    @media(max-width:768px){
+      .grain{display:none}
+      .vignette{background:radial-gradient(ellipse at 50% 50%,transparent 35%,rgba(0,0,0,0.45) 90%)}
+      nav{padding:14px 24px}
+      .nav-logo-sep,.nav-logo-tag{display:none}
+      .nav-hamburger{display:flex}
+      .nav-links{display:none;position:fixed;top:50px;left:0;right:0;background:rgba(0,0,0,0.95);backdrop-filter:blur(30px);padding:16px 0;flex-direction:column;gap:0;border-bottom:1px solid rgba(255,255,255,0.06)}
+      .nav-links.open{display:flex}
+      .nav-links li{text-align:center}
+      .nav-links a{display:block;padding:14px 24px}
+      .nav-cta{margin:8px 24px;display:block;text-align:center}
+      /* Mobile: drop the desktop absolute-positioning trick and stack everything
+         vertically — sub copy centred, CTAs centred below. Viewport is portrait-tall
+         on phones so the SVG isn't height-constrained the way it is on desktop 16:10. */
+      .hero-bot{position:static;flex-direction:column;align-items:center;padding:0 24px 56px;gap:24px;min-height:0}
+      .hero-sub-cin{position:static;text-align:center;max-width:none}
+      .hero-cta-stack{position:static;left:auto;bottom:auto;transform:none;flex-direction:row;align-items:center;justify-content:center;flex-wrap:wrap;gap:12px}
+      .btn-glow,.btn-ghost{text-align:center}
+      .sticky-inner{padding:0 32px}
+      .word-monologue{margin:0 auto;font-size:clamp(1.8rem,7vw,2.6rem)}
+      .sticky-section{height:180vh}
+      /* Global rail on mobile — closer to edge, no labels (too noisy in narrow viewport) */
+      .scroll-rail{left:14px}
+      .scroll-rail-label{display:none}
+      /* 3D cards: flat-but-glass on mobile per spec */
+      .card3d{transform:none !important}
+      .card3d::before,.card3d::after{display:none}
+      .stage-3d{perspective:none}
+      .stats-shot{height:200vh}
+      .stat-number{font-size:clamp(5.5rem,28vw,9rem)}
+      .stat-caption{font-size:1.1rem;margin-top:32px;padding:0 24px}
+      .stat-rule{width:80vw}
+      .fs{padding:80px 24px}
+      .steps,.why-grid,.pricing-grid{grid-template-columns:1fr}
+      .usecase-row{flex-direction:column;gap:20px;padding:48px 0;align-items:flex-start}
+      .uc-scene{width:120px;height:90px;align-self:flex-end}
+      footer{flex-direction:column;padding:40px 24px}
+      .footer-right{align-items:flex-start}
+      .letterbox{height:24px}
     }
-    .footer-wordmark {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-    }
-    .footer-tagline {
-      font-size: 0.72rem;
-      color: var(--gray);
-      letter-spacing: 0.01em;
-    }
-    .footer-right {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 10px;
-    }
-    .footer-links {
-      display: flex; gap: 28px; list-style: none;
-    }
-    .footer-links a {
-      font-size: 0.68rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--gray);
-      transition: color 0.2s;
-    }
-    .footer-links a:hover { color: var(--black); }
-    .footer-copy {
-      font-size: 0.65rem;
-      color: var(--gray-dim);
-      letter-spacing: 0.04em;
+    @media(prefers-reduced-motion:reduce){
+      .grain{animation:none}
+      .scroll-line{animation:none}
     }
 
-    /* ── TERMINAL (hero visual) ── */
-    .terminal-block {
-      position: absolute;
-      right: 48px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 420px;
-      border: 1px solid rgba(0,0,0,0.12);
-      border-radius: 10px;
-      padding: 28px 32px;
-      font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
-      font-size: 0.79rem;
-      line-height: 1.9;
-      color: #C8D0D8;
-      background: #0E1117;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.12);
+    /* ===== LIGHT MODE THEME — DISABLED =====
+       Entire block commented out. Uncomment to re-enable, plus the toggle <li>, the
+       .theme-toggle CSS, the toggle <script> at the end of the file, and the isLight
+       check inside __fxBurst. Activated by [data-theme="light"] on <html>. */
+    /*
+    [data-theme="light"] body{background:#f7f5ef;color:#1a1a1a}
+    /* Keep the cinematic ribbons + murmuration particles visible in light mode by switching
+       the canvas's blend mode. The canvas paints with globalCompositeOperation='lighter'
+       (additive bright pixels on transparent), which on a dark bg renders as glowing streaks.
+       On a light bg, normal blending would wash the bright pixels out. mix-blend-mode:multiply
+       inverts the visibility logic — bright color pixels darken the cream bg, so cyan ribbons
+       become teal streaks and amber ribbons become warm orange streaks against the cream. */
+    [data-theme="light"] #ribbon-canvas,[data-theme="light"] #fx-canvas{mix-blend-mode:multiply;opacity:0.85}
+    [data-theme="light"] .vignette{background:radial-gradient(ellipse at 50% 50%,transparent 35%,rgba(0,0,0,0.04) 95%)}
+    [data-theme="light"] .grain{opacity:0.04;mix-blend-mode:multiply}
+    [data-theme="light"] .letterbox{background:linear-gradient(to bottom,rgba(247,245,239,0.85),transparent)}
+    [data-theme="light"] .letterbox.bottom{background:linear-gradient(to top,rgba(247,245,239,0.85),transparent)}
+    [data-theme="light"] .scroll-rail{display:none}
+
+    [data-theme="light"] nav.scrolled{background:rgba(247,245,239,0.85);border-bottom:1px solid rgba(0,0,0,0.06)}
+    [data-theme="light"] .nav-links a{color:rgba(26,26,26,0.65)}
+    [data-theme="light"] .nav-links a:hover{color:#1a1a1a}
+    [data-theme="light"] .nav-cta{background:#1a1a1a;color:#fff !important}
+    [data-theme="light"] .nav-cta:hover{background:#000}
+    [data-theme="light"] .nav-logo-tag{color:rgba(26,26,26,0.55)}
+    [data-theme="light"] .nav-logo-sep{color:rgba(26,26,26,0.25)}
+    [data-theme="light"] .nav-hamburger span{background:#1a1a1a}
+
+    [data-theme="light"] .hero-h1-svg text{fill:rgba(0,0,0,0.04);stroke:rgba(26,26,26,0.92)}
+    [data-theme="light"] .hero-h1-svg .em{stroke:#b07a40}
+    [data-theme="light"] .hero-h1-svg .lit{fill:#1a1a1a}
+    [data-theme="light"] .hero-h1-svg .em.lit{fill:#b07a40}
+    [data-theme="light"] .hero-sub-cin{color:rgba(26,26,26,0.65);text-shadow:none}
+    [data-theme="light"] .hero-sub-cin span{color:#b07a40 !important}
+    [data-theme="light"] .hero-scroll span{color:rgba(26,26,26,0.4)}
+    [data-theme="light"] .scroll-line{background:linear-gradient(to bottom,rgba(26,26,26,0.4),transparent)}
+    [data-theme="light"] .btn-glow{background:#1a1a1a;color:#fff}
+    [data-theme="light"] .btn-glow:hover{background:#000}
+    [data-theme="light"] .btn-glow::before{background:#1a1a1a}
+    [data-theme="light"] .btn-ghost{color:rgba(26,26,26,0.7);border:1px solid rgba(26,26,26,0.2)}
+    [data-theme="light"] .btn-ghost:hover{border-color:rgba(26,26,26,0.5);color:#1a1a1a;background:rgba(26,26,26,0.04)}
+
+    [data-theme="light"] .monologue-eyebrow{color:rgba(26,26,26,0.55)}
+    [data-theme="light"] .monologue-eyebrow b{color:#b07a40}
+    [data-theme="light"] .word-monologue .w{color:rgba(26,26,26,0.15)}
+    [data-theme="light"] .word-monologue .w.lit{color:#1a1a1a;text-shadow:0 0 18px rgba(176,122,64,0.25),0 0 50px rgba(176,122,64,0.12);filter:none}
+    [data-theme="light"] .word-monologue .w.seen{color:rgba(26,26,26,0.65)}
+    [data-theme="light"] .word-monologue .w.lit em{color:#b07a40;text-shadow:0 0 22px rgba(176,122,64,0.35)}
+    [data-theme="light"] .word-monologue .w.seen em{color:rgba(176,122,64,0.7)}
+    [data-theme="light"] .word-monologue .w.italic.lit{color:rgba(26,26,26,0.85);text-shadow:0 0 14px rgba(176,122,64,0.18)}
+    [data-theme="light"] .word-monologue .w.italic.seen{color:rgba(26,26,26,0.55)}
+
+    [data-theme="light"] .stat-number{color:#1a1a1a;text-shadow:none;mix-blend-mode:normal}
+    [data-theme="light"] .stat-number .suffix{color:rgba(26,26,26,0.55)}
+    [data-theme="light"] .stat-eyebrow{color:rgba(26,26,26,0.45);text-shadow:none}
+    [data-theme="light"] .stat-rule{background:linear-gradient(90deg,transparent,rgba(0,0,0,0.18),transparent)}
+    [data-theme="light"] .stat-rule::after{background:linear-gradient(90deg,transparent,#b07a40,transparent);box-shadow:0 0 18px rgba(176,122,64,0.45)}
+    [data-theme="light"] .stat-card.settled .stat-caption{color:rgba(26,26,26,0.85)}
+    [data-theme="light"] .stat-card.settled .stat-caption em{color:#b07a40}
+
+    [data-theme="light"] .big-text{text-shadow:none}
+    [data-theme="light"] .big-text em{color:rgba(26,26,26,0.55)}
+
+    /* Light-mode glass cards: lower opacity (0.45 vs 0.65) + drop shadow + subtle top
+       highlight gives the frosted-glass-floating-on-cream look. backdrop-filter:blur(12px)
+       inherited from base rule still applies — combined with the lower opacity, the cream
+       bg + ribbons behind read through slightly, restoring the glassmorphic depth. */
+    [data-theme="light"] .step-card,
+    [data-theme="light"] .why-card,
+    [data-theme="light"] .price-card,
+    [data-theme="light"] .usecase-row{
+      background:rgba(255,255,255,0.25);
+      border:1px solid rgba(0,0,0,0.08);
+      color:#1a1a1a;
+      box-shadow:0 1px 0 rgba(255,255,255,0.55) inset, 0 16px 40px -16px rgba(20,15,10,0.18), 0 2px 8px rgba(20,15,10,0.06);
     }
-    .t-dim { color: #555; }
-    .t-acc { color: #8A9BAD; }
-    .t-green { color: #3DD68C; }
-    .t-comment { color: #484F58; }
-    .t-bar {
-      display: flex; align-items: center; gap: 6px;
-      margin-bottom: 16px; padding-bottom: 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+    [data-theme="light"] .step-card:hover,
+    [data-theme="light"] .why-card:hover,
+    [data-theme="light"] .usecase-row:hover{
+      background:rgba(255,255,255,0.40);
+      border-color:rgba(0,0,0,0.12);
+      box-shadow:0 1px 0 rgba(255,255,255,0.65) inset, 0 24px 50px -16px rgba(20,15,10,0.22), 0 4px 12px rgba(20,15,10,0.08);
     }
-    .t-dot { width: 8px; height: 8px; border-radius: 50%; }
-    .t-r { background: #FF5F57; }
-    .t-y { background: #FFBD2E; }
-    .t-g { background: #28C840; }
-    .t-title { font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; color: #484F58; margin-left: auto; }
+    [data-theme="light"] .step-num{color:rgba(26,26,26,0.55)}
+    [data-theme="light"] .step-title,
+    [data-theme="light"] .why-title{color:#1a1a1a}
+    [data-theme="light"] .step-body,
+    [data-theme="light"] .why-body,
+    [data-theme="light"] .price-desc,
+    [data-theme="light"] .usecase-body{color:rgba(26,26,26,0.65)}
+    [data-theme="light"] .why-icon{background:rgba(176,122,64,0.08);border:1px solid rgba(176,122,64,0.25);box-shadow:none}
+    [data-theme="light"] .why-icon svg{stroke:#b07a40}
 
-    /* ── TERMINAL DARK MODE INVERSION ── */
-    [data-theme="dark"] .terminal-block {
-      background: #F0EEE8;
-      border-color: rgba(0,0,0,0.12);
-      box-shadow: 0 8px 40px rgba(0,0,0,0.4), 0 2px 8px rgba(0,0,0,0.2);
-      color: #2A2A2A;
-    }
-    [data-theme="dark"] .t-dim { color: #AAA; }
-    [data-theme="dark"] .t-acc { color: #555; }
-    [data-theme="dark"] .t-green { color: #1A8A50; }
-    [data-theme="dark"] .t-comment { color: #BBB; }
-    [data-theme="dark"] .t-bar { border-bottom-color: rgba(0,0,0,0.12); }
-    [data-theme="dark"] .t-title { color: #BBB; }
+    [data-theme="light"] .price-name{color:rgba(26,26,26,0.65)}
+    [data-theme="light"] .price-amount{color:#1a1a1a}
+    [data-theme="light"] .price-amount span{color:rgba(26,26,26,0.55)}
+    [data-theme="light"] .price-tag{color:rgba(26,26,26,0.7);border-color:rgba(0,0,0,0.2);background:rgba(0,0,0,0.04)}
+    [data-theme="light"] .price-card.featured{background:rgba(255,255,255,0.85);border-color:rgba(176,122,64,0.4);box-shadow:0 0 50px rgba(176,122,64,0.10) inset}
+    [data-theme="light"] .price-btn-fill{background:#1a1a1a;color:#fff}
+    [data-theme="light"] .price-btn-outline{color:#1a1a1a;border:1px solid rgba(0,0,0,0.2)}
+    [data-theme="light"] .price-btn-outline:hover{background:rgba(0,0,0,0.04);border-color:rgba(0,0,0,0.4)}
 
-    /* ── INDEX-SPECIFIC MOBILE ── */
-    @media (max-width: 768px) {
-      :root { --inner-pad: 0 24px; }
+    [data-theme="light"] .usecase-num{color:rgba(26,26,26,0.12)}
+    [data-theme="light"] .usecase-title{color:#1a1a1a;text-shadow:none}
+    [data-theme="light"] .usecase-tag{color:rgba(26,26,26,0.45)}
+    [data-theme="light"] .uc-scene svg{stroke:rgba(26,26,26,0.5)}
 
-      /* Hero: override absolute layout, stack content */
-      .hero {
-        min-height: auto !important;
-        padding: 80px 24px 48px !important;
-        overflow: visible !important;
-        justify-content: flex-start !important;
-        gap: 36px !important;
-      }
-      .hero-index { display: none !important; }
-      .hero-heading {
-        font-size: clamp(3.2rem, 10vw, 5rem) !important;
-        order: 1 !important;
-      }
-      .hero-bottom {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 20px !important;
-        margin-top: 0 !important;
-        order: 2 !important;
-      }
-      /* Terminal: de-absolute, scrollable, placed after text */
-      .terminal-block {
-        position: static !important;
-        transform: none !important;
-        width: 100% !important;
-        right: auto !important;
-        top: auto !important;
-        order: 3 !important;
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch;
-        border-radius: 8px !important;
-      }
+    [data-theme="light"] .parallax-quote-inner{color:rgba(26,26,26,0.85)}
 
-      /* Trust bar: wrap */
-      .trust-bar-inner {
-        padding: 0 24px !important;
-        flex-wrap: wrap !important;
-        gap: 16px !important;
-      }
-      .trust-label { display: none; }
-      .trust-divider { display: none; }
+    [data-theme="light"] .cta-section{background:transparent;border-top:1px solid rgba(0,0,0,0.06)}
+    [data-theme="light"] .cta-content p{color:rgba(26,26,26,0.7)}
+    [data-theme="light"] .cta-section .btn-glow{background:#1a1a1a;color:#fff}
+    [data-theme="light"] .cta-glow{background:radial-gradient(circle,rgba(176,122,64,0.10) 0%,rgba(176,122,64,0.04) 35%,transparent 70%)}
 
-      /* Section inner padding */
-      .section-inner { padding: 0 24px !important; }
-
-      /* Why grid: 3 → 1 col */
-      .why-grid { grid-template-columns: 1fr !important; }
-
-      /* Tier rows (home page services section): stack */
-      .tier-row {
-        display: block !important;
-        padding: 20px 0 !important;
-      }
-      .tier-row-name-cell { font-size: 1.5rem !important; margin-bottom: 6px; }
-      .tier-row-desc { margin-bottom: 10px; }
-      .tier-row-price { text-align: left !important; margin-top: 8px; }
-
-      /* Process steps: 4 → 2 col */
-      .process-steps { grid-template-columns: 1fr 1fr !important; gap: 32px !important; }
-      .process-step { border-right: none !important; padding-right: 0 !important; padding-left: 0 !important; }
-      .why-card { border-right: none !important; padding-right: 0 !important; padding-left: 0 !important; }
-
-      /* Industry items: stack */
-      .industry-item {
-        display: block !important;
-        padding: 20px 0 !important;
-      }
-      .industry-name { font-size: 1.4rem !important; margin-bottom: 6px; }
-      .industry-price { text-align: left !important; margin-top: 8px; }
-
-      /* Section padding — keep 24px side margins */
-      .statement, .why, .services, .process, .industries, .cta {
-        padding: 56px 24px !important;
-      }
-      footer { padding: 40px 24px !important; }
-
-      /* CTA section */
-      .cta-inner { flex-direction: column !important; gap: 24px !important; }
-      .cta-right { flex-direction: column !important; width: 100%; }
-      .cta-right .btn { width: 100%; justify-content: center; }
-
-      /* Footer */
-      footer { flex-direction: column !important; align-items: flex-start !important; gap: 32px !important; }
-      .footer-right { align-items: flex-start !important; }
-      .footer-links { flex-wrap: wrap !important; gap: 10px 20px !important; }
-    }
-
-    @media (max-width: 480px) {
-      .process-steps { grid-template-columns: 1fr !important; }
-      .hero-title { font-size: clamp(2rem, 9vw, 2.6rem) !important; }
-    }
-
+    [data-theme="light"] footer{color:rgba(26,26,26,0.65);background:transparent;border-top:1px solid rgba(0,0,0,0.06)}
+    [data-theme="light"] .footer-links a{color:rgba(26,26,26,0.55)}
+    [data-theme="light"] .footer-links a:hover{color:#1a1a1a}
+    [data-theme="light"] .footer-copy{color:rgba(26,26,26,0.45)}
+    */
   </style>
 </head>
 <body>
 
+<!-- ====== POST-PROCESS LAYERS ====== -->
+<canvas id="ribbon-canvas" aria-hidden="true"></canvas>
+<canvas id="fx-canvas" aria-hidden="true"></canvas>
+<div class="vignette" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="letterbox top" aria-hidden="true"></div>
+<div class="letterbox bottom" aria-hidden="true"></div>
+
+<!-- ====== GLOBAL SCROLL RAIL ======
+     Fixed full-page rail tracking total scroll progress. Section markers + glowing dot.
+     The rail fades when idle (no scroll for 1s) and rebrightens on scroll movement.
+     Markers/labels are populated from the section list at runtime. -->
+<aside class="scroll-rail" id="scrollRail" aria-hidden="true">
+  <div class="scroll-rail-track"></div>
+  <div class="scroll-rail-fill" id="railFill"></div>
+  <div class="scroll-rail-dot" id="railDot"></div>
+  <!-- ticks + labels populated by JS -->
+</aside>
+
 <!-- NAV -->
 <nav>
-  <div class="nav-left">
-    <span class="nav-wordmark">creeksea.ai</span>
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode"></button>
-  </div>
+  <span class="nav-logo">creeksea.ai<span class="nav-logo-sep">|</span><span class="nav-logo-tag">AI agent development studio</span></span>
   <ul class="nav-links" id="navLinks">
-    <li><a href="index.html" class="active">Home</a></li>
-    <li class="nav-dropdown">
-      <a href="#services">Services</a>
-      <div class="nav-dropdown-menu">
-        <a href="tier-1-foundations.html"><span class="drop-num">01</span>Foundations</a>
-        <a href="tier-2-professional.html"><span class="drop-num">02</span>Professional</a>
-        <a href="tier-3-business.html"><span class="drop-num">03</span>Business</a>
-        <a href="tier-4-enterprise.html"><span class="drop-num">04</span>Enterprise</a>
-        <div class="nav-dropdown-divider"></div>
-        <a href="addon-services.html"><span class="drop-num">+</span>Add-Ons</a>
-      </div>
-    </li>
-    <li><a href="addon-services.html">Add-Ons</a></li>
-    <li><a href="hardware.html">Hardware</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="https://meetings-na2.hubspot.com/fergus-clare" class="nav-cta">Get Started →</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#use-cases">Use Cases</a></li>
+    <!-- LIGHT-MODE TOGGLE — disabled. Uncomment this <li>, the .theme-toggle CSS, the
+         [data-theme="light"] CSS block, and the toggle script at end of file to re-enable.
+    <li><button class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark mode">
+      <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button></li>
+    -->
+    <li><a href="https://meetings-na2.hubspot.com/fergus-clare" class="nav-cta">Book a Call</a></li>
   </ul>
-  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <span class="hero-index">01</span>
+<!-- ====== SHOT 1 — HERO ======
+     Asymmetric three-row composition. The H1 is an SVG so the ribbon can stroke each glyph
+     as it sweeps across the screen. -->
+<section class="shot hero" id="hero">
+  <div class="hero-inner">
+    <!-- MIDDLE — the headline, drawn in light by the ribbons -->
+    <div class="hero-h1-wrap">
+      <svg class="hero-h1-svg" id="heroH1" viewBox="0 0 1400 620" preserveAspectRatio="xMidYMid meet" aria-label="AI agents that hyperscale your business.">
+        <!-- Three lines, baseline-anchored. -->
+        <text x="700" y="180" text-anchor="middle" font-size="170" id="line1">AI agents that</text>
+        <text x="700" y="380" text-anchor="middle" font-size="240" class="em" id="line2">hyperscale</text>
+        <text x="700" y="560" text-anchor="middle" font-size="170" id="line3">your business.</text>
+      </svg>
+    </div>
 
-  <div class="terminal-block">
-    <div class="t-bar">
-      <div class="t-dot t-r"></div>
-      <div class="t-dot t-y"></div>
-      <div class="t-dot t-g"></div>
-      <span class="t-title">ollama · private</span>
-    </div>
-    <div class="t-comment"># running on your hardware</div>
-    <div style="height:6px"></div>
-    <div><span class="t-acc">llama3.3:70b</span>  43.0 GB  <span class="t-green">running ●</span></div>
-    <div class="t-dim">mistral:7b      4.1 GB   idle</div>
-    <div class="t-dim">gemma2:27b     15.2 GB   idle</div>
-    <div style="height:6px"></div>
-    <div class="t-acc">✓ data residency: ON-PREMISES</div>
-    <div class="t-acc">✓ internet access: DISABLED</div>
-    <div style="height:6px"></div>
-    <div class="t-dim">https://ai.internal:11434</div>
-  </div>
-
-  <h1 class="hero-heading">
-    AI that stays<br><em>on your</em><br>hardware.
-  </h1>
-
-  <div class="hero-bottom">
-    <p class="hero-desc">
-      Creeksea deploys and manages fully private, locally-hosted AI systems for enterprises that cannot compromise on data security or regulatory compliance.
-    </p>
-    <div class="hero-actions">
-      <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-fill">Schedule a Call →</a>
-      <a href="#services" class="btn-outline">View Services</a>
-    </div>
-  </div>
-</section>
-
-<!-- STATEMENT -->
-<section class="statement">
-  <div class="statement-left">
-    <span class="section-num">02</span>
-    <span class="section-label">Our Position</span>
-  </div>
-  <p class="statement-title">
-    Cloud AI vendors process your queries on <em>their</em> infrastructure.<br>
-    We build AI that runs entirely on hardware <em>you</em> control.<br>
-    No third party calls, no exceptions.
-  </p>
-</section>
-
-<!-- WHY -->
-<section class="why">
-  <div class="why-header">
-    <h2 class="why-title">Why organizations<br>choose creeksea.ai.</h2>
-    <p class="why-header-right">Six reasons enterprises with non-negotiable data requirements partner with us instead of cloud AI providers.</p>
-  </div>
-  <div class="why-grid">
-    <div class="why-card">
-      <span class="why-card-num">01</span>
-      <div class="why-card-title">Complete Data Sovereignty</div>
-      <div class="why-card-body">Inference runs on-premises. No queries, prompts, or outputs ever transit the public internet. Your data stays in your custody, always.</div>
-    </div>
-    <div class="why-card">
-      <span class="why-card-num">02</span>
-      <div class="why-card-title">Managed End-to-End</div>
-      <div class="why-card-body">Hardware procurement, rack installation, model deployment, fine-tuning, and ongoing support — Creeksea handles every layer.</div>
-    </div>
-    <div class="why-card">
-      <span class="why-card-num">03</span>
-      <div class="why-card-title">Compliance-Ready</div>
-      <div class="why-card-body">HIPAA, SOC 2, GDPR, and FedRAMP alignment built into every deployment. Full audit trails and role-based access controls from day one.</div>
-    </div>
-  </div>
-  <div class="why-grid" style="border-top: 1px solid var(--border);">
-    <div class="why-card">
-      <span class="why-card-num">04</span>
-      <div class="why-card-title">Enterprise Performance</div>
-      <div class="why-card-body">Latest open-weight models on enterprise-grade NVIDIA GPU infrastructure. Sub-second inference at scale, without cloud latency or throttling.</div>
-    </div>
-    <div class="why-card">
-      <span class="why-card-num">05</span>
-      <div class="why-card-title">No Vendor Lock-In</div>
-      <div class="why-card-body">Open-weight models on hardware you own or lease. When our engagement ends, you keep everything — models, infrastructure, institutional knowledge.</div>
-    </div>
-    <div class="why-card">
-      <span class="why-card-num">06</span>
-      <div class="why-card-title">Predictable Pricing</div>
-      <div class="why-card-body">Flat monthly retainer — no per-token charges, no usage overages, no surprise bills. One price covers everything.</div>
-    </div>
-  </div>
-</section>
-
-<!-- SERVICES -->
-<section class="services" id="services">
-  <div class="services-header">
-    <h2 class="services-title">Service tiers sized<br>for your organization.</h2>
-    <p style="font-size:0.8rem;color:var(--gray);max-width:280px;line-height:1.7;">Every tier includes managed infrastructure and unlimited support hours.</p>
-  </div>
-  <div>
-    <a href="tier-1-foundations.html" class="tier-row">
-      <div class="tier-row-name-cell">
-        <span class="tier-row-num">01</span>
-        <span class="tier-row-name">Foundations</span>
+    <!-- BOTTOM — sub copy centred directly under the H1, then CTA buttons centred below. -->
+    <div class="hero-bot">
+      <div class="hero-sub-cin">
+        We design, build, and deploy custom AI agents that automate your most complex workflows.
+        <span style="color:rgba(244,216,168,0.85)">End to end. Strategy to production.</span>
       </div>
-      <span class="tier-row-desc">Single-node deployment. Up to 3 models. HIPAA-ready baseline. For organizations beginning their private AI journey.</span>
-      <div class="tier-row-price">$8,000<span>setup fee</span></div>
-    </a>
-    <a href="tier-2-professional.html" class="tier-row">
-      <div class="tier-row-name-cell">
-        <span class="tier-row-num">02</span>
-        <span class="tier-row-name">Professional</span>
+      <div class="hero-cta-stack">
+        <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-glow">Schedule a Call</a>
+        <a href="#pricing" class="btn-ghost">View Pricing</a>
       </div>
-      <span class="tier-row-desc">Production-ready deployment. Up to 3 models, 20 users. SSL/TLS, SSO-ready, RAG pipeline, and custom agent build.</span>
-      <div class="tier-row-price">$18,000<span>setup fee</span></div>
-    </a>
-    <a href="tier-3-business.html" class="tier-row">
-      <div class="tier-row-name-cell">
-        <span class="tier-row-num">03</span>
-        <span class="tier-row-name">Business</span>
+    </div>
+  </div>
+  <div class="hero-scroll" id="heroScroll"><span>Scroll</span><div class="scroll-line"></div></div>
+</section>
+
+<!-- ====== SHOT 2 — WORD-BY-WORD MONOLOGUE ======
+     Sticky for 280vh. Words ignite as the ribbon's hot spot passes under them. Vertical
+     timeline rule on the left tracks progress like a film strip's edge. -->
+<div class="sticky-section" id="wordSection">
+  <div class="sticky-inner">
+    <!-- The local scroll rule was retired in favor of the global #scrollRail -->
+
+    <div class="monologue-eyebrow">Your problem &middot; <b>our solution</b></div>
+    <div class="word-monologue" id="wordReveal"><span class="w">Your</span> <span class="w">team</span> <span class="w">knows</span> <span class="w"><em>AI</em></span> <span class="w">could</span> <span class="w">transform</span> <span class="w">operations.</span> <span class="w">Few</span> <span class="w">have</span> <span class="w">the</span> <span class="w">time</span> <span class="w">or</span> <span class="w">expertise</span> <span class="w">to</span> <span class="w">build</span> <span class="w">agents</span> <span class="w">that</span> <span class="w"><em>reliably</em></span> <span class="w">work.</span> <span class="w italic">We</span> <span class="w italic">handle</span> <span class="w italic">every</span> <span class="w italic">step.</span> <span class="w italic">You</span> <span class="w italic">get</span> <span class="w italic">results,</span> <span class="w italic">not</span> <span class="w italic">experiments.</span></div>
+  </div>
+</div>
+
+<!-- ====== SHOT 3 — STATS AS TITLE CARDS ======
+     Pinned for 300vh — three full-viewport stat cards. As scroll advances, the active card
+     fades in, the digit columns roll like a slot machine, the underline ribbon sweeps across,
+     and a lens flare bursts at settle. -->
+<div class="stats-shot" id="statsShot">
+  <!-- Section header -->
+  <div class="stats-header">
+    <div class="big-text">Success,<br><em>by the numbers.</em></div>
+  </div>
+
+  <!-- Stat 1 -->
+  <div class="stat-section">
+    <div class="stat-pin">
+      <div class="stat-card" data-target="12" data-decimals="0" data-suffix="min" data-caption="<em>Average</em> time saved per task.">
+        <div class="stat-eyebrow">A single agent reclaims</div>
+        <div class="stat-number"><span class="digits"></span><span class="suffix">min</span></div>
+        <div class="stat-rule"></div>
+        <div class="stat-caption"><em>Average</em> time saved per task.</div>
       </div>
-      <span class="tier-row-desc">Enterprise-grade security, RAG, SSO/SAML, PII redaction, and up to 3 custom agents across unlimited users.</span>
-      <div class="tier-row-price">$38,000<span>setup fee</span></div>
-    </a>
-    <a href="tier-4-enterprise.html" class="tier-row">
-      <div class="tier-row-name-cell">
-        <span class="tier-row-num">04</span>
-        <span class="tier-row-name">Enterprise</span>
+    </div>
+  </div>
+
+  <!-- Stat 2 -->
+  <div class="stat-section">
+    <div class="stat-pin">
+      <div class="stat-card" data-target="99.4" data-decimals="1" data-suffix="%" data-caption="Agent <em>accuracy</em> against your evaluation set.">
+        <div class="stat-eyebrow">Production-grade reliability at</div>
+        <div class="stat-number"><span class="digits"></span><span class="suffix">%</span></div>
+        <div class="stat-rule"></div>
+        <div class="stat-caption">Agent <em>accuracy</em> against your evaluation set.</div>
       </div>
-      <span class="tier-row-desc">HA multi-server, zero-trust, branded UI, LDAP/AD, up to 8 agents, compliance readiness, and 30-day hypercare.</span>
-      <div class="tier-row-price">$75,000+<span>setup fee</span></div>
-    </a>
+    </div>
   </div>
-</section>
 
-<!-- PROCESS -->
-<section class="process">
-  <div class="process-header">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-      <h2 class="process-title">Deployed in weeks,<br><em>not months.</em></h2>
-      <span class="section-num" style="padding-top:8px;">03</span>
+  <!-- Stat 3 -->
+  <div class="stat-section">
+    <div class="stat-pin">
+      <div class="stat-card" data-target="2" data-decimals="0" data-suffix="weeks" data-caption="From <em>pilot</em> to running in production.">
+        <div class="stat-eyebrow">Built and shipped in</div>
+        <div class="stat-number"><span class="digits"></span><span class="suffix">weeks</span></div>
+        <div class="stat-rule"></div>
+        <div class="stat-caption">From <em>pilot</em> to running in production.</div>
+      </div>
     </div>
   </div>
-  <div class="process-steps">
-    <div class="process-step">
-      <span class="process-step-num">01</span>
-      <div class="process-step-title">Discovery & Scope</div>
-      <div class="process-step-body">We assess your use cases, compliance requirements, network architecture, and user workflows.</div>
-    </div>
-    <div class="process-step">
-      <span class="process-step-num">02</span>
-      <div class="process-step-title">Hardware Procurement</div>
-      <div class="process-step-body">We source enterprise-grade GPU servers, or work with your existing infrastructure. Delivered in 2–3 weeks.</div>
-    </div>
-    <div class="process-step">
-      <span class="process-step-num">03</span>
-      <div class="process-step-title">Model Deployment</div>
-      <div class="process-step-body">Models installed, tuned, and integrated with your internal tools, SSO, and document repositories.</div>
-    </div>
-    <div class="process-step">
-      <span class="process-step-num">04</span>
-      <div class="process-step-title">Ongoing Management</div>
-      <div class="process-step-body">Monitoring, model updates, scaling, and continuous support — all under a flat monthly retainer.</div>
-    </div>
-  </div>
-</section>
+</div>
 
-<!-- INDUSTRIES -->
-<section class="industries">
-  <div class="industries-header">
-    <h2 class="industries-title">Built for<br>regulated industries.</h2>
-    <span class="section-num">04</span>
-  </div>
-  <div class="industry-list">
-    <div class="industry-item">
-      <span class="industry-name">Healthcare</span>
-      <span class="industry-desc">HIPAA-compliant private AI for clinical decision support and care team workflows.</span>
-      <span class="industry-tag">HIPAA</span>
+<!-- ====== SHOT 4 — PROCESS ======
+     Cinematic-language pass: reel slate, glass cards in a 3D stage with mouse tilt and
+     scroll-driven entry rotation. The "01..04" numerals float forward via translateZ. -->
+<section class="fs fs-gradient stage-3d" id="process">
+  <div class="fs-inner">
+    <div style="text-align:center;margin:0 0 36px">
+      <div class="big-text sr d1">From idea to<br><em>production agent.</em></div>
     </div>
-    <div class="industry-item">
-      <span class="industry-name">Financial Services</span>
-      <span class="industry-desc">Private AI for investment research, regulatory reporting, and risk assessment.</span>
-      <span class="industry-tag">SEC / FINRA</span>
-    </div>
-    <div class="industry-item">
-      <span class="industry-name">Government</span>
-      <span class="industry-desc">Air-gapped and FedRAMP-aligned AI systems for strict data locality requirements.</span>
-      <span class="industry-tag">FedRAMP</span>
-    </div>
-    <div class="industry-item">
-      <span class="industry-name">Legal & Professional</span>
-      <span class="industry-desc">Confidential document review and research with attorney-client privilege compliance.</span>
-      <span class="industry-tag">Privilege</span>
-    </div>
-    <div class="industry-item">
-      <span class="industry-name">Real Estate & PE</span>
-      <span class="industry-desc">Deal flow analysis, portfolio monitoring, and sensitive transaction management.</span>
-      <span class="industry-tag">NDA</span>
+    <div class="steps">
+      <div class="step-card card3d sr d1" data-rim="-0.5"><div class="glass-bloom"></div>
+        <div class="layer lz-icon"><div class="step-num">01</div></div>
+        <div class="layer lz-title"><div class="step-title">Discovery</div></div>
+        <div class="layer lz-body"><div class="step-body">We map your workflows, identify the highest-value automation candidates, and define success metrics.</div></div>
+      </div>
+      <div class="step-card card3d sr d2" data-rim="-0.2"><div class="glass-bloom"></div>
+        <div class="layer lz-icon"><div class="step-num">02</div></div>
+        <div class="layer lz-title"><div class="step-title">Design</div></div>
+        <div class="layer lz-body"><div class="step-body">Agent architecture, tool integrations, error handling, and human-in-the-loop checkpoints — scoped before code.</div></div>
+      </div>
+      <div class="step-card card3d sr d3" data-rim="0.2"><div class="glass-bloom"></div>
+        <div class="layer lz-icon"><div class="step-num">03</div></div>
+        <div class="layer lz-title"><div class="step-title">Build &amp; Test</div></div>
+        <div class="layer lz-body"><div class="step-body">Iterative development with rigorous evaluation against real data until the agent hits your accuracy bar.</div></div>
+      </div>
+      <div class="step-card card3d sr d4" data-rim="0.5"><div class="glass-bloom"></div>
+        <div class="layer lz-icon"><div class="step-num">04</div></div>
+        <div class="layer lz-title"><div class="step-title">Deploy &amp; Optimize</div></div>
+        <div class="layer lz-body"><div class="step-body">Production deployment with monitoring, alerting, and continuous improvement from real-world results.</div></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- CTA -->
-<section class="cta">
-  <span class="cta-label">Get Started</span>
-  <h2 class="cta-title">Ready to take AI<br><em>off the cloud?</em></h2>
-  <p class="cta-sub">Schedule a 30-minute discovery call to discuss your use case, compliance requirements, and deployment timeline.</p>
-  <div class="cta-actions">
-    <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-fill">Schedule a Call →</a>
-    <a href="#services" class="btn-outline">View Pricing</a>
+<!-- Interstitial parallax quote — its own reel slate kept compact inline -->
+<div class="parallax-quote" id="parallaxQuote1">
+  <div class="parallax-quote-inner" id="pq1inner">"The best AI agents don't replace your team, they give your team superpowers."</div>
+</div>
+
+<!-- ====== SHOT 5 — WHY ====== -->
+<section class="fs fs-black stage-3d" id="why">
+  <div class="fs-inner">
+    <div style="text-align:center;margin:0 0 36px">
+      <div class="big-text sr d1">Built different from<br><em>every other AI shop.</em></div>
+    </div>
+    <div class="why-grid">
+      <div class="why-card card3d sr d1" data-rim="-0.6"><div class="glass-bloom"></div>
+        <div class="layer lz-icon"><div class="why-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></div></div>
+        <div class="layer lz-title"><div class="why-title">End-to-end delivery</div></div>
+        <div class="layer lz-body"><div class="why-body">From identifying workflows to deploying agents — we own the entire lifecycle so you don't need an AI team.</div></div>
+      </div>
+      <div class="why-card card3d sr d2" data-rim="-0.3"><div class="glass-bloom"></div>
+        <div class="layer lz-icon"><div class="why-icon"><svg viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></div></div>
+        <div class="layer lz-title"><div class="why-title">Built for your systems</div></div>
+        <div class="layer lz-body"><div class="why-body">Every agent connects to the tools you use — CRMs, ERPs, databases, Slack, email. Deep integrations, not demos.</div></div>
+      </div>
+      <div class="why-card card3d sr d3" data-rim="0"><div class="glass-bloom"></div>
+        <div class="layer lz-icon"><div class="why-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div></div>
+        <div class="layer lz-title"><div class="why-title">Production-grade</div></div>
+        <div class="layer lz-body"><div class="why-body">Structured error handling, human-in-the-loop fallbacks, logging. Agents that run at scale, not just in a notebook.</div></div>
+      </div>
+      <div class="why-card card3d sr d1" data-rim="0.2"><div class="glass-bloom"></div>
+        <div class="layer lz-icon"><div class="why-icon"><svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></div></div>
+        <div class="layer lz-title"><div class="why-title">Measurable ROI</div></div>
+        <div class="layer lz-body"><div class="why-body">We define success metrics before building. Every engagement starts with a clear baseline — see exactly what the agent saves.</div></div>
+      </div>
+      <div class="why-card card3d sr d2" data-rim="0.4"><div class="glass-bloom"></div>
+        <div class="layer lz-icon"><div class="why-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div></div>
+        <div class="layer lz-title"><div class="why-title">Model agnostic</div></div>
+        <div class="layer lz-body"><div class="why-body">Claude, GPT, Gemini, or open-weight models. Best model for each task. No lock-in, always optimized.</div></div>
+      </div>
+      <div class="why-card card3d sr d3" data-rim="0.6"><div class="glass-bloom"></div>
+        <div class="layer lz-icon"><div class="why-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg></div></div>
+        <div class="layer lz-title"><div class="why-title">You own everything</div></div>
+        <div class="layer lz-body"><div class="why-body">All code, configs, and docs are yours. When the engagement ends, your agents keep running.</div></div>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ====== SHOT 6 — PRICING ====== -->
+<section class="fs fs-gradient stage-3d" id="pricing">
+  <div class="fs-inner">
+    <div style="text-align:center;margin:0 0 36px">
+      <div class="big-text sr d1">Engagements sized<br><em>to your ambition.</em></div>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card card3d sr d1" data-rim="-0.4"><div class="glass-bloom"></div>
+        <div class="layer lz-meta"><div class="price-name">Pilot</div></div>
+        <div class="layer lz-amount"><div class="price-amount">$15,000 <span>fixed scope</span></div></div>
+        <div class="layer lz-body"><div class="price-desc">One workflow, one agent, built end-to-end.</div></div>
+        <div class="layer lz-meta"><a href="https://meetings-na2.hubspot.com/fergus-clare" class="price-btn price-btn-outline">Get Started</a></div>
+      </div>
+      <div class="price-card featured card3d sr d2" data-rim="0.6"><div class="glass-bloom"></div>
+        <div class="layer lz-meta"><div class="price-tag">Most popular</div></div>
+        <div class="layer lz-meta"><div class="price-name">Build</div></div>
+        <div class="layer lz-amount"><div class="price-amount">$25–50K <span>per agent system</span></div></div>
+        <div class="layer lz-body"><div class="price-desc">Multi-step agent systems with complex integrations.</div></div>
+        <div class="layer lz-meta"><a href="https://meetings-na2.hubspot.com/fergus-clare" class="price-btn price-btn-fill">Get Started</a></div>
+      </div>
+      <div class="price-card card3d sr d3" data-rim="0.3"><div class="glass-bloom"></div>
+        <div class="layer lz-meta"><div class="price-name">Scale</div></div>
+        <div class="layer lz-amount"><div class="price-amount">$75,000+ <span>custom scope</span></div></div>
+        <div class="layer lz-body"><div class="price-desc">Multiple agents across departments — coordinated workflows.</div></div>
+        <div class="layer lz-meta"><a href="https://meetings-na2.hubspot.com/fergus-clare" class="price-btn price-btn-outline">Get Started</a></div>
+      </div>
+      <div class="price-card card3d sr d4" data-rim="0"><div class="glass-bloom"></div>
+        <div class="layer lz-meta"><div class="price-name">Partnership</div></div>
+        <div class="layer lz-amount"><div class="price-amount">$10K+ <span>per month</span></div></div>
+        <div class="layer lz-body"><div class="price-desc">Ongoing retainer for continuous agent development.</div></div>
+        <div class="layer lz-meta"><a href="https://meetings-na2.hubspot.com/fergus-clare" class="price-btn price-btn-outline">Get Started</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SHOT 7 — USE CASES ======
+     Each row gets a small 3D scene on the right (layered SVG, translateZ on parts).
+     Rows tilt subtly with mouse via .card3d. -->
+<section class="fs fs-black stage-3d" id="use-cases">
+  <div class="fs-inner">
+    <div style="text-align:center;margin:0 0 36px">
+      <div class="big-text sr d1">Agents built for<br><em>real workflows.</em></div>
+    </div>
+    <div class="usecase-row card3d sr" data-rim="-0.6">
+      <div class="usecase-num layer lz-icon">01</div>
+      <div class="layer lz-body" style="flex:1">
+        <div class="usecase-title">Document processing</div>
+        <div class="usecase-body">Agents that extract, classify, validate, and route documents — with human review only when needed.</div>
+        <span class="usecase-tag">Operations</span>
+      </div>
+      <div class="uc-scene layer lz-icon" aria-hidden="true">
+        <div class="uc-layer" style="--lz:0px"><svg viewBox="0 0 120 90"><rect x="14" y="10" width="50" height="68" rx="3"/><path d="M22 26h34M22 36h34M22 46h22"/></svg></div>
+        <div class="uc-layer" style="--lz:18px"><svg viewBox="0 0 120 90"><rect x="42" y="22" width="56" height="58" rx="3" stroke="rgba(244,216,168,0.85)"/><path d="M50 38h40M50 48h40M50 58h28" stroke="rgba(244,216,168,0.85)"/></svg></div>
+      </div>
+    </div>
+    <div class="usecase-row card3d sr" data-rim="-0.3">
+      <div class="usecase-num layer lz-icon">02</div>
+      <div class="layer lz-body" style="flex:1">
+        <div class="usecase-title">Customer intake</div>
+        <div class="usecase-body">End-to-end intake automation with verification and CRM record creation.</div>
+        <span class="usecase-tag">Sales &amp; Support</span>
+      </div>
+      <div class="uc-scene layer lz-icon" aria-hidden="true">
+        <div class="uc-layer" style="--lz:0px"><svg viewBox="0 0 120 90"><circle cx="32" cy="32" r="14"/><path d="M16 70c0-9 7-16 16-16s16 7 16 16"/></svg></div>
+        <div class="uc-layer" style="--lz:14px"><svg viewBox="0 0 120 90"><path d="M58 34h44M58 50h36M58 66h28" stroke="rgba(244,216,168,0.85)"/></svg></div>
+        <div class="uc-layer" style="--lz:28px"><svg viewBox="0 0 120 90"><circle cx="92" cy="20" r="6" stroke="rgba(244,216,168,0.95)"/><path d="M88 20l3 3 5-6" stroke="rgba(244,216,168,0.95)"/></svg></div>
+      </div>
+    </div>
+    <div class="usecase-row card3d sr" data-rim="0">
+      <div class="usecase-num layer lz-icon">03</div>
+      <div class="layer lz-body" style="flex:1">
+        <div class="usecase-title">Internal research</div>
+        <div class="usecase-body">Knowledge-base search, synthesis, structured reports.</div>
+        <span class="usecase-tag">Knowledge Work</span>
+      </div>
+      <div class="uc-scene layer lz-icon" aria-hidden="true">
+        <div class="uc-layer" style="--lz:0px"><svg viewBox="0 0 120 90"><circle cx="50" cy="44" r="20"/><path d="M64 58l16 16"/></svg></div>
+        <div class="uc-layer" style="--lz:18px"><svg viewBox="0 0 120 90"><path d="M40 36h20M40 44h20M40 52h12" stroke="rgba(244,216,168,0.85)"/></svg></div>
+      </div>
+    </div>
+    <div class="usecase-row card3d sr" data-rim="0.3">
+      <div class="usecase-num layer lz-icon">04</div>
+      <div class="layer lz-body" style="flex:1">
+        <div class="usecase-title">Data pipelines</div>
+        <div class="usecase-body">Intelligent ETL agents that handle edge cases that break traditional automation.</div>
+        <span class="usecase-tag">Data &amp; Analytics</span>
+      </div>
+      <div class="uc-scene layer lz-icon" aria-hidden="true">
+        <div class="uc-layer" style="--lz:0px"><svg viewBox="0 0 120 90"><ellipse cx="30" cy="20" rx="14" ry="5"/><path d="M16 20v50c0 3 6 6 14 6s14-3 14-6V20"/><path d="M16 38c0 3 6 6 14 6s14-3 14-6M16 56c0 3 6 6 14 6s14-3 14-6"/></svg></div>
+        <div class="uc-layer" style="--lz:18px"><svg viewBox="0 0 120 90"><path d="M52 44h36M84 38l8 6-8 6" stroke="rgba(244,216,168,0.95)"/></svg></div>
+        <div class="uc-layer" style="--lz:30px"><svg viewBox="0 0 120 90"><ellipse cx="100" cy="20" rx="14" ry="5" stroke="rgba(244,216,168,0.85)"/><path d="M86 20v50c0 3 6 6 14 6s14-3 14-6V20" stroke="rgba(244,216,168,0.85)"/></svg></div>
+      </div>
+    </div>
+    <div class="usecase-row card3d sr" data-rim="0.6">
+      <div class="usecase-num layer lz-icon">05</div>
+      <div class="layer lz-body" style="flex:1">
+        <div class="usecase-title">Compliance &amp; QA</div>
+        <div class="usecase-body">Audit records against policy, flag discrepancies, escalate automatically.</div>
+        <span class="usecase-tag">Risk &amp; Compliance</span>
+      </div>
+      <div class="uc-scene layer lz-icon" aria-hidden="true">
+        <div class="uc-layer" style="--lz:0px"><svg viewBox="0 0 120 90"><path d="M60 8l36 14v22c0 18-16 32-36 38-20-6-36-20-36-38V22z"/></svg></div>
+        <div class="uc-layer" style="--lz:24px"><svg viewBox="0 0 120 90"><path d="M48 44l9 9 18-18" stroke="rgba(244,216,168,0.95)"/></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== SHOT 8 — CTA / FINAL CONVERGENCE ====== -->
+<section class="cta-section" id="cta">
+  <div class="cta-glow"></div>
+  <div class="cta-content">
+    <div class="big-text sr">Ready to<br><em>hyperscale?</em></div>
+    <p class="sr d1">Schedule a 30-minute call to walk through your workflows and identify where an AI agent could have the most impact.</p>
+    <div class="cta-btns sr d2">
+      <a href="https://meetings-na2.hubspot.com/fergus-clare" class="btn-glow">Schedule a Call</a>
+      <a href="#pricing" class="btn-ghost">View Pricing</a>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="footer-left">
-    <span class="footer-wordmark">creeksea.ai</span>
-    <span class="footer-tagline">Private AI infrastructure for enterprises that cannot compromise.</span>
+    <span class="footer-logo">creeksea.ai</span>
+    <span class="footer-tag">AI agents that automate your most complex workflows.</span>
   </div>
   <div class="footer-right">
     <ul class="footer-links">
-      <li><a href="tier-1-foundations.html">Foundations</a></li>
-      <li><a href="tier-2-professional.html">Professional</a></li>
-      <li><a href="tier-3-business.html">Business</a></li>
-      <li><a href="tier-4-enterprise.html">Enterprise</a></li>
-      <li><a href="addon-services.html">Add-Ons</a></li>
-      <li><a href="hardware.html">Hardware</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="why-private-ai.html">Why Private AI</a></li>
-      <li><a href="faq.html">FAQ</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#why">Why Us</a></li>
+      <li><a href="#pricing">Pricing</a></li>
+      <li><a href="#use-cases">Use Cases</a></li>
     </ul>
-    <span class="footer-copy">© 2025 creeksea.ai, LLC · activate@creeksea.ai</span>
+    <span class="footer-copy">&copy; <span id="footerYear">2025</span> creeksea.ai, LLC &middot; activate@creeksea.ai</span>
   </div>
 </footer>
-
+<script>document.getElementById('footerYear').textContent=new Date().getFullYear();</script>
+<!-- LIGHT-MODE TOGGLE SCRIPT — disabled. Uncomment this <script> block plus the toggle
+     <li> in nav, the .theme-toggle CSS, the [data-theme="light"] CSS block, and the
+     isLight check in __fxBurst to re-enable.
 <script>
-  // Nav scroll
-  const nav = document.querySelector('nav');
-  window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
-
-  // Theme toggle with localStorage persistence
-  const html = document.documentElement;
-  const toggle = document.getElementById('themeToggle');
-  const saved = localStorage.getItem('creeksea-theme') || 'light';
-  html.setAttribute('data-theme', saved);
-
-  toggle.addEventListener('click', () => {
-    const next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('creeksea-theme', next);
-  });
-</script>
-
-<script>
-  // ── Mobile nav hamburger ──
-  (function() {
-    var btn = document.getElementById('navHamburger');
-    var links = document.getElementById('navLinks');
-    if (!btn || !links) return;
-
-    btn.addEventListener('click', function() {
-      btn.classList.toggle('open');
-      links.classList.toggle('open');
+(function(){
+  var KEY='creeksea-theme';
+  var stored=localStorage.getItem(KEY);
+  var theme=stored==='light'?'light':'dark';
+  document.documentElement.setAttribute('data-theme',theme);
+  var btn=document.getElementById('themeToggle');
+  if(btn){
+    btn.addEventListener('click',function(){
+      theme=theme==='dark'?'light':'dark';
+      document.documentElement.setAttribute('data-theme',theme);
+      localStorage.setItem(KEY,theme);
     });
+  }
+})();
+</script>
+-->
 
-    // Close menu when a non-dropdown link is tapped
-    links.querySelectorAll('a').forEach(function(a) {
-      if (!a.closest('.nav-dropdown') || a.closest('.nav-dropdown-menu')) {
-        a.addEventListener('click', function() {
-          btn.classList.remove('open');
-          links.classList.remove('open');
-          // close any open dropdowns too
-          links.querySelectorAll('.nav-dropdown').forEach(function(d){ d.classList.remove('open'); });
-        });
+<!-- ============================================================
+     SCRIPT 1 — Page-level cinematic state.
+     Coordinates: hero exit, word reveal driven by ribbon hot spot, stats slot-machine,
+     scroll-rule fill, parallax quote, nav, scroll reveal.
+     ============================================================ -->
+<script>
+(function(){
+  // Cache nodes once.
+  var heroSection=document.getElementById('hero');
+  var heroH1=document.getElementById('heroH1');
+  var heroScroll=document.getElementById('heroScroll');
+  var heroBot=document.querySelector('.hero-bot');
+  var wordSection=document.getElementById('wordSection');
+  var stickyInner=wordSection?wordSection.querySelector('.sticky-inner'):null;
+  var wordsBlock=document.getElementById('wordReveal');
+  var wordEls=document.querySelectorAll('#wordReveal .w');
+  var statsShot=document.getElementById('statsShot');
+  var statCards=document.querySelectorAll('.stat-card');
+  var pq1inner=document.getElementById('pq1inner');
+  var pq1=document.getElementById('parallaxQuote1');
+  var lboxTop=document.querySelector('.letterbox.top');
+  var lboxBot=document.querySelector('.letterbox.bottom');
+
+  // Global scroll rail nodes
+  var scrollRail=document.getElementById('scrollRail');
+  var railFill=document.getElementById('railFill');
+  var railDot=document.getElementById('railDot');
+
+  var totalWords=wordEls.length;
+
+  // ----- Section catalogue for the global scroll rail -----
+  // Order matches scroll order. Each entry produces a tick + label on the rail.
+  // We position by the section's mid-point as a fraction of total scrollable height,
+  // recomputed on resize/load.
+  var SECTIONS=[
+    {id:'hero',n:'01',label:'Open'},
+    {id:'wordSection',n:'02',label:'Monologue'},
+    {id:'statsShot',n:'03',label:'Numbers'},
+    {id:'process',n:'04',label:'Process'},
+    {id:'why',n:'05',label:'Why'},
+    {id:'pricing',n:'06',label:'Pricing'},
+    {id:'use-cases',n:'07',label:'Use Cases'},
+    {id:'cta',n:'08',label:'Activate'}
+  ];
+  var railTicks=[]; // {tick,label,frac,el}
+  function buildRail(){
+    if(!scrollRail)return;
+    // Tear down any existing dynamic ticks/labels
+    railTicks.forEach(function(t){if(t.tick&&t.tick.parentNode)t.tick.parentNode.removeChild(t.tick);
+      if(t.label&&t.label.parentNode)t.label.parentNode.removeChild(t.label);});
+    railTicks.length=0;
+    var docMax=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+    SECTIONS.forEach(function(s){
+      var el=document.getElementById(s.id);
+      if(!el)return;
+      // Use the section's *start* (top) for tick placement — matches how the user perceives "I'm now in this section"
+      var rect=el.getBoundingClientRect();
+      var sy=window.pageYOffset||window.scrollY||0;
+      var topY=rect.top+sy;
+      var frac=Math.max(0,Math.min(1,topY/docMax));
+      var tick=document.createElement('span');
+      tick.className='scroll-rail-tick';
+      tick.style.top=(frac*100).toFixed(2)+'%';
+      scrollRail.appendChild(tick);
+      var lbl=document.createElement('span');
+      lbl.className='scroll-rail-label';
+      lbl.style.top=(frac*100).toFixed(2)+'%';
+      lbl.innerHTML='<span class="num">'+s.n+'</span>'+s.label;
+      scrollRail.appendChild(lbl);
+      railTicks.push({tick:tick,label:lbl,frac:frac,id:s.id,el:el});
+    });
+  }
+  // Build after layout settles. Re-run on resize and on full load (fonts shift heights).
+  setTimeout(buildRail,0);
+  window.addEventListener('load',buildRail);
+  window.addEventListener('resize',function(){clearTimeout(window.__railRT);window.__railRT=setTimeout(buildRail,150);},{passive:true});
+
+  // Idle-fade for the rail — wakes on scroll, fades after 1s of stillness.
+  var lastScrollMs=0;
+  function awakeRail(){
+    if(!scrollRail)return;
+    lastScrollMs=performance.now();
+    scrollRail.classList.add('awake');
+  }
+  function railIdleTick(){
+    if(scrollRail && performance.now()-lastScrollMs>1000){
+      scrollRail.classList.remove('awake');
+    }
+    requestAnimationFrame(railIdleTick);
+  }
+  requestAnimationFrame(railIdleTick);
+
+  // ----- Build slot-machine digit columns for each stat card -----
+  // We render each digit as a vertical column of 0..9 spans inside an overflow:hidden window.
+  // Settling = transform: translateY(-digit*1em) with eased easing per column, with a delay per
+  // column so digits "land" left-to-right like a real slot machine.
+  function buildDigitColumns(card){
+    var target=card.dataset.target;
+    var decimals=parseInt(card.dataset.decimals)||0;
+    var digitsContainer=card.querySelector('.digits');
+    digitsContainer.innerHTML='';
+    // Format target to fixed string. We render the *exact* characters of the formatted target
+    // (digits + optional decimal point). Each digit becomes a slot column.
+    var s=parseFloat(target).toFixed(decimals);
+    var cols=[]; // {el, finalDigit}
+    for(var i=0;i<s.length;i++){
+      var ch=s[i];
+      if(ch==='.'){
+        var dot=document.createElement('span');
+        dot.textContent='.';
+        dot.style.padding='0 0.04em';
+        digitsContainer.appendChild(dot);
+        continue;
+      }
+      var col=document.createElement('span');
+      col.className='digit-col';
+      // 0..9 spans
+      for(var d=0;d<10;d++){
+        var sp=document.createElement('span');
+        sp.textContent=d;
+        col.appendChild(sp);
+      }
+      digitsContainer.appendChild(col);
+      cols.push({el:col,finalDigit:parseInt(ch,10),idx:cols.length});
+    }
+    card._cols=cols;
+    card._settled=false;
+  }
+  statCards.forEach(buildDigitColumns);
+  // Tag each stat card with its index so the burst-on-settle event can escalate intensity.
+  statCards.forEach(function(c,i){c.dataset.statIdx=i;});
+
+  // Roll all columns to a fractional progress p in [0,1].
+  // Each column runs from 0 to its final digit, with a per-column stagger so the leftmost column
+  // settles first and the rightmost last (slot-machine feel). The last 8% of progress smoothly
+  // pulls each column exactly onto its final value (no jitter).
+  function rollColumns(card,p){
+    if(!card._cols)return;
+    var cols=card._cols;
+    var n=cols.length;
+    // overall easing — fast then settle
+    var ep=p<0?0:(p>1?1:p);
+    for(var i=0;i<n;i++){
+      // per-column window: each col starts at i*stagger, settles by 0.85+i*tail
+      var stagger=0.10/Math.max(1,n);
+      var startP=i*stagger;
+      var settleP=0.78+i*stagger;
+      var local=(ep-startP)/(settleP-startP);
+      if(local<0)local=0;
+      if(local>1)local=1;
+      // ease-out
+      var eased=1-Math.pow(1-local,3);
+      // Number of *spins* before settling. Higher idx spins more.
+      var spins=6+(n-i)*2;
+      var totalDist=spins*10+cols[i].finalDigit;
+      var pos=eased*totalDist;
+      // wrap to 0..10 visually but we only have 10 spans, so use modulo on transform amount
+      var visualY=(pos%10);
+      // When eased ~ 1, snap exactly to finalDigit
+      if(eased>0.998)visualY=cols[i].finalDigit;
+      cols[i].el.style.transform='translateY(-'+(visualY*1)+'em)';
+      // Hide spans whose layout box doesn't overlap the .digits clip region. Belt-and-
+      // suspenders against the col's transform compositing layer escaping parent clip:
+      // CSS overflow:hidden / clip-path / mask all failed to clip the leak in some
+      // browsers (the "3" span of the "4" col rendered above the digit row). Setting
+      // visibility:hidden physically prevents render. Done per-frame so adjacent spans
+      // become visible naturally as the slot-machine roll cycles past.
+      var spans=cols[i].el.children;
+      for(var k=0;k<spans.length;k++){
+        // Show spans whose layout box overlaps the visible clip (1em window). At integer
+        // visualY (settled), only the matching span has overlap; at fractional values
+        // (rolling), one above and one below partially overlap. Strict < 1 — at exactly
+        // distance 1, the span just touches the clip edge with no overlap.
+        spans[k].style.visibility=(Math.abs(k-visualY)<1)?'':'hidden';
+      }
+    }
+    // Settle event — the digits have *just* landed on their final values.
+    // Threshold tuned to match when the last column visually snaps (eased > 0.998 ≈
+    // local > 0.874). For n-column cards (n=1..3 on this page) the latest snap occurs
+    // at ep ≈ 0.68..0.75. Firing at 0.78 puts the burst right on the visual landing
+    // instead of ~25% of the roll later, which read as a delay.
+    if(ep>0.78 && !card._settled){
+      card._settled=true;
+      card.classList.add('settled');
+      var statIdx=parseInt(card.dataset.statIdx)||0;
+      // Escalation: stat 0 = 1.0, stat 1 = 1.45, stat 2 = 2.0
+      var intensity=1.0+statIdx*0.5;
+      window.__fxBurst && window.__fxBurst('stat-settle',{intensity:intensity,card:card});
+    } else if(ep<=0.78 && card._settled){
+      // (don't unsettle on backscroll — keep the caption visible)
+    }
+  }
+
+  // Each stat-card lives in its own .stat-section. Each card's roll is driven by entry
+  // progress: digit top at viewport bottom (rollP=0) → digit centered at viewport center
+  // (rollP=1, sticky engages). After the entry roll lands, the card holds during sticky
+  // and exits as the next section rises.
+  function updateStats(sy,vh){
+    var sections=document.querySelectorAll('.stat-section');
+    sections.forEach(function(sec){
+      var card=sec.querySelector('.stat-card');
+      var num=card&&card.querySelector('.stat-number');
+      if(!card||!num)return;
+
+      var nr=num.getBoundingClientRect();
+      var numTopDoc=nr.top+sy;
+      var numCenterDoc=numTopDoc+nr.height/2;
+      var prerollStart=numTopDoc-vh;            // digit top reaches viewport bottom
+      var prerollEnd=numCenterDoc-vh/2;         // digit center reaches viewport center
+      var prerollSpan=Math.max(1,prerollEnd-prerollStart);
+      var prerollP=(sy-prerollStart)/prerollSpan;
+
+      // Section bounds for visibility check (active class drives ribbon sweep)
+      var secRect=sec.getBoundingClientRect();
+      var secTop=secRect.top+sy;
+      var secBot=secTop+sec.offsetHeight;
+      var inView=secBot>sy && secTop<sy+vh;
+
+      if(sy<prerollStart){
+        // Section not yet near viewport — keep digits at 00, hide card
+        card.classList.remove('active');
+        rollColumns(card,0);
+      } else {
+        // Card is entering, settled, or exiting — keep visible, drive roll progress
+        if(inView){
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+        rollColumns(card,Math.max(0,Math.min(1,prerollP)));
       }
     });
+  }
 
-    // Services dropdown: toggle on tap (mobile only)
-    links.querySelectorAll('.nav-dropdown').forEach(function(dropdown) {
-      var trigger = dropdown.querySelector(':scope > a');
-      if (!trigger) return;
-      trigger.addEventListener('click', function(e) {
-        if (window.innerWidth <= 768) {
-          e.preventDefault();
-          dropdown.classList.toggle('open');
-        }
+  // ----- Scroll handler -----
+  function onScroll(){
+    var sy=window.pageYOffset||window.scrollY||0;
+    var vh=window.innerHeight;
+
+    // Hero exit (parallax fade + scale + blur)
+    if(sy<vh*1.5){
+      var hp=Math.min(sy/vh,1);
+      heroH1.style.opacity=Math.max(1-hp*1.3,0);
+      heroH1.style.transform='scale('+(1+hp*0.10)+') translateY('+(-hp*60)+'px)';
+      heroH1.style.filter='blur('+(hp*8)+'px)';
+      heroScroll.style.opacity=Math.max(1-hp*3,0);
+      // Sub copy + CTAs ride out with the H1. Faded slightly faster (×1.5) so they
+      // clear before the H1 finishes its scale/blur — keeps the bottom band from
+      // floating after the headline has already left the frame.
+      if(heroBot){
+        heroBot.style.opacity=Math.max(1-hp*1.5,0);
+        heroBot.style.transform='translateY('+(-hp*40)+'px)';
+      }
+    }
+
+    // Letterbox bars deepen slightly as we leave the hero — heightens the sense of "we are now in the film"
+    var lboxP=Math.min(1,Math.max(0,(sy-vh*0.3)/(vh*0.7)));
+    var h=24+Math.round(lboxP*36);
+    if(window.innerWidth>768){
+      lboxTop.style.height=h+'px';
+      lboxBot.style.height=h+'px';
+    }
+
+    // Word reveal — anchored to the TEXT BLOCK's on-screen position, not the
+    // pin element. The pin is a *visual* convenience for the user; progress
+    // tracks where the words actually live in the viewport.
+    //
+    // Why: with .sticky-inner now flex-centring its children, the text block
+    // occupies only the middle ~40-60% of the inner. Anchoring wp to the
+    // inner's top means wp=1 fires when the inner's bottom approaches the
+    // viewport top — at which point the text has already exited upward and the
+    // user can no longer see the closing words being lit. Anchoring to the
+    // text block's centre instead keeps the lighting in lock-step with what
+    // the user is actually reading.
+    //
+    // Mapping:
+    //   wp = 0 when the text block's centre is 75% down the viewport (text
+    //          rising into the reading zone from below)
+    //   wp = 1 when the text block's centre is at viewport centre (50%)
+    //          — full illumination is reached when the monologue is centred,
+    //          not when it's exiting the top. Compresses the reveal window
+    //          from 60vh to 25vh of scroll for a brisker pace.
+    //
+    // Live getBoundingClientRect() + window.innerHeight only — no cached
+    // anchors, no CSS-baked constants. Mobile-safe by construction.
+    if(stickyInner && wordsBlock){
+      var t=wordsBlock.getBoundingClientRect();
+      var textCenter = t.top + t.height/2;       // viewport-relative centre of the text
+      var startY = vh * 0.75;                    // wp = 0 at this textCenter (entering reading zone)
+      var endY   = vh * 0.50;                    // wp = 1 when text is centred in viewport
+      var span   = Math.max(1, startY - endY);
+      var wp = (startY - textCenter) / span;
+      wp = Math.max(0, Math.min(1, wp));
+
+      // Reveal window inside wp. Wider than before because the new wp covers
+      // both the lead-in AND the pinned range, so we have more total scroll to
+      // play with. The closing italic clause is now part of the main word stream
+      // (last 9 spans with .italic), so there's no separate tag trigger.
+      var WP_START=0.0, WP_END=0.92;
+      var rp = (wp - WP_START) / (WP_END - WP_START);
+      rp = Math.max(0, Math.min(1, rp));
+      var lit;
+      if(wp < WP_START){
+        lit = -1;
+      } else if(rp >= 1){
+        lit = totalWords - 1;
+      } else {
+        // round (not floor) centres each word on its slot — symmetric cadence.
+        lit = Math.min(totalWords-1, Math.round(rp * (totalWords - 1)));
+      }
+      for(var i=0;i<totalWords;i++){
+        // Preserve the .italic flag on the closing clause (last 9 spans). The
+        // state class is rebuilt every frame; .italic is a static modifier.
+        var isItalic = wordEls[i].classList.contains('italic');
+        var base = isItalic ? 'w italic' : 'w';
+        var want = i<lit ? base+' seen' : (i===lit ? base+' lit' : base);
+        // preserve embedded <em> wrappers — we toggle classes only on the .w span
+        if(wordEls[i].className!==want)wordEls[i].className=want;
+      }
+    }
+
+    // Stats slot-machine
+    updateStats(sy,vh);
+
+    // Parallax quote — fade in toward viewport center, fade out at edges. Range raised
+     // from [0.05..0.2] to [0.3..1] so the quote is actually legible (the previous range
+     // combined with rgba(255,255,255,0.15) color gave an effective max brightness of ~3%).
+    if(pq1inner&&pq1){
+      var r=pq1.getBoundingClientRect();
+      var p=(vh-r.top)/(vh+r.height);
+      pq1inner.style.transform='translateY('+((0.5-p)*80)+'px)';
+      pq1inner.style.opacity=Math.max(Math.min(1-Math.abs(0.5-p)*2,1),0.3);
+    }
+
+    // ----- Global scroll rail -----
+    // Total page progress — 0 at top, 1 at bottom. Fill height + dot position track this.
+    // Active section is whichever tick the dot has just passed (and not yet passed the next).
+    var docMax=Math.max(1,document.documentElement.scrollHeight-vh);
+    var pageT=Math.max(0,Math.min(1,sy/docMax));
+    if(railFill)railFill.style.height=(pageT*100).toFixed(2)+'%';
+    if(railDot)railDot.style.top=(pageT*100).toFixed(2)+'%';
+    // Active section determination — last tick whose frac <= pageT
+    var activeIdx=-1;
+    for(var ti=0;ti<railTicks.length;ti++){
+      if(railTicks[ti].frac<=pageT+0.001)activeIdx=ti;
+      else break;
+    }
+    for(var ti2=0;ti2<railTicks.length;ti2++){
+      var isActive=(ti2===activeIdx);
+      var t=railTicks[ti2];
+      t.tick.classList.toggle('active',isActive);
+      t.label.classList.toggle('active',isActive);
+    }
+    awakeRail();
+
+    // ----- 3D card scroll-driven entry rotation -----
+    // Cards rotate from a tilted "off-axis" pose to flat as they cross viewport center.
+    // We use the card's distance from the viewport mid as a signed value; map to enter [0,1].
+    update3DCards(vh);
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+
+  // ===== 3D CARD CINEMATOGRAPHY =====
+  // Setup mouse-driven tilt + cursor-tracked refraction for every .card3d.
+  // Disabled on mobile (CSS overrides transforms with !important and hides ::before/after).
+  var isMobile=window.innerWidth<768;
+  var cards3d=Array.prototype.slice.call(document.querySelectorAll('.card3d'));
+  // Cache featured card identification (price-card.featured)
+  cards3d.forEach(function(card){
+    if(card.classList.contains('featured'))card.classList.add('focal-candidate');
+    // Initial CSS variable defaults so transforms don't NaN
+    card.style.setProperty('--tilt-x','0deg');
+    card.style.setProperty('--tilt-y','0deg');
+    card.style.setProperty('--refl-x','50%');
+    card.style.setProperty('--refl-y','50%');
+    card.style.setProperty('--enter','0.2');
+    var rim=parseFloat(card.dataset.rim||'0');
+    card.style.setProperty('--rim',rim.toString());
+
+    if(!isMobile){
+      // Mouse-driven tilt — small deflection so it feels physical, not flailing.
+      // pointermove writes to inline custom props; CSS transition smooths it.
+      card.addEventListener('pointermove',function(e){
+        var r=card.getBoundingClientRect();
+        var nx=(e.clientX-r.left)/r.width;  // 0..1 across card
+        var ny=(e.clientY-r.top)/r.height;  // 0..1 down card
+        var maxDeg=6; // gentle
+        var tiltY=(nx-0.5)*2*maxDeg;        // mouse right => rotateY positive
+        var tiltX=(0.5-ny)*2*maxDeg;        // mouse down  => rotateX negative
+        card.style.setProperty('--tilt-x',tiltX.toFixed(2)+'deg');
+        card.style.setProperty('--tilt-y',tiltY.toFixed(2)+'deg');
+        card.style.setProperty('--refl-x',(nx*100).toFixed(1)+'%');
+        card.style.setProperty('--refl-y',(ny*100).toFixed(1)+'%');
       });
-    });
-  })();
+      card.addEventListener('pointerleave',function(){
+        card.style.setProperty('--tilt-x','0deg');
+        card.style.setProperty('--tilt-y','0deg');
+        card.style.setProperty('--refl-x','50%');
+        card.style.setProperty('--refl-y','50%');
+      });
+    }
+  });
+
+  // Per-card scroll-driven entry rotation. Each card carries a slot of "off-axis" rotation
+  // proportional to its column index inside its grid (so adjacent cards don't all tilt the
+  // same way — cinematic asymmetry).
+  function update3DCards(vh){
+    if(isMobile)return;
+    for(var i=0;i<cards3d.length;i++){
+      var card=cards3d[i];
+      var r=card.getBoundingClientRect();
+      var midY=r.top+r.height/2;
+      // d in [-1,1]: -1 = card centered at top of viewport, +1 = card centered at bottom
+      var d=(midY-vh/2)/(vh/2);
+      d=Math.max(-1.5,Math.min(1.5,d));
+      // enter: 1 when card mid is at viewport mid, 0 when far
+      var enter=Math.max(0,1-Math.abs(d)*0.55);
+      // Off-axis rotation: scale entry rotation by signed d (cards above center lean up,
+      // below center lean down). X rotation primarily, small Y rotation too.
+      var rotX=d*9;  // up-to ~13deg at edges
+      var rotY=d*-5; // small Y tilt for depth
+      // Damp the rotation by (1-enter) so it lands flat at center.
+      var rotXfinal=rotX*(1-enter);
+      var rotYfinal=rotY*(1-enter);
+      card.style.setProperty('--enter-rot-x',rotXfinal.toFixed(2)+'deg');
+      card.style.setProperty('--enter-rot-y',rotYfinal.toFixed(2)+'deg');
+      card.style.setProperty('--enter',enter.toFixed(3));
+      // Featured card "bloom forward" when fully centered
+      if(card.classList.contains('featured')){
+        card.classList.toggle('bloom-forward',enter>0.85);
+      }
+    }
+  }
+  // Expose so onScroll can call it
+  window.__update3DCards=update3DCards;
+  // Initial paint
+  update3DCards(window.innerHeight);
+
+  // NAV
+  window.addEventListener('scroll',function(){
+    document.querySelector('nav').classList.toggle('scrolled',window.scrollY>60);
+  },{passive:true});
+
+  // HAMBURGER
+  var hb=document.getElementById('navHamburger'),nl=document.getElementById('navLinks');
+  hb.addEventListener('click',function(){hb.classList.toggle('open');nl.classList.toggle('open')});
+  nl.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){hb.classList.remove('open');nl.classList.remove('open')})});
+
+  // SCROLL REVEAL
+  var srs=document.querySelectorAll('.sr,.sr-scale');
+  var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('v');obs.unobserve(e.target)}})},{threshold:0.12,rootMargin:'0px 0px -60px 0px'});
+  srs.forEach(function(el){obs.observe(el)});
+
+  // ----- Hero H1 light-write effect -----
+  // Once the hero is visible, animate the stroke "drawing" of each text line, then fade-fill.
+  // We use a CSS class .lit that switches the fill from near-transparent to white. The "drawing"
+  // illusion is sold by the ribbon canvas: as the warm/cool ribbons sweep across the headline
+  // region, JS schedules the lit class to flip on each line in sequence, timed to the sweep.
+  function animateHeroH1(){
+    var l1=document.getElementById('line1');
+    var l2=document.getElementById('line2');
+    var l3=document.getElementById('line3');
+    if(!l1)return;
+    setTimeout(function(){l1.classList.add('lit')},700);
+    setTimeout(function(){l2.classList.add('lit'); window.__fxBurst && window.__fxBurst('hero-em');},1300);
+    setTimeout(function(){l3.classList.add('lit')},1900);
+  }
+  if(document.readyState==='complete')animateHeroH1();
+  else window.addEventListener('load',animateHeroH1);
+
+  // Initial paint
+  requestAnimationFrame(onScroll);
+})();
 </script>
-  
-<!-- Start of HubSpot Embed Code -->
+
+<!-- ============================================================
+     SCRIPT 2 — Effects canvas: lens flares, particle bursts, chromatic aberration overlays.
+     Sits above ribbons but below content. Only paints when something is "live".
+     ============================================================ -->
+<script>
+(function(){
+  var canvas=document.getElementById('fx-canvas');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  var W=0,H=0,DPR=Math.min(window.devicePixelRatio||1,1.5);
+  var isMobile=window.innerWidth<768;
+  function resize(){
+    W=window.innerWidth;H=window.innerHeight;
+    canvas.width=Math.floor(W*DPR);canvas.height=Math.floor(H*DPR);
+    canvas.style.width=W+'px';canvas.style.height=H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  window.addEventListener('resize',resize,{passive:true});
+  resize();
+
+  // Active particles + flares list
+  var bursts=[]; // {x,y,t0,duration,color}
+  var particles=[]; // {x,y,vx,vy,t0,life,color,size}
+
+  // Public: trigger a burst at a named anchor point.
+  // Anchors:
+  //   'hero-em'        — centred on the italic "hyperscale" word in the H1
+  //   'center-bottom'  — viewport centre, lower third (legacy)
+  //   'stat-settle'    — anchored on the active stat card's number rule centre.
+  //                      opts: {intensity:1.0, card:HTMLElement} for escalating bursts.
+  // Anchors are resolved relative to the current viewport.
+  window.__fxBurst=function(anchor,opts){
+    if(isMobile)return; // mobile graceful degrade — no particle bursts
+    opts=opts||{};
+    var intensity=opts.intensity||1.0;
+    var x=W/2,y=H/2;
+    if(anchor==='hero-em'){
+      var em=document.getElementById('line2');
+      if(em){
+        var r=em.getBoundingClientRect();
+        x=r.left+r.width/2; y=r.top+r.height/2;
+      }
+    }else if(anchor==='center-bottom'){
+      x=W/2; y=H*0.62;
+    }else if(anchor==='stat-settle'){
+      // Use the active stat card's .stat-rule midpoint — the burst lands exactly where the
+      // ribbon sweeper has come to rest under the digits. Falls back to center-bottom.
+      var card=opts.card;
+      if(card){
+        var rule=card.querySelector('.stat-rule');
+        if(rule){
+          var rr=rule.getBoundingClientRect();
+          x=rr.left+rr.width/2;
+          y=rr.top+rr.height/2;
+        } else {
+          var cr=card.getBoundingClientRect();
+          x=cr.left+cr.width/2;
+          y=cr.top+cr.height*0.62;
+        }
+      } else {
+        x=W/2; y=H*0.62;
+      }
+    }
+    var now=performance.now();
+    // Flare radius and spark count both scale with intensity (stat 3 > stat 2 > stat 1)
+    var dur=900+(intensity-1)*350;
+    // LIGHT-MODE COLOR SWAP — disabled. Uncomment to swap gold→blue for light theme.
+    // var isLight=document.documentElement.getAttribute('data-theme')==='light';
+    // var flareColor=isLight?'70,140,200':'244,216,168';
+    // var sparkColorA=isLight?'80,150,200':'244,216,168';
+    // var sparkColorB=isLight?'140,200,230':'255,245,220';
+    bursts.push({x:x,y:y,t0:now,duration:dur,color:'244,216,168',intensity:intensity});
+    var sparkCount=Math.floor(32*intensity);
+    for(var i=0;i<sparkCount;i++){
+      var ang=Math.random()*Math.PI*2;
+      var spd=(120+Math.random()*240)*Math.sqrt(intensity);
+      particles.push({
+        x:x,y:y,
+        vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd,
+        t0:now,life:(600+Math.random()*500)*Math.min(1.3,intensity),
+        color:Math.random()<0.6?'244,216,168':'255,245,220',
+        size:(1+Math.random()*2.2)*Math.min(1.5,Math.sqrt(intensity))
+      });
+    }
+  };
+
+  function frame(now){
+    requestAnimationFrame(frame);
+    if(bursts.length===0 && particles.length===0){
+      // Nothing live — fast-path clear and return
+      ctx.clearRect(0,0,W,H);
+      return;
+    }
+    ctx.clearRect(0,0,W,H);
+    ctx.globalCompositeOperation='lighter';
+
+    // Draw flares (radial halos with anamorphic horizontal streak)
+    for(var i=bursts.length-1;i>=0;i--){
+      var b=bursts[i];
+      var age=now-b.t0;
+      if(age>b.duration){bursts.splice(i,1);continue;}
+      var p=age/b.duration; // 0..1
+      var alpha=Math.pow(1-p,1.5); // ease-out fade
+      var iScale=b.intensity||1.0;
+      var rad=(40+p*220)*Math.sqrt(iScale);
+      // soft halo
+      var g=ctx.createRadialGradient(b.x,b.y,0,b.x,b.y,rad);
+      g.addColorStop(0,'rgba(255,250,235,'+(0.85*alpha)+')');
+      g.addColorStop(0.25,'rgba('+b.color+','+(0.55*alpha)+')');
+      g.addColorStop(1,'rgba('+b.color+',0)');
+      ctx.fillStyle=g;
+      ctx.beginPath();ctx.arc(b.x,b.y,rad,0,Math.PI*2);ctx.fill();
+      // anamorphic horizontal streak
+      var streakW=rad*4;
+      var sg=ctx.createLinearGradient(b.x-streakW,b.y,b.x+streakW,b.y);
+      sg.addColorStop(0,'rgba('+b.color+',0)');
+      sg.addColorStop(0.5,'rgba(255,245,220,'+(0.45*alpha)+')');
+      sg.addColorStop(1,'rgba('+b.color+',0)');
+      ctx.fillStyle=sg;
+      ctx.fillRect(b.x-streakW,b.y-1.5,streakW*2,3);
+      // 4-spoke radial flare
+      ctx.strokeStyle='rgba(255,245,220,'+(0.35*alpha)+')';
+      ctx.lineWidth=1;
+      ctx.beginPath();
+      ctx.moveTo(b.x-rad*1.4,b.y);ctx.lineTo(b.x+rad*1.4,b.y);
+      ctx.moveTo(b.x,b.y-rad*1.1);ctx.lineTo(b.x,b.y+rad*1.1);
+      ctx.stroke();
+    }
+
+    // Draw particles with gravity + drag
+    for(var j=particles.length-1;j>=0;j--){
+      var pt=particles[j];
+      var age=now-pt.t0;
+      if(age>pt.life){particles.splice(j,1);continue;}
+      var dt=16/1000;
+      pt.vy+=80*dt; // gravity
+      pt.vx*=0.985; pt.vy*=0.985;
+      pt.x+=pt.vx*dt; pt.y+=pt.vy*dt;
+      var pp=age/pt.life;
+      var a=(1-pp)*0.95;
+      ctx.fillStyle='rgba('+pt.color+','+a.toFixed(3)+')';
+      ctx.beginPath();ctx.arc(pt.x,pt.y,pt.size*(1-pp*0.5),0,Math.PI*2);ctx.fill();
+    }
+
+    ctx.globalCompositeOperation='source-over';
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+<!-- ============================================================
+     SCRIPT 3 — Ribbon canvas (carries forward + gets dramatically more cinematic).
+     Bigger amplitude swerves, hot-core highlights at intersections, bigger lens-flare bursts.
+     Drives the hero H1 "light-write" timing via a callback hook.
+     ============================================================ -->
+<script>
+function initRibbons(){
+  var canvas=document.getElementById('ribbon-canvas');
+  if(!canvas)return;
+  var ctx=canvas.getContext('2d');
+  if(!ctx)return;
+
+  var reducedMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isMobile=window.innerWidth<768;
+  var SEGMENTS=isMobile?40:72;
+  var DPR=Math.min(window.devicePixelRatio||1,isMobile?1:1.5);
+
+  // ===== MULTI-BAND RIBBON SYSTEM =====
+  // Each "band" is a workflow stream entering from one side. Cool bands (left) represent
+  // back-office data — finance / accounting / tax. Warm bands (right) represent
+  // client-facing operations — HR/people / operations / sales. They braid in stages:
+  //   Stage A (hero, t<0.10): all bands separate, gently arcing inward — readable as
+  //                             multiple distinct streams from a static screenshot.
+  //   Stage B (0.10..0.30): each side's bands progressively braid into a single warm
+  //                           super-band and a single cool super-band (3->1 each).
+  //   Stage C (0.30..0.75): the two super-bands braid each other (the existing 2-ribbon
+  //                           act becomes the *second* act).
+  //   Stage D (0.75..1.0): final convergence to a unified warm-white beam.
+  //
+  // Each band has: side (-1 cool, +1 warm), idx (0..N-1 within side), color triplet,
+  // baseY offset (staggered vertical entry), passQuality ('full' = 3-pass glow on the
+  // dominant/final beam, 'lite' = 2-pass on secondary bands).
+  var BAND_COLORS_COOL=[
+    {c:'95,184,212',name:'data'},        // teal — back-office data
+    {c:'80,150,200',name:'finance'},     // cool blue — finance
+    {c:'95,120,180',name:'accounting'}   // cool indigo — accounting/tax
+  ];
+  var BAND_COLORS_WARM=[
+    {c:'212,154,95',name:'ops'},         // warm amber — operations
+    {c:'220,180,120',name:'people'},     // warm gold — HR/people
+    {c:'200,140,90',name:'sales'}        // warm copper — client-facing
+  ];
+  var COL_FUSED='244,216,168';
+  // Per-side band count: 3 desktop, 1 mobile (mobile graceful degrade — "max 2 bands total")
+  var BANDS_PER_SIDE=isMobile?1:3;
+  // Build the band list. The first band on each side (idx=0) is the "dominant" one — it
+  // becomes the super-band after stage B. It carries 3-pass glow when desktop.
+  var BANDS=[];
+  for(var bi=0;bi<BANDS_PER_SIDE;bi++){
+    BANDS.push({side:-1,idx:bi,color:BAND_COLORS_COOL[bi].c,
+      yOffset:(-0.18+bi*0.10),phaseOffset:bi*1.1,
+      isDominant:bi===0,
+      passes:(bi===0?(isMobile?1:3):(isMobile?1:2))});
+    BANDS.push({side:+1,idx:bi,color:BAND_COLORS_WARM[bi].c,
+      yOffset:(-0.18+bi*0.10),phaseOffset:bi*1.1+0.5,
+      isDominant:bi===0,
+      passes:(bi===0?(isMobile?1:3):(isMobile?1:2))});
+  }
+
+  var ctaBtn=document.querySelector('.cta-section .btn-glow');
+
+  var W=0,H=0;
+  function resize(){
+    W=window.innerWidth;H=window.innerHeight;
+    canvas.width=Math.floor(W*DPR);canvas.height=Math.floor(H*DPR);
+    canvas.style.width=W+'px';canvas.style.height=H+'px';
+    ctx.setTransform(DPR,0,0,DPR,0,0);
+  }
+  window.addEventListener('resize',resize,{passive:true});
+  resize();
+
+  var scrollProgress=0;
+  function readScroll(){
+    var sy=window.pageYOffset||window.scrollY||0;
+    var max=Math.max(1,document.documentElement.scrollHeight-window.innerHeight);
+    scrollProgress=Math.max(0,Math.min(1,sy/max));
+  }
+  window.addEventListener('scroll',readScroll,{passive:true});
+  readScroll();
+
+  var pinchAnchors=[];
+  function computeAnchors(){
+    pinchAnchors.length=0;
+    var sels=['.hero-h1-svg','.word-monologue','.stat-rule','.big-text','.cta-section .big-text'];
+    var sy=window.pageYOffset||window.scrollY||0;
+    for(var i=0;i<sels.length;i++){
+      var els=document.querySelectorAll(sels[i]);
+      els.forEach(function(el){
+        var r=el.getBoundingClientRect();
+        pinchAnchors.push(r.top+sy+r.height/2);
+      });
+    }
+  }
+  window.addEventListener('resize',computeAnchors,{passive:true});
+  window.addEventListener('load',computeAnchors);
+  computeAnchors();
+
+  // ===== STAGE-AWARE BRAID PARAMS =====
+  // Returns:
+  //   sep        — outer-band separation (1 = bands at edges, 0 = fully merged at axis)
+  //   twistAmp   — sinusoidal swerve amplitude in px
+  //   twistFreq  — vertical wave frequency
+  //   fusion     — 0..1: when >0, all bands are pulled toward the central axis as a beam
+  //   bandMerge  — 0..1: per-side merge progress. 0 = bands separate. 1 = bands collapsed
+  //                 onto the dominant band of their side.
+  //   sideBraid  — 0..1: how much the two super-bands braid each other (the legacy "2-ribbon"
+  //                 act). Active mostly through stage C.
+  function braidParams(t){
+    var sep,twistAmp,twistFreq,fusion,bandMerge,sideBraid;
+    if(t<0.10){
+      // Stage A: hero — all bands enter, separate, gently arcing inward.
+      var k=t/0.10;
+      sep=1.0;
+      twistAmp=10+k*30;
+      twistFreq=0.45;
+      fusion=0;
+      bandMerge=0;
+      sideBraid=0;
+    }else if(t<0.30){
+      // Stage B: per-side bands progressively braid into a single super-band each side.
+      // 3->1 on warm, 3->1 on cool. Outer separation slightly closes.
+      var k=(t-0.10)/0.20;
+      sep=1.0-k*0.10;
+      twistAmp=40+k*60;
+      twistFreq=0.55+k*0.35;
+      fusion=0;
+      bandMerge=k;        // 0 -> 1
+      sideBraid=0;
+    }else if(t<0.55){
+      // Stage C: the two super-bands now braid each other. Bands fully merged per side.
+      var k=(t-0.30)/0.25;
+      sep=0.90-k*0.25;
+      twistAmp=110+k*70;
+      twistFreq=1.0+k*0.5;
+      fusion=0;
+      bandMerge=1;
+      sideBraid=k;
+    }else if(t<0.75){
+      // Stage C2: aggressive twist through mid-page; super-bands begin tightening.
+      var k=(t-0.55)/0.20;
+      sep=0.65-k*0.30;
+      twistAmp=180-k*70;
+      twistFreq=1.5+k*0.5;
+      fusion=k*0.30;
+      bandMerge=1;
+      sideBraid=1;
+    }else if(t<0.95){
+      // Stage D: final convergence — fusion ramps; super-bands collapse to central axis.
+      var k=(t-0.75)/0.20;
+      sep=0.35-k*0.33;
+      twistAmp=110*(1-k);
+      twistFreq=1.9;
+      fusion=0.30+k*0.55;
+      bandMerge=1;
+      sideBraid=1-k*0.6;
+    }else{
+      // Unified beam — single warm-white stream over the CTA.
+      var k=Math.min(1,(t-0.95)/0.05);
+      sep=0.02*(1-k);twistAmp=0;twistFreq=0;fusion=0.85+k*0.15;
+      bandMerge=1;
+      sideBraid=0;
+    }
+    return {sep:sep,twistAmp:twistAmp,twistFreq:twistFreq,fusion:fusion,
+            bandMerge:bandMerge,sideBraid:sideBraid};
+  }
+
+  // bandPoints — produce sample points for one band at scroll progress t.
+  // The band's own `sep` shrinks to zero as bandMerge ramps (collapses onto the dominant
+  // band). The dominant band has its own swerve; followers track the dominant band with a
+  // small phase-offset braid that fades as bandMerge -> 1.
+  function bandPoints(band,t,scrollY,timeMs){
+    var p=braidParams(t);
+    var pts=new Array(SEGMENTS+1);
+    var contentHalf=Math.min(W*0.42,560);
+    var gutterOffset=isMobile?28:64;
+    // Per-band base X — fans out by idx so 3 bands per side enter at different x distances
+    // before bandMerge collapses them. (1 - bandMerge) collapses follower bands onto dominant.
+    var fanFactor=1+(band.idx*0.18);
+    var bandSep=p.sep*(1-(band.isDominant?0:p.bandMerge));
+    var baseX=W/2 + band.side*(contentHalf+gutterOffset)*p.sep*fanFactor*(band.isDominant?1:1) - (band.isDominant?0:0);
+    // After bandMerge=1, follower bands sit on top of dominant — same baseX
+    if(!band.isDominant){
+      var dominantBaseX=W/2 + band.side*(contentHalf+gutterOffset)*p.sep*1;
+      baseX=baseX*(1-p.bandMerge)+dominantBaseX*p.bandMerge;
+    }
+    // sideBraid: when the two super-bands braid, the dominant band's endX swings about the
+    // central axis. fusion pulls everything to the axis at the end.
+    var endX=W/2;
+    var phase=band.side>0?0:Math.PI;
+    phase+=band.phaseOffset;
+    var timePhase=timeMs*0.00022;
+    // Vertical offset for staggered entry — followers enter slightly above/below the dominant
+    // at the very top of the page only.
+    var yOffsetPx=(band.idx*8)*(1-p.bandMerge);
+    for(var s=0;s<=SEGMENTS;s++){
+      var u=s/SEGMENTS;
+      var y=u*H + yOffsetPx*Math.sin(u*Math.PI);
+      // Stage C: the dominant band uses sideBraid amplitude; followers (fully merged) ride along.
+      var braidAmpEffective=p.twistAmp;
+      if(!band.isDominant){
+        // followers swerve less when merged; more when not merged (during stage A)
+        braidAmpEffective=p.twistAmp*(1-p.bandMerge*0.85);
+      }
+      // Apply fusion-axial pull
+      var x0=baseX+(endX-baseX)*u*Math.max(p.fusion, p.sideBraid*0.0); // fusion-axial blend
+      var envelope=Math.sin(u*Math.PI);
+      var swerve=Math.sin(u*Math.PI*2*p.twistFreq+phase+timePhase)*braidAmpEffective*envelope*(1-p.fusion);
+      // Stage A: very small follower swerve so each band reads as its own stream
+      if(t<0.10 && !band.isDominant){
+        swerve+=Math.sin(u*Math.PI+band.phaseOffset)*22*envelope*band.idx;
+      }
+      var x=x0+swerve;
+      // Pinch toward content anchors when bands are still separate (sep > 0.45)
+      if(p.sep>0.45 && band.isDominant){
+        var docY=scrollY+y;
+        var pinchPull=0;
+        for(var a=0;a<pinchAnchors.length;a++){
+          var d=Math.abs(docY-pinchAnchors[a]);
+          var w=Math.exp(-(d*d)/(2*150*150));
+          pinchPull+=w;
+        }
+        if(pinchPull>0){
+          var targetX=W/2 + band.side*contentHalf*0.85;
+          var pinchAmt=Math.min(1,pinchPull)*0.55*p.sep;
+          x=x+(targetX-x)*pinchAmt;
+        }
+      }
+      pts[s]=[x,y];
+    }
+    return {pts:pts,fusion:p.fusion,sep:p.sep,band:band};
+  }
+
+  function strokePath(pts,width,color,alpha,blur){
+    ctx.beginPath();
+    ctx.moveTo(pts[0][0],pts[0][1]);
+    for(var i=1;i<pts.length-1;i++){
+      var mx=(pts[i][0]+pts[i+1][0])/2;
+      var my=(pts[i][1]+pts[i+1][1])/2;
+      ctx.quadraticCurveTo(pts[i][0],pts[i][1],mx,my);
+    }
+    var last=pts[pts.length-1];
+    ctx.lineTo(last[0],last[1]);
+    ctx.lineCap='round';ctx.lineJoin='round';
+    ctx.lineWidth=width;
+    ctx.strokeStyle='rgba('+color+','+alpha+')';
+    ctx.shadowBlur=blur;
+    ctx.shadowColor='rgba('+color+','+(alpha*0.9)+')';
+    ctx.stroke();
+  }
+
+  // Detect crossings between dominant cool & warm super-bands — for hot-core flares.
+  function findCrossings(coolPts,warmPts){
+    if(isMobile)return [];
+    var crossings=[];
+    for(var i=1;i<coolPts.length;i++){
+      var prevDx=coolPts[i-1][0]-warmPts[i-1][0];
+      var dx=coolPts[i][0]-warmPts[i][0];
+      if((prevDx<=0&&dx>=0)||(prevDx>=0&&dx<=0)){
+        if(prevDx!==dx){
+          var f=Math.abs(prevDx)/(Math.abs(prevDx)+Math.abs(dx));
+          var x=coolPts[i-1][0]+(coolPts[i][0]-coolPts[i-1][0])*f;
+          var y=coolPts[i-1][1]+(coolPts[i][1]-coolPts[i-1][1])*f;
+          crossings.push({x:x,y:y});
+        }
+      }
+    }
+    return crossings;
+  }
+
+  // ===== MURMURATION PARTICLES =====
+  // Scattered "starlings" drifting around each side's band. At the top of the page they're
+  // highly dispersed; as scroll progresses, the attraction toward the band ramps up. After
+  // pricing (~t=0.55) they're in tight formation. In the final fusion stage, they bleed
+  // into the central unified beam — visual metaphor of "scattered to unified".
+  var PARTICLES_PER_SIDE=isMobile?20:60;
+  var particles=[];
+  function initParticles(){
+    particles=[];
+    for(var s=-1;s<=1;s+=2){
+      for(var i=0;i<PARTICLES_PER_SIDE;i++){
+        var sideX=W/2 + s*(Math.random()*W*0.40 + W*0.06);
+        particles.push({
+          side:s, x:sideX, y:Math.random()*H,
+          vx:0, vy:0,
+          size:Math.random()*1.4+0.9,                // bumped from 0.5..1.5 → 0.9..2.3
+          seed:Math.random()*1000,
+          alpha:Math.random()*0.4+0.6,               // bumped from 0.3..0.8 → 0.6..1.0
+        });
+      }
+    }
+  }
+  initParticles();
+  window.addEventListener('resize',initParticles,{passive:true});
+
+  // Compute attraction toward band path. Strength is keyed off scroll position so the
+  // formation tightens as the user reads through the page.
+  // Tuning: keep diffusion HIGH through hero→monologue→numbers→process→why so the
+  // scattered murmuration reads as a consistent atmospheric effect across those sections.
+  // Only at Pricing does the attraction ramp sharply, gathering particles toward the
+  // bands. Final stage (CTA) bleeds into the unified gold beam.
+  function attractionAt(t){
+    if(t<0.10) return 0.006;                                         // hero — dispersed
+    if(t<0.40) return 0.006 + ((t-0.10)/0.30)*0.014;                 // monologue/numbers — slow tightening (keeps visibility)
+    if(t<0.65) return 0.020 + ((t-0.40)/0.25)*0.015;                 // process/why — held diffuse, gentle gather
+    if(t<0.80) return 0.035 + ((t-0.65)/0.15)*0.080;                 // PRICING — sharp tightening here
+    if(t<0.95) return 0.115 + ((t-0.80)/0.15)*0.075;                 // use-cases/cta lead-in — tight
+    return 0.190;                                                     // unified beam
+  }
+
+  function drawMurmuration(t, scrollY, elapsed, coolDomPts, warmDomPts){
+    if(!particles.length) return;
+    var attraction=attractionAt(t);
+    // mergeIntoBeam: 0 until t=0.75, ramps to 1 by t=1. Pulls particles toward central axis.
+    var mergeIntoBeam=Math.max(0,Math.min(1,(t-0.75)/0.25));
+    var beamX=W/2;
+    var dampening=0.88;
+    ctx.shadowBlur=0;
+    for(var i=0;i<particles.length;i++){
+      var pt=particles[i];
+      var pts=pt.side<0?coolDomPts:warmDomPts;
+      // Target: nearest band point (by y). Falls back to a side-x line if no path.
+      var tx=W/2 + pt.side*W*0.30, ty=pt.y;
+      if(pts&&pts.length){
+        var bestIdx=Math.max(0,Math.min(pts.length-1,Math.floor((pt.y/H)*pts.length)));
+        // Refine nearest by y in a small neighborhood
+        var bestD=Math.abs(pts[bestIdx][1]-pt.y);
+        for(var k=Math.max(0,bestIdx-2);k<=Math.min(pts.length-1,bestIdx+2);k++){
+          var d=Math.abs(pts[k][1]-pt.y);
+          if(d<bestD){bestD=d;bestIdx=k;}
+        }
+        tx=pts[bestIdx][0];
+      }
+      // Beam-merge: shift target toward central axis in fusion stage
+      if(mergeIntoBeam>0){
+        tx=tx*(1-mergeIntoBeam) + beamX*mergeIntoBeam;
+      }
+      // Brownian noise — gives the flock its organic, unsynchronized motion
+      var nx=Math.sin((elapsed*0.0007)+pt.seed)*0.18;
+      var ny=Math.cos((elapsed*0.0009)+pt.seed*1.3)*0.12;
+      pt.vx += (tx-pt.x)*attraction + nx;
+      pt.vy += ny;
+      pt.vx *= dampening;
+      pt.vy *= dampening;
+      pt.x += pt.vx;
+      pt.y += pt.vy;
+      // Vertical wrap so particles persist as page scrolls
+      if(pt.y<-30){pt.y=H+30; pt.vy=0;}
+      if(pt.y>H+30){pt.y=-30; pt.vy=0;}
+      // Color: side-tinted normally, shifting to fused gold during merge
+      var col;
+      if(mergeIntoBeam<0.001){
+        col=pt.side<0?'120,200,225':'225,180,140';
+      } else {
+        var sideCol=pt.side<0?[120,200,225]:[225,180,140];
+        var goldCol=[244,216,168];
+        var r=Math.round(sideCol[0]+(goldCol[0]-sideCol[0])*mergeIntoBeam);
+        var g=Math.round(sideCol[1]+(goldCol[1]-sideCol[1])*mergeIntoBeam);
+        var b=Math.round(sideCol[2]+(goldCol[2]-sideCol[2])*mergeIntoBeam);
+        col=r+','+g+','+b;
+      }
+      // Pulse alpha gently. Higher base multiplier (0.9) so each individual particle is
+      // clearly visible — at low scroll positions where particles are dispersed, density
+      // is low so a brighter per-particle alpha keeps the murmuration visible. At high
+      // scroll positions density is naturally higher (clustered).
+      var pulse=0.7+0.3*Math.sin(elapsed*0.0015+pt.seed*2);
+      var a=pt.alpha*pulse*0.9;
+      // Subtle brightening as merging (kept small so it doesn't overpower the dispersed state)
+      if(mergeIntoBeam>0) a*=(1+mergeIntoBeam*0.25);
+      ctx.fillStyle='rgba('+col+','+a.toFixed(3)+')';
+      ctx.beginPath();
+      ctx.arc(pt.x,pt.y,pt.size,0,Math.PI*2);
+      ctx.fill();
+    }
+  }
+
+  var startMs=performance.now();
+  var lastBeam=-1;
+
+  function frame(now){
+    requestAnimationFrame(frame);
+    var t=scrollProgress;
+    var sy=window.pageYOffset||window.scrollY||0;
+    var elapsed=now-startMs;
+
+    ctx.clearRect(0,0,W,H);
+    ctx.globalCompositeOperation='lighter';
+
+    var p=braidParams(t);
+
+    // Dominant band paths used by both ribbons drawing and the murmuration particles.
+    var coolDom=null,warmDom=null;
+
+    if(p.fusion<0.98){
+      // Compute all band paths once. Followers drawn first (so dominant overlays them
+      // when bandMerge -> 1, giving a clean bright core on top).
+      var bandPathsByOrder=[];
+      // Followers first
+      for(var bi=0;bi<BANDS.length;bi++){
+        if(!BANDS[bi].isDominant){
+          bandPathsByOrder.push(bandPoints(BANDS[bi],t,sy,elapsed));
+        }
+      }
+      // Dominants last
+      for(var bi2=0;bi2<BANDS.length;bi2++){
+        if(BANDS[bi2].isDominant){
+          var bp=bandPoints(BANDS[bi2],t,sy,elapsed);
+          bandPathsByOrder.push(bp);
+          if(BANDS[bi2].side<0)coolDom=bp; else warmDom=bp;
+        }
+      }
+      // Draw followers with dimmed glow and band's own color
+      for(var pi=0;pi<bandPathsByOrder.length;pi++){
+        var bp=bandPathsByOrder[pi];
+        var b=bp.band;
+        var col=mixColor(b.color,COL_FUSED,p.fusion*0.7);
+        if(b.isDominant){
+          if(b.passes===3){
+            strokePath(bp.pts,9,col,0.22,46);
+            strokePath(bp.pts,3.6,col,0.62,22);
+            // Dominant inner highlight: warmer for warm side, cooler for cool side
+            var hot = b.side>0 ? '248,232,210' : '220,238,248';
+            strokePath(bp.pts,1.4,hot,0.92,5);
+          } else {
+            strokePath(bp.pts,4,col,0.55,16);
+          }
+        } else {
+          // Follower bands — alpha and glow scale down as bandMerge increases (they're
+          // visually absorbed into the dominant band).
+          var followerAlpha=Math.max(0,(1-p.bandMerge*0.6))*0.55;
+          var followerWidth=2.6+(1-p.bandMerge)*1.2;
+          if(b.passes===2){
+            strokePath(bp.pts,followerWidth+4,col,followerAlpha*0.45,28);
+            strokePath(bp.pts,followerWidth,col,followerAlpha,12);
+          } else {
+            strokePath(bp.pts,followerWidth,col,followerAlpha,10);
+          }
+        }
+      }
+      // Crossings between cool & warm dominants — only when sideBraid is meaningful
+      if(coolDom && warmDom && p.sideBraid>0.2){
+        var crossings=findCrossings(coolDom.pts,warmDom.pts);
+        for(var c=0;c<crossings.length;c++){
+          var cx=crossings[c].x,cy=crossings[c].y;
+          var r=18;
+          var g=ctx.createRadialGradient(cx,cy,0,cx,cy,r*4);
+          g.addColorStop(0,'rgba(255,250,235,0.95)');
+          g.addColorStop(0.25,'rgba('+COL_FUSED+',0.55)');
+          g.addColorStop(1,'rgba('+COL_FUSED+',0)');
+          ctx.shadowBlur=0;
+          ctx.fillStyle=g;
+          ctx.beginPath();ctx.arc(cx,cy,r*4,0,Math.PI*2);ctx.fill();
+          // anamorphic streak
+          var sw=r*8;
+          var sg=ctx.createLinearGradient(cx-sw,cy,cx+sw,cy);
+          sg.addColorStop(0,'rgba('+COL_FUSED+',0)');
+          sg.addColorStop(0.5,'rgba(255,245,220,0.55)');
+          sg.addColorStop(1,'rgba('+COL_FUSED+',0)');
+          ctx.fillStyle=sg;
+          ctx.fillRect(cx-sw,cy-1.5,sw*2,3);
+        }
+      }
+    }
+
+    // Murmuration — runs on top of the bands so the particles flock around them
+    drawMurmuration(t, sy, elapsed,
+      coolDom?coolDom.pts:null,
+      warmDom?warmDom.pts:null);
+
+    if(p.fusion>0.15){
+      var fAlpha=Math.min(1,(p.fusion-0.15)/0.50);
+      var beamX=W/2;
+      var pulseY=((elapsed*0.4)%2500)/2500*H;
+      var beamGrad=ctx.createLinearGradient(beamX,0,beamX,H);
+      beamGrad.addColorStop(0,'rgba('+COL_FUSED+',0)');
+      beamGrad.addColorStop(0.5,'rgba('+COL_FUSED+','+(0.55*fAlpha)+')');
+      beamGrad.addColorStop(1,'rgba('+COL_FUSED+','+(0.85*fAlpha)+')');
+      ctx.strokeStyle=beamGrad;
+      ctx.shadowColor='rgba('+COL_FUSED+','+(0.6*fAlpha)+')';
+      ctx.shadowBlur=isMobile?22:42;
+      ctx.lineWidth=8;
+      ctx.beginPath();ctx.moveTo(beamX,0);ctx.lineTo(beamX,H);ctx.stroke();
+      ctx.shadowBlur=isMobile?10:16;
+      ctx.lineWidth=3.2;
+      ctx.beginPath();ctx.moveTo(beamX,0);ctx.lineTo(beamX,H);ctx.stroke();
+      ctx.shadowBlur=2;
+      ctx.lineWidth=1.2;
+      ctx.strokeStyle='rgba(255,245,220,'+(0.9*fAlpha)+')';
+      ctx.beginPath();ctx.moveTo(beamX,0);ctx.lineTo(beamX,H);ctx.stroke();
+      var pulseGrad=ctx.createRadialGradient(beamX,pulseY,0,beamX,pulseY,80);
+      pulseGrad.addColorStop(0,'rgba(255,250,235,'+(0.55*fAlpha)+')');
+      pulseGrad.addColorStop(0.4,'rgba('+COL_FUSED+','+(0.25*fAlpha)+')');
+      pulseGrad.addColorStop(1,'rgba('+COL_FUSED+',0)');
+      ctx.shadowBlur=0;
+      ctx.fillStyle=pulseGrad;
+      ctx.beginPath();ctx.arc(beamX,pulseY,80,0,Math.PI*2);ctx.fill();
+    }
+
+    if(ctaBtn){
+      var beamI=0;
+      if(p.fusion>0.4){
+        var br=ctaBtn.getBoundingClientRect();
+        if(br.top<H && br.bottom>0){
+          beamI=Math.min(1,(p.fusion-0.4)/0.55);
+        }
+      }
+      if(Math.abs(beamI-lastBeam)>0.02){
+        ctaBtn.style.setProperty('--beam-intensity',beamI.toFixed(3));
+        lastBeam=beamI;
+      }
+    }
+
+    ctx.shadowBlur=0;
+    ctx.globalCompositeOperation='source-over';
+  }
+  if(reducedMotion){requestAnimationFrame(function(now){frame(now)});}
+  else{requestAnimationFrame(frame);}
+
+  function mixColor(a,b,k){
+    var aa=a.split(','),bb=b.split(',');
+    var r=Math.round(+aa[0]+(+bb[0]-+aa[0])*k);
+    var g=Math.round(+aa[1]+(+bb[1]-+aa[1])*k);
+    var bl=Math.round(+aa[2]+(+bb[2]-+aa[2])*k);
+    return r+','+g+','+bl;
+  }
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',initRibbons);}
+else{initRibbons();}
+</script>
+
 <script type="text/javascript" id="hs-script-loader" async defer src="//js-na2.hs-scripts.com/245793816.js"></script>
-<!-- End of HubSpot Embed Code -->
-  
 </body>
 </html>
