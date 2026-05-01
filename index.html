@@ -532,7 +532,10 @@
     footer{border-top:1px solid rgba(255,255,255,0.08);padding:48px 40px;display:flex;justify-content:space-between;align-items:flex-start;gap:40px;position:relative;z-index:3;background:transparent}
     .footer-left{display:flex;flex-direction:column;gap:10px}
     .footer-logo{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:500}
-    .footer-tag{font-size:0.78rem;color:rgba(255,255,255,0.45);max-width:300px;line-height:1.6;font-weight:300}
+    .footer-tag{font-size:0.78rem;color:rgba(255,255,255,0.45);line-height:1.6;font-weight:300;white-space:nowrap}
+    /* Hide the scroll-rail when the footer is in view — at 100% scroll the rail's job is
+       done, and its bottom labels otherwise overlap the footer's left content. */
+    .scroll-rail.at-end{opacity:0 !important;pointer-events:none}
     .footer-right{display:flex;flex-direction:column;align-items:flex-end;gap:14px}
     .footer-links{display:flex;gap:24px;list-style:none;flex-wrap:wrap}
     .footer-links a{font-size:0.75rem;color:rgba(255,255,255,0.45);font-weight:300}
@@ -582,6 +585,7 @@
       .usecase-row{flex-direction:column;gap:20px;padding:48px 0;align-items:flex-start}
       .uc-scene{width:120px;height:90px;align-self:flex-end}
       footer{flex-direction:column;padding:40px 24px}
+      .footer-tag{white-space:normal;max-width:none}
       .footer-right{align-items:flex-start}
       .letterbox{height:24px}
     }
@@ -1171,6 +1175,21 @@
     requestAnimationFrame(railIdleTick);
   }
   requestAnimationFrame(railIdleTick);
+
+  // Hide the rail when the footer enters the viewport — its bottom labels overlap
+  // the footer's left content, and at 100% scroll the rail has finished its job.
+  // IntersectionObserver fires reliably on visibility changes without polling.
+  (function observeFooter(){
+    if(!scrollRail || !window.IntersectionObserver) return;
+    var footerEl=document.querySelector('footer');
+    if(!footerEl) return;
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        scrollRail.classList.toggle('at-end', e.isIntersecting);
+      });
+    },{threshold:0.01});
+    io.observe(footerEl);
+  })();
 
   // ----- Build slot-machine digit columns for each stat card -----
   // We render each digit as a vertical column of 0..9 spans inside an overflow:hidden window.
